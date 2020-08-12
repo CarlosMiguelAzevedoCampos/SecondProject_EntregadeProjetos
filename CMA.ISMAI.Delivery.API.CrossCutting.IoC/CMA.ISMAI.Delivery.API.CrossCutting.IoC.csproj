@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.Bus\CMA.ISMAI.Delivery.API.CrossCutting.Bus.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.FileSaver\CMA.ISMAI.Delivery.API.CrossCutting.FileSaver.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest\CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.Queue\CMA.ISMAI.Delivery.API.CrossCutting.Queue.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.Zip\CMA.ISMAI.Delivery.API.CrossCutting.Zip.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.API.Domain\CMA.ISMAI.Delivery.API.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
