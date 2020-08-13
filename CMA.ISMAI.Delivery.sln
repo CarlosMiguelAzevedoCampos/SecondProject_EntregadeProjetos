@@ -91,7 +91,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileLoad
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{673A8621-3F7F-4328-AD06-245FA2A485B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileLoading.CrossCutting.Tests", "CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting\CMA.ISMAI.Delivery.FileLoading.CrossCutting.Tests.csproj", "{09CB58EB-9A3D-463C-8FA9-5D58583C47AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileLoading.CrossCutting.Tests", "CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting\CMA.ISMAI.Delivery.FileLoading.CrossCutting.Tests.csproj", "{09CB58EB-9A3D-463C-8FA9-5D58583C47AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - FileProcessing", "3 - FileProcessing", "{92173FD0-FBFC-4EE2-BE66-9F5F1A0F6BE6}"
 EndProject
@@ -99,21 +99,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Domain", "1 - Domain", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{622843A3-8654-4FCB-A2C4-67F89CAF01EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileProcessing.Domain", "CMA.ISMAI.Delivery.FileProcessing.Domain\CMA.ISMAI.Delivery.FileProcessing.Domain.csproj", "{077F4156-BDD9-45CA-AF95-362F19B0B830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.Domain", "CMA.ISMAI.Delivery.FileProcessing.Domain\CMA.ISMAI.Delivery.FileProcessing.Domain.csproj", "{077F4156-BDD9-45CA-AF95-362F19B0B830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileProcessing.Domain.Tests", "CMA.ISMAI.Delivery.FileProcessing.Domain.Tests\CMA.ISMAI.Delivery.FileProcessing.Domain.Tests.csproj", "{2286881E-0A9C-4707-888B-FB0A1E35562C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.Domain.Tests", "CMA.ISMAI.Delivery.FileProcessing.Domain.Tests\CMA.ISMAI.Delivery.FileProcessing.Domain.Tests.csproj", "{2286881E-0A9C-4707-888B-FB0A1E35562C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - CrossCutting", "2 - CrossCutting", "{C7CFE0F7-28C6-4F63-A1DB-F9FE0381769F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing", "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing.csproj", "{7703E97A-1BFD-4300-BAF7-259F00644A4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing", "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing.csproj", "{7703E97A-1BFD-4300-BAF7-259F00644A4A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - UI", "0 - UI", "{9B791183-F15D-4E2A-A7C9-C85D0361D5EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileProcessing.UI", "CMA.ISMAI.Delivery.FileProcessing.UI\CMA.ISMAI.Delivery.FileProcessing.UI.csproj", "{724F6FBF-16D7-4BC3-86E4-18724C86CCA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.UI", "CMA.ISMAI.Delivery.FileProcessing.UI\CMA.ISMAI.Delivery.FileProcessing.UI.csproj", "{724F6FBF-16D7-4BC3-86E4-18724C86CCA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus", "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus.csproj", "{C5C46C58-EF33-4A20-B568-11E802D816E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus", "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus.csproj", "{C5C46C58-EF33-4A20-B568-11E802D816E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader", "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader.csproj", "{DFDC4F48-AAC1-422A-8AD5-C402E58EFE83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader", "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader.csproj", "{DFDC4F48-AAC1-422A-8AD5-C402E58EFE83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda", "CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda\CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.csproj", "{6400DE37-5A36-455D-B269-4E185C017C90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -253,6 +255,10 @@ Global
 		{DFDC4F48-AAC1-422A-8AD5-C402E58EFE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFDC4F48-AAC1-422A-8AD5-C402E58EFE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFDC4F48-AAC1-422A-8AD5-C402E58EFE83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6400DE37-5A36-455D-B269-4E185C017C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6400DE37-5A36-455D-B269-4E185C017C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6400DE37-5A36-455D-B269-4E185C017C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6400DE37-5A36-455D-B269-4E185C017C90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -309,6 +315,7 @@ Global
 		{724F6FBF-16D7-4BC3-86E4-18724C86CCA1} = {9B791183-F15D-4E2A-A7C9-C85D0361D5EE}
 		{C5C46C58-EF33-4A20-B568-11E802D816E6} = {C7CFE0F7-28C6-4F63-A1DB-F9FE0381769F}
 		{DFDC4F48-AAC1-422A-8AD5-C402E58EFE83} = {C7CFE0F7-28C6-4F63-A1DB-F9FE0381769F}
+		{6400DE37-5A36-455D-B269-4E185C017C90} = {7408275F-9D91-48D4-B617-7F9036F8A6CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A59F4A0-411C-49CF-A5C3-E87C108B33FE}

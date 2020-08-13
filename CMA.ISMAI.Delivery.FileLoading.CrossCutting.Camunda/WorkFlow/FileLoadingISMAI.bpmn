@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0vnx2q2" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.2">
+  <bpmn:process id="FileLoading" name="FileLoading" isExecutable="true">
+    <bpmn:startEvent id="Event_0dc55xc">
+      <bpmn:outgoing>Flow_1cfo98j</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity-Download-Files" name="Download files" camunda:type="external" camunda:topic="download_files">
+      <bpmn:incoming>Flow_0e9xbyp</bpmn:incoming>
+      <bpmn:outgoing>Flow_1csuahl</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_0ukwsxz" name="Are files ok?">
+      <bpmn:incoming>Flow_19fprr3</bpmn:incoming>
+      <bpmn:outgoing>Flow_09mi2uf</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0piplkb</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1um91nh">
+      <bpmn:incoming>Flow_0clvmwn</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_17rw2ww">
+      <bpmn:incoming>Flow_1etxbyh</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1csuahl" sourceRef="Activity-Download-Files" targetRef="Activity-Verify-Files" />
+    <bpmn:sequenceFlow id="Flow_19fprr3" sourceRef="Activity-Verify-Files" targetRef="Gateway_0ukwsxz" />
+    <bpmn:sequenceFlow id="Flow_09mi2uf" name="Yes" sourceRef="Gateway_0ukwsxz" targetRef="Activity-Create-GUID">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{files}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0piplkb" name="No" sourceRef="Gateway_0ukwsxz" targetRef="Activity-Notify-Student">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{not files}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_07k1gd2" sourceRef="Activity-Create-GUID" targetRef="Activity-Send-Broker" />
+    <bpmn:sequenceFlow id="Flow_0clvmwn" sourceRef="Activity-Send-Broker" targetRef="Event_1um91nh" />
+    <bpmn:sequenceFlow id="Flow_18tgemy" sourceRef="Activity-Notify-Student" targetRef="Activity-Send-Manual" />
+    <bpmn:sequenceFlow id="Flow_1etxbyh" sourceRef="Activity-Send-Manual" targetRef="Event_17rw2ww" />
+    <bpmn:serviceTask id="Activity-Verify-Files" name="Verify files" camunda:type="external" camunda:topic="verify_files">
+      <bpmn:incoming>Flow_1csuahl</bpmn:incoming>
+      <bpmn:incoming>Flow_0n71zuk</bpmn:incoming>
+      <bpmn:outgoing>Flow_19fprr3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity-Notify-Student" name="Notify student" camunda:type="external" camunda:topic="notify_student">
+      <bpmn:incoming>Flow_0piplkb</bpmn:incoming>
+      <bpmn:outgoing>Flow_18tgemy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity-Send-Manual" name="Send to manual processing" camunda:type="external" camunda:topic="manual_processing">
+      <bpmn:incoming>Flow_18tgemy</bpmn:incoming>
+      <bpmn:outgoing>Flow_1etxbyh</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity-Create-GUID" name="Create GUID for the files" camunda:type="external" camunda:topic="create_guid">
+      <bpmn:incoming>Flow_09mi2uf</bpmn:incoming>
+      <bpmn:outgoing>Flow_07k1gd2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity-Send-Broker" name="Send to broker" camunda:type="external" camunda:topic="send_broker">
+      <bpmn:incoming>Flow_07k1gd2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0clvmwn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_00afasv" name="Is download required?">
+      <bpmn:incoming>Flow_1cfo98j</bpmn:incoming>
+      <bpmn:outgoing>Flow_0e9xbyp</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0n71zuk</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0e9xbyp" name="Yes" sourceRef="Gateway_00afasv" targetRef="Activity-Download-Files">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{download}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0n71zuk" name="No" sourceRef="Gateway_00afasv" targetRef="Activity-Verify-Files">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{not download}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1cfo98j" sourceRef="Event_0dc55xc" targetRef="Gateway_00afasv" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="FileLoading">
+      <bpmndi:BPMNEdge id="Flow_1cfo98j_di" bpmnElement="Flow_1cfo98j">
+        <di:waypoint x="188" y="170" />
+        <di:waypoint x="275" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0n71zuk_di" bpmnElement="Flow_0n71zuk">
+        <di:waypoint x="300" y="145" />
+        <di:waypoint x="300" y="100" />
+        <di:waypoint x="560" y="100" />
+        <di:waypoint x="560" y="130" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="423" y="82" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e9xbyp_di" bpmnElement="Flow_0e9xbyp">
+        <di:waypoint x="325" y="170" />
+        <di:waypoint x="380" y="170" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="344" y="152" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1etxbyh_di" bpmnElement="Flow_1etxbyh">
+        <di:waypoint x="860" y="293" />
+        <di:waypoint x="912" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18tgemy_di" bpmnElement="Flow_18tgemy">
+        <di:waypoint x="720" y="293" />
+        <di:waypoint x="760" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0clvmwn_di" bpmnElement="Flow_0clvmwn">
+        <di:waypoint x="1010" y="170" />
+        <di:waypoint x="1052" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07k1gd2_di" bpmnElement="Flow_07k1gd2">
+        <di:waypoint x="870" y="170" />
+        <di:waypoint x="910" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0piplkb_di" bpmnElement="Flow_0piplkb">
+        <di:waypoint x="670" y="195" />
+        <di:waypoint x="670" y="253" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="682" y="226" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09mi2uf_di" bpmnElement="Flow_09mi2uf">
+        <di:waypoint x="695" y="170" />
+        <di:waypoint x="770" y="170" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="724" y="152" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19fprr3_di" bpmnElement="Flow_19fprr3">
+        <di:waypoint x="610" y="170" />
+        <di:waypoint x="645" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1csuahl_di" bpmnElement="Flow_1csuahl">
+        <di:waypoint x="480" y="170" />
+        <di:waypoint x="510" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0cl18qt_di" bpmnElement="Activity-Download-Files">
+        <dc:Bounds x="380" y="130" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0ukwsxz_di" bpmnElement="Gateway_0ukwsxz" isMarkerVisible="true">
+        <dc:Bounds x="645" y="145" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="640" y="108" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1um91nh_di" bpmnElement="Event_1um91nh">
+        <dc:Bounds x="1052" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17rw2ww_di" bpmnElement="Event_17rw2ww">
+        <dc:Bounds x="912" y="275" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nmnr0b_di" bpmnElement="Activity-Verify-Files">
+        <dc:Bounds x="510" y="130" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0l0nu81_di" bpmnElement="Activity-Notify-Student">
+        <dc:Bounds x="620" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0g1q2jh_di" bpmnElement="Activity-Send-Manual">
+        <dc:Bounds x="760" y="253" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_082xyjg_di" bpmnElement="Activity-Create-GUID">
+        <dc:Bounds x="770" y="130" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0vsgi47_di" bpmnElement="Activity-Send-Broker">
+        <dc:Bounds x="910" y="130" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dc55xc_di" bpmnElement="Event_0dc55xc">
+        <dc:Bounds x="152" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_00afasv_di" bpmnElement="Gateway_00afasv" isMarkerVisible="true">
+        <dc:Bounds x="275" y="145" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="271" y="202" width="59" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

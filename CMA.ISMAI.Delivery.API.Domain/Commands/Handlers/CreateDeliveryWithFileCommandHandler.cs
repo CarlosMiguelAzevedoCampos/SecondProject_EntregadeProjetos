@@ -52,15 +52,15 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                 return ValidationResult;
             }
 
-            if (!_queueService.SendToQueue(new DeliveryWithFile(request.Id, request.StudentName, request.InstituteName, request.CourseName,
-                    request.StudentEmail, request.StudentNumber, request.DeliveryTime, "", request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName), ""))
+            if (!_queueService.SendToQueue(new DeliveryFileSystem(request.Id, request.StudentName, request.InstituteName, request.CourseName,
+                    request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, ""), ""))
             {
                 AddError("A problem happend while sending your submition to the Queue.");
                 return ValidationResult;
             }
 
-            await _mediator.PublishEvent(new CreateDeliveryWithFileEvent(new DeliveryWithFile(request.Id, request.StudentName, request.InstituteName, request.CourseName,
-                    request.StudentEmail, request.StudentNumber, request.DeliveryTime, "", request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName)));
+            await _mediator.PublishEvent(new CreateDeliveryWithFileEvent(new DeliveryFileSystem(request.Id, request.StudentName, request.InstituteName, request.CourseName,
+                    request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, "")));
             return ValidationResult;
         }
     }

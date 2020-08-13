@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.Bus\CMA.ISMAI.Delivery.FileLoading.Bus.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda\CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileDownload\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileDownload.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileIdentifier\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileIdentifier.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier.csproj" />
