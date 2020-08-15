@@ -3,5 +3,6 @@
     public interface ICamundaService
     {
         bool StartWorkFlow(Core.Model.Delivery delivery);
+        void RegistWorkers();
     }
 }

@@ -61,9 +61,11 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
 
             ValidationResult = DoZipOperations(webReponse, request.PublicPDFVersionName, request.PrivatePDFVersionName);
 
-           
+            if (!ValidationResult.IsValid)
+                return ValidationResult;
+
             if (!_queueService.SendToQueue(new DeliveryWithLink(request.Id, request.StudentName, request.InstituteName, request.CourseName,
-               request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.LinkFile, request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName), ""))
+               request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.LinkFile, request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName), "FileLoading"))
             {
                 AddError("A problem happend while sending your submition to the Queue.");
                 return ValidationResult;

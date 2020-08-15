@@ -2,7 +2,7 @@
 
 namespace CMA.ISMAI.Core.Model
 {
-    public class Delivery
+    public abstract class Delivery
     {
         public Delivery(Guid id, string studentName, string instituteName, string courseName, string studentEmail, string studentNumber, DateTime deliveryTime, string cordenatorName, string title, string defenitionOfDelivery, string publicPDFVersionName, string privatePDFVersionName)
         {

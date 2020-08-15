@@ -6,7 +6,7 @@
     </bpmn:startEvent>
     <bpmn:serviceTask id="Activity-Download-Files" name="Download files" camunda:type="external" camunda:topic="download_files">
       <bpmn:incoming>Flow_0e9xbyp</bpmn:incoming>
-      <bpmn:outgoing>Flow_1csuahl</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0h8t8xw</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="Gateway_0ukwsxz" name="Are files ok?">
       <bpmn:incoming>Flow_19fprr3</bpmn:incoming>
@@ -14,12 +14,11 @@
       <bpmn:outgoing>Flow_0piplkb</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:endEvent id="Event_1um91nh">
-      <bpmn:incoming>Flow_0clvmwn</bpmn:incoming>
+      <bpmn:incoming>Flow_0c12kx5</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:endEvent id="Event_17rw2ww">
       <bpmn:incoming>Flow_1etxbyh</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1csuahl" sourceRef="Activity-Download-Files" targetRef="Activity-Verify-Files" />
     <bpmn:sequenceFlow id="Flow_19fprr3" sourceRef="Activity-Verify-Files" targetRef="Gateway_0ukwsxz" />
     <bpmn:sequenceFlow id="Flow_09mi2uf" name="Yes" sourceRef="Gateway_0ukwsxz" targetRef="Activity-Create-GUID">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{files}</bpmn:conditionExpression>
@@ -27,13 +26,11 @@
     <bpmn:sequenceFlow id="Flow_0piplkb" name="No" sourceRef="Gateway_0ukwsxz" targetRef="Activity-Notify-Student">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{not files}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_07k1gd2" sourceRef="Activity-Create-GUID" targetRef="Activity-Send-Broker" />
-    <bpmn:sequenceFlow id="Flow_0clvmwn" sourceRef="Activity-Send-Broker" targetRef="Event_1um91nh" />
     <bpmn:sequenceFlow id="Flow_18tgemy" sourceRef="Activity-Notify-Student" targetRef="Activity-Send-Manual" />
     <bpmn:sequenceFlow id="Flow_1etxbyh" sourceRef="Activity-Send-Manual" targetRef="Event_17rw2ww" />
     <bpmn:serviceTask id="Activity-Verify-Files" name="Verify files" camunda:type="external" camunda:topic="verify_files">
-      <bpmn:incoming>Flow_1csuahl</bpmn:incoming>
       <bpmn:incoming>Flow_0n71zuk</bpmn:incoming>
+      <bpmn:incoming>Flow_1tyesz7</bpmn:incoming>
       <bpmn:outgoing>Flow_19fprr3</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity-Notify-Student" name="Notify student" camunda:type="external" camunda:topic="notify_student">
@@ -42,15 +39,18 @@
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity-Send-Manual" name="Send to manual processing" camunda:type="external" camunda:topic="manual_processing">
       <bpmn:incoming>Flow_18tgemy</bpmn:incoming>
+      <bpmn:incoming>Flow_0woql1y</bpmn:incoming>
+      <bpmn:incoming>Flow_16rps55</bpmn:incoming>
+      <bpmn:incoming>Flow_01l139a</bpmn:incoming>
       <bpmn:outgoing>Flow_1etxbyh</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity-Create-GUID" name="Create GUID for the files" camunda:type="external" camunda:topic="create_guid">
       <bpmn:incoming>Flow_09mi2uf</bpmn:incoming>
-      <bpmn:outgoing>Flow_07k1gd2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0wxbvfz</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity-Send-Broker" name="Send to broker" camunda:type="external" camunda:topic="send_broker">
-      <bpmn:incoming>Flow_07k1gd2</bpmn:incoming>
-      <bpmn:outgoing>Flow_0clvmwn</bpmn:outgoing>
+      <bpmn:incoming>Flow_107778p</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ld7b4b</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="Gateway_00afasv" name="Is download required?">
       <bpmn:incoming>Flow_1cfo98j</bpmn:incoming>
@@ -64,6 +64,42 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{not download}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1cfo98j" sourceRef="Event_0dc55xc" targetRef="Gateway_00afasv" />
+    <bpmn:exclusiveGateway id="Gateway_035j4kk" name="Everything went ok?">
+      <bpmn:incoming>Flow_0h8t8xw</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tyesz7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0woql1y</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0h8t8xw" sourceRef="Activity-Download-Files" targetRef="Gateway_035j4kk" />
+    <bpmn:sequenceFlow id="Flow_1tyesz7" name="Yes" sourceRef="Gateway_035j4kk" targetRef="Activity-Verify-Files">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ok}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0woql1y" name="No" sourceRef="Gateway_035j4kk" targetRef="Activity-Send-Manual">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{not ok}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1yvm4zw" name="Everything went ok?">
+      <bpmn:incoming>Flow_0wxbvfz</bpmn:incoming>
+      <bpmn:outgoing>Flow_16rps55</bpmn:outgoing>
+      <bpmn:outgoing>Flow_107778p</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_16xvs1g" name="Everything went ok?">
+      <bpmn:incoming>Flow_0ld7b4b</bpmn:incoming>
+      <bpmn:outgoing>Flow_01l139a</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0c12kx5</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_16rps55" name="No" sourceRef="Gateway_1yvm4zw" targetRef="Activity-Send-Manual">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{not ok}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_01l139a" name="No" sourceRef="Gateway_16xvs1g" targetRef="Activity-Send-Manual">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{not ok}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0wxbvfz" sourceRef="Activity-Create-GUID" targetRef="Gateway_1yvm4zw" />
+    <bpmn:sequenceFlow id="Flow_107778p" name="Yes" sourceRef="Gateway_1yvm4zw" targetRef="Activity-Send-Broker">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ok}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0c12kx5" name="Yes" sourceRef="Gateway_16xvs1g" targetRef="Event_1um91nh">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ok}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ld7b4b" sourceRef="Activity-Send-Broker" targetRef="Gateway_16xvs1g" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="FileLoading">
@@ -88,20 +124,12 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1etxbyh_di" bpmnElement="Flow_1etxbyh">
-        <di:waypoint x="860" y="293" />
-        <di:waypoint x="912" y="293" />
+        <di:waypoint x="670" y="450" />
+        <di:waypoint x="670" y="472" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_18tgemy_di" bpmnElement="Flow_18tgemy">
-        <di:waypoint x="720" y="293" />
-        <di:waypoint x="760" y="293" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0clvmwn_di" bpmnElement="Flow_0clvmwn">
-        <di:waypoint x="1010" y="170" />
-        <di:waypoint x="1052" y="170" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_07k1gd2_di" bpmnElement="Flow_07k1gd2">
-        <di:waypoint x="870" y="170" />
-        <di:waypoint x="910" y="170" />
+        <di:waypoint x="670" y="333" />
+        <di:waypoint x="670" y="370" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0piplkb_di" bpmnElement="Flow_0piplkb">
         <di:waypoint x="670" y="195" />
@@ -121,10 +149,70 @@
         <di:waypoint x="610" y="170" />
         <di:waypoint x="645" y="170" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1csuahl_di" bpmnElement="Flow_1csuahl">
-        <di:waypoint x="480" y="170" />
-        <di:waypoint x="510" y="170" />
+      <bpmndi:BPMNEdge id="Flow_0h8t8xw_di" bpmnElement="Flow_0h8t8xw">
+        <di:waypoint x="430" y="210" />
+        <di:waypoint x="430" y="268" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tyesz7_di" bpmnElement="Flow_1tyesz7">
+        <di:waypoint x="455" y="293" />
+        <di:waypoint x="560" y="293" />
+        <di:waypoint x="560" y="210" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="499" y="275" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0woql1y_di" bpmnElement="Flow_0woql1y">
+        <di:waypoint x="430" y="318" />
+        <di:waypoint x="430" y="410" />
+        <di:waypoint x="620" y="410" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="438" y="361" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16rps55_di" bpmnElement="Flow_16rps55">
+        <di:waypoint x="840" y="318" />
+        <di:waypoint x="840" y="390" />
+        <di:waypoint x="720" y="390" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="848" y="351" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01l139a_di" bpmnElement="Flow_01l139a">
+        <di:waypoint x="960" y="318" />
+        <di:waypoint x="960" y="410" />
+        <di:waypoint x="720" y="410" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="968" y="361" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wxbvfz_di" bpmnElement="Flow_0wxbvfz">
+        <di:waypoint x="840" y="210" />
+        <di:waypoint x="840" y="268" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_107778p_di" bpmnElement="Flow_107778p">
+        <di:waypoint x="865" y="293" />
+        <di:waypoint x="880" y="293" />
+        <di:waypoint x="880" y="170" />
+        <di:waypoint x="910" y="170" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="886" y="229" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0c12kx5_di" bpmnElement="Flow_0c12kx5">
+        <di:waypoint x="985" y="293" />
+        <di:waypoint x="1120" y="293" />
+        <di:waypoint x="1120" y="188" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1044" y="275" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ld7b4b_di" bpmnElement="Flow_0ld7b4b">
+        <di:waypoint x="960" y="210" />
+        <di:waypoint x="960" y="268" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0dc55xc_di" bpmnElement="Event_0dc55xc">
+        <dc:Bounds x="152" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0cl18qt_di" bpmnElement="Activity-Download-Files">
         <dc:Bounds x="380" y="130" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -134,20 +222,11 @@
           <dc:Bounds x="640" y="108" width="60" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1um91nh_di" bpmnElement="Event_1um91nh">
-        <dc:Bounds x="1052" y="152" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_17rw2ww_di" bpmnElement="Event_17rw2ww">
-        <dc:Bounds x="912" y="275" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1nmnr0b_di" bpmnElement="Activity-Verify-Files">
         <dc:Bounds x="510" y="130" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0l0nu81_di" bpmnElement="Activity-Notify-Student">
         <dc:Bounds x="620" y="253" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0g1q2jh_di" bpmnElement="Activity-Send-Manual">
-        <dc:Bounds x="760" y="253" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_082xyjg_di" bpmnElement="Activity-Create-GUID">
         <dc:Bounds x="770" y="130" width="100" height="80" />
@@ -155,13 +234,37 @@
       <bpmndi:BPMNShape id="Activity_0vsgi47_di" bpmnElement="Activity-Send-Broker">
         <dc:Bounds x="910" y="130" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0dc55xc_di" bpmnElement="Event_0dc55xc">
-        <dc:Bounds x="152" y="152" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_00afasv_di" bpmnElement="Gateway_00afasv" isMarkerVisible="true">
         <dc:Bounds x="275" y="145" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="271" y="202" width="59" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_035j4kk_di" bpmnElement="Gateway_035j4kk" isMarkerVisible="true">
+        <dc:Bounds x="405" y="268" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="310" y="283" width="80" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0g1q2jh_di" bpmnElement="Activity-Send-Manual">
+        <dc:Bounds x="620" y="370" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17rw2ww_di" bpmnElement="Event_17rw2ww">
+        <dc:Bounds x="652" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_16xvs1g_di" bpmnElement="Gateway_16xvs1g" isMarkerVisible="true">
+        <dc:Bounds x="935" y="268" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="970" y="255.5" width="80" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1um91nh_di" bpmnElement="Event_1um91nh">
+        <dc:Bounds x="1102" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1yvm4zw_di" bpmnElement="Gateway_1yvm4zw" isMarkerVisible="true">
+        <dc:Bounds x="815" y="268" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="725" y="279.5" width="80" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
