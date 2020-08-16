@@ -20,6 +20,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
 
         public Task<ValidationResult> Handle(VerifyFilesCommand request, CancellationToken cancellationToken)
         {
+            ValidationResult.Errors.Clear();
             if (!_fileVerifierService.UnzipFiles(request.FilePath, request.FilePathExtract))
             {
                 AddError("An error happend while extracting the files");

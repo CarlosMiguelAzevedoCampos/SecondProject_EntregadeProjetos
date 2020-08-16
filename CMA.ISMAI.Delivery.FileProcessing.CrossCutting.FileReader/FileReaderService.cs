@@ -13,7 +13,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader
             List<string> jury = new List<string>();
             try
             {
-                var fi = new FileInfo(@"C:\Users\Carlos Campos\Desktop\excel.xlsx");
+                var fi = new FileInfo(@"C:\Users\Carlos Campos\Desktop\jury.xlsx");
                 if (fi.Exists)
                 {
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;

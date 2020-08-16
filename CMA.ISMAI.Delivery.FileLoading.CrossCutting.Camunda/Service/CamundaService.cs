@@ -127,7 +127,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                    getStudentName.Value.ToString(), getCourseName.Value.ToString()),
                   string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{0}_{1}_{2}_{3}", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
                    getStudentName.Value.ToString(), getCourseName.Value.ToString()));
-
+                    
                     var validation = await _mediator.Send(verifyFilesCommand);
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     dictionaryToPassVariable.Add("files", validation.IsValid);
@@ -237,14 +237,13 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                 {
                     var delivery = externalTask.Variables;
                     var getStudentName = returnVariableValue(delivery, "studentName");
-                    var getDeliveryUrl = returnVariableValue(delivery, "fileUrl");
                     var getInstituteName = returnVariableValue(delivery, "instituteName");
                     var getStudentEmail = returnVariableValue(delivery, "studentEmail");
                     var getCourseName = returnVariableValue(delivery, "courseName");
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "worker");
 
-                    _notificationService.SendEmail("carlosmiguelcampos1996@gmail.com", string.Format("Hello, <br/> Something went wrong on the delivery. The delivery failed on the File Loading diagram. Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. It failed on the {4} phase. Thanks",
+                    _notificationService.SendEmail("carlosmiguelcampos1996@gmail.com", string.Format("Hello, <br/> Something went wrong on the delivery. <br/> <br/> The delivery failed on the File Loading diagram. <br/> <br/> Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/> <br/> It failed on the {4} phase. <br/> <br/> Thanks",
                         getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getWorker.Value.ToString()));
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);

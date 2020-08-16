@@ -1,6 +1,9 @@
-﻿using CMA.ISMAI.Delivery.Payment.CrossCutting.Bus;
+﻿using CMA.ISMAI.Core.Interface;
+using CMA.ISMAI.Core.Service;
+using CMA.ISMAI.Delivery.Payment.CrossCutting.Bus;
+using CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Interface;
+using CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service;
 using CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader;
-using CMA.ISMAI.Delivery.Payment.CrossCutting.Notifications;
 using CMA.ISMAI.Delivery.Payment.CrossCutting.Queue;
 using CMA.ISMAI.Delivery.Payment.Domain.Commands;
 using CMA.ISMAI.Delivery.Payment.Domain.Interfaces;
@@ -31,9 +34,9 @@ namespace CMA.ISMAI.Delivery.Payment.UI
             services.AddScoped<IMediatorHandler, InMemoryBus>();
             services.AddScoped<IRequestHandler<NotifyActionCommand, ValidationResult>, NotifyActionCommandHandler>();
             services.AddScoped<IRequestHandler<VerifyPaymentOfDeliveryCommand, ValidationResult>, DeliveryPaymentHandler>();
-            services.AddScoped<IRequestHandler<SendToQueueCommand, ValidationResult>, QueueCommandHandler>();
             services.AddScoped<IFileReaderService, FileReaderService>();
-            services.AddScoped<INotifyService, NotificationService>();
+            services.AddScoped<ICamundaService, CamundaService>();
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IQueueService, QueueService>();
             services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
             services.AddTransient<ConsoleApplication>();

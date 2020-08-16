@@ -1,7 +1,9 @@
-﻿namespace CMA.ISMAI.Delivery.API.Domain.Interfaces
-{
+﻿using CMA.ISMAI.Core.Model;
+
+namespace CMA.ISMAI.Delivery.API.Domain.Interfaces
+{ 
     public interface IQueueService
     {
-        bool SendToQueue(Core.Model.Delivery delivery, string queueName);
+        bool SendToQueue(Core.Model.Delivery deliveryFileSystem, string queue);
     }
 }

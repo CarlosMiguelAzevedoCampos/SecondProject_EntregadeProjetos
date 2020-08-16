@@ -26,6 +26,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
 
         public Task<ValidationResult> Handle(CreateFileIdentifiersCommand request, CancellationToken cancellationToken)
         {
+            ValidationResult.Errors.Clear();
             Dictionary<string, Guid> fileInforation = _fileIdentifierService.GenerateFileIdentifier(request.FilePath);
 
             if (fileInforation.Count == 0)

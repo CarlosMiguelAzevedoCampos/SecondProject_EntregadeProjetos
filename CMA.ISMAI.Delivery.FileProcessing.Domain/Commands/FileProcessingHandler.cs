@@ -29,6 +29,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
 
         public Task<ValidationResult> Handle(GenerateWaterMarkCommand request, CancellationToken cancellationToken)
         {
+            ValidationResult.Errors.Clear();
+
             if (!_generateWaterMarkService.AddWaterMark(request.FilePath, request.PublicPDFVersionName, request.PrivatePDFVersionName))
                 AddError("A problem happen while adding a water mark");
             return Task.FromResult(ValidationResult);
@@ -36,6 +38,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
 
         public Task<ValidationResult> Handle(GenerateCoverPageCommand request, CancellationToken cancellationToken)
         {
+            ValidationResult.Errors.Clear();
+
             if (!_coverPageService.AddCoverPage(request.FilePath, request.Title, request.StudentName, request.Cordenator, request.DeliveryContext))
                 AddError("A problem happen while adding a cover");
             return Task.FromResult(ValidationResult);
@@ -43,6 +47,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
 
         public Task<ValidationResult> Handle(GenerateJuryPageCommand request, CancellationToken cancellationToken)
         {
+            ValidationResult.Errors.Clear();
+
             List<string> jury = _fileReaderService.ReturnJury(request.StudentNumber, request.StudentInstituteName, request.StudentCourseName);
             if (jury.Count == 0)
             {

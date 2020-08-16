@@ -20,6 +20,7 @@ namespace CMA.ISMAI.Delivery.Payment.Domain.Commands
         }
         public Task<ValidationResult> Handle(NotifyActionCommand request, CancellationToken cancellationToken)
         {
+            ValidationResult.Errors.Clear();
             if (!_notifyService.SendEmail(request.Body, request.Email))
                 AddError("A problem happend while sending the email");
             return Task.FromResult(ValidationResult);

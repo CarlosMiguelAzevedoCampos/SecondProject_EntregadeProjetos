@@ -1,4 +1,8 @@
-﻿using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus;
+﻿using CMA.ISMAI.Core.Interface;
+using CMA.ISMAI.Core.Service;
+using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus;
+using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Interface;
+using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Commands;
@@ -31,7 +35,9 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
             services.AddScoped<IGenerateJuryPageService, GenerateJuryPageService>();
             services.AddScoped<ICoverPageService, CoverPageService>();
             services.AddScoped<IFileReaderService, FileReaderService>();
+            services.AddScoped<ICamundaService, CamundaService>();
             services.AddScoped<IMediatorHandler, InMemoryBus>();
+            services.AddScoped<INotificationService, NotificationService>();
 
 
             services.AddScoped<IRequestHandler<GenerateWaterMarkCommand, ValidationResult>, FileProcessingHandler>();

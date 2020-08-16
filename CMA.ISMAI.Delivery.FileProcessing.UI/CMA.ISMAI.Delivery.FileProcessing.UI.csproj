@@ -9,13 +9,16 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Core\CMA.ISMAI.Core.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileProcessing.Domain\CMA.ISMAI.Delivery.FileProcessing.Domain.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.FileProcessing.CrossCutting.Camunda\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.csproj" />
   </ItemGroup>
 
 </Project>

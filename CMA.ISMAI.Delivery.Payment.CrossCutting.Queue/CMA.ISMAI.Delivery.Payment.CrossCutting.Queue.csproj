@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Core\CMA.ISMAI.Core.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.Domain\CMA.ISMAI.Delivery.Payment.Domain.csproj" />
   </ItemGroup>

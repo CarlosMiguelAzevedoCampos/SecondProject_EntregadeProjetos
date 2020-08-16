@@ -61,6 +61,7 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                 return ValidationResult;
             }
 
+            
             await _mediator.PublishEvent(new CreateDeliveryWithFileEvent(new DeliveryFileSystem(request.Id, request.StudentName, request.InstituteName, request.CourseName,
                     request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Zip\{0}_{1}_{2}_{3}.zip", request.StudentNumber, request.InstituteName,
                request.StudentName, request.CourseName))));

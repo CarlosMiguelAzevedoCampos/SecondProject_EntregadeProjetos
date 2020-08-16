@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="WorkFlow\FileProcessingISMAI.bpmn" />
+    <None Remove="WorkFlow\StudentPaymentISMAI.bpmn" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="WorkFlow\FileProcessingISMAI.bpmn">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BerndRuecker.Sample.CamundaClient" Version="0.1.1" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Core\CMA.ISMAI.Core.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.FileProcessing.Domain\CMA.ISMAI.Delivery.FileProcessing.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
