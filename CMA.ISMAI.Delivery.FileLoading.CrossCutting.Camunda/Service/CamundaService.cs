@@ -2,6 +2,7 @@
 using CamundaClient.Dto;
 using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Interface;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
 using MediatR;
 using System;
@@ -21,14 +22,15 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
         private readonly IDictionary<string, Action<ExternalTask>> workers;
         private readonly IMediator _mediator;
         private readonly INotificationService _notificationService;
-
-        public CamundaService(IMediator mediator, INotificationService notificationService)
+        private readonly IQueueService _queueService;
+        public CamundaService(IMediator mediator, INotificationService notificationService, IQueueService queueService)
         {
             camundaEngineClient = new CamundaEngineClient(new System.Uri("http://localhost:8080/engine-rest/engine/default/"), null, null);
             filePath = $"CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.WorkFlow.FileLoadingISMAI.bpmn";
             workers = new Dictionary<string, Action<ExternalTask>>();
             _mediator = mediator;
             _notificationService = notificationService;
+            _queueService = queueService;
         }
 
         public bool StartWorkFlow(Core.Model.Delivery delivery)
@@ -79,61 +81,178 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
 
             registerWorker("download_files", async externalTask =>
             {
-                var delivery = externalTask.Variables;
-                var getStudentName = returnVariableValue(delivery, "studentName");
-                var getDeliveryUrl = returnVariableValue(delivery, "fileUrl");
-                var getInstituteName = returnVariableValue(delivery, "instituteName");
-                var getStudentEmail = returnVariableValue(delivery, "studentEmail");
-                var getCourseName = returnVariableValue(delivery, "courseName");
-                var getStudentNumber = returnVariableValue(delivery, "studentNumber");
-                var getDeliveryTime = returnVariableValue(delivery, "deliveryTime");
-                var getCordenatorName = returnVariableValue(delivery, "cordenatorName");
-                var getTitle = returnVariableValue(delivery, "title");
-                var getDefenition = returnVariableValue(delivery, "defenitionOfDelivery");
-                var getpublicdefenition = returnVariableValue(delivery, "publicPDFVersionName");
-                var getprivatedefenition = returnVariableValue(delivery, "privatePDFVersionName");
-                var getId = returnVariableValue(delivery, "id");
-                DownloadFileFromUrlCommand downloadCommand = new DownloadFileFromUrlCommand(Guid.Parse(getId.Value.ToString())
-                    , getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getCourseName.Value.ToString(), getStudentEmail.Value.ToString(), getStudentNumber.Value.ToString(), DateTime.Parse(getDeliveryTime.Value.ToString()),
-                    getCordenatorName.Value.ToString(), getDefenition.Value.ToString(), getTitle.Value.ToString(), getDeliveryUrl.Value.ToString(), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString());
-                var validation = await _mediator.Send(downloadCommand);
-                Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
-                dictionaryToPassVariable.Add("ok", validation.IsValid);
-                camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getDeliveryUrl = returnVariableValue(delivery, "fileUrl");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getStudentEmail = returnVariableValue(delivery, "studentEmail");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                    var getDeliveryTime = returnVariableValue(delivery, "deliveryTime");
+                    var getCordenatorName = returnVariableValue(delivery, "cordenatorName");
+                    var getTitle = returnVariableValue(delivery, "title");
+                    var getDefenition = returnVariableValue(delivery, "defenitionOfDelivery");
+                    var getpublicdefenition = returnVariableValue(delivery, "publicPDFVersionName");
+                    var getprivatedefenition = returnVariableValue(delivery, "privatePDFVersionName");
+                    var getId = returnVariableValue(delivery, "id");
+                    DownloadFileFromUrlCommand downloadCommand = new DownloadFileFromUrlCommand(Guid.Parse(getId.Value.ToString())
+                        , getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getCourseName.Value.ToString(), getStudentEmail.Value.ToString(), getStudentNumber.Value.ToString(), DateTime.Parse(getDeliveryTime.Value.ToString()),
+                        getCordenatorName.Value.ToString(), getDefenition.Value.ToString(), getTitle.Value.ToString(), getDeliveryUrl.Value.ToString(), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString());
+                    var validation = await _mediator.Send(downloadCommand);
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    dictionaryToPassVariable.Add("ok", validation.IsValid);
+                    dictionaryToPassVariable.Add("Worker", "download_files");
+                    camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                }
+                catch(Exception ex)
+                {
+
+                }
             });
 
             registerWorker("verify_files", async externalTask =>
             {
-                var delivery = externalTask.Variables;
-                var getId = returnVariableValue(delivery, "id");
-                var getStudentName = returnVariableValue(delivery, "studentName");
-                var getInstituteName = returnVariableValue(delivery, "instituteName");
-                var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getId = returnVariableValue(delivery, "id");
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
 
-                VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.Parse(getId.Value.ToString()), string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{0}_{1}_{2}.zip", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
-               getStudentNumber.Value.ToString()));
+                    VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.Parse(getId.Value.ToString()), string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Zip\{0}_{1}_{2}_{3}.zip", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                   getStudentName.Value.ToString(), getCourseName.Value.ToString()),
+                  string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{0}_{1}_{2}_{3}", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                   getStudentName.Value.ToString(), getCourseName.Value.ToString()));
 
-                var validation = await _mediator.Send(verifyFilesCommand);
-                Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
-                dictionaryToPassVariable["ok"] = validation.IsValid;
-                camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                    var validation = await _mediator.Send(verifyFilesCommand);
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    dictionaryToPassVariable.Add("files", validation.IsValid);
+                    dictionaryToPassVariable["Worker"] = "verify_files";
+                    camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                }catch(Exception ex)
+                {
+
+                }
+            });
+
+            registerWorker("create_guid", async externalTask =>
+            {
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getId = returnVariableValue(delivery, "id");
+                    var getStudentEmail = returnVariableValue(delivery, "studentEmail");
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
+
+                    CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{0}_{1}_{2}_{3}", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                    getStudentName.Value.ToString(), getCourseName.Value.ToString()), getStudentEmail.Value.ToString());
+
+
+                    var validation = await _mediator.Send(createFileIdentifiersCommand);
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    dictionaryToPassVariable["ok"] = validation.IsValid;
+                    dictionaryToPassVariable["Worker"] = "create_guid";
+
+                    camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                }
+                catch(Exception ex)
+                {
+
+                }
+            });
+
+            registerWorker("send_broker", externalTask =>
+            {
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getDeliveryUrl = returnVariableValue(delivery, "fileUrl");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getStudentEmail = returnVariableValue(delivery, "studentEmail");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                    var getDeliveryTime = returnVariableValue(delivery, "deliveryTime");
+                    var getCordenatorName = returnVariableValue(delivery, "cordenatorName");
+                    var getTitle = returnVariableValue(delivery, "title");
+                    var getDefenition = returnVariableValue(delivery, "defenitionOfDelivery");
+                    var getpublicdefenition = returnVariableValue(delivery, "publicPDFVersionName");
+                    var getprivatedefenition = returnVariableValue(delivery, "privatePDFVersionName");
+                    var getId = returnVariableValue(delivery, "id");
+
+
+                    Core.Model.DeliveryFileSystem deliveryFileSystem = new Core.Model.DeliveryFileSystem(Guid.Parse(getId.Value.ToString())
+                        , getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getCourseName.Value.ToString(), getStudentEmail.Value.ToString(), getStudentNumber.Value.ToString(), DateTime.Parse(getDeliveryTime.Value.ToString()),
+                        getCordenatorName.Value.ToString(), getTitle.Value.ToString(), getDefenition.Value.ToString(), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString(), string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{0}_{1}_{2}_{3}", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                    getStudentName.Value.ToString(), getCourseName.Value.ToString()));
+
+
+                    bool validation = _queueService.SendToQueue(deliveryFileSystem, "PaymentProcessing");
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    dictionaryToPassVariable["ok"] = validation;
+                    dictionaryToPassVariable["Worker"] = "send_broker";
+
+                    camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                }
+                catch(Exception ex)
+                {
+
+                }
             });
 
 
+            registerWorker("notify_student", externalTask =>
+            {
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getDeliveryUrl = returnVariableValue(delivery, "fileUrl");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getStudentEmail = returnVariableValue(delivery, "studentEmail");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                    var getWorker = returnVariableValue(delivery, "Worker");
+
+                    _notificationService.SendEmail(getStudentEmail.Value.ToString(), string.Format("Hello, <br/> Corrupted files were found in your Delivery. Please, contact the university for more information. <br/> Thanks, <br/> Delivery System."));
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                }
+                catch(Exception ex)
+                {
+
+                }
+            });
+
             registerWorker("manual_processing", externalTask =>
             {
-                var delivery = externalTask.Variables;
-                var getStudentName = returnVariableValue(delivery, "studentName");
-                var getDeliveryUrl = returnVariableValue(delivery, "fileUrl");
-                var getInstituteName = returnVariableValue(delivery, "instituteName");
-                var getStudentEmail = returnVariableValue(delivery, "studentEmail");
-                var getCourseName = returnVariableValue(delivery, "courseName");
-                var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getDeliveryUrl = returnVariableValue(delivery, "fileUrl");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getStudentEmail = returnVariableValue(delivery, "studentEmail");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                    var getWorker = returnVariableValue(delivery, "worker");
 
-                _notificationService.SendEmail("carlosmiguelcampos1996@gmail.com", string.Format("Hello, <br/> Something went wrong on the delivery. Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. Thanks",
-                    getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString()));
-                Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
-                camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                    _notificationService.SendEmail("carlosmiguelcampos1996@gmail.com", string.Format("Hello, <br/> Something went wrong on the delivery. The delivery failed on the File Loading diagram. Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. It failed on the {4} phase. Thanks",
+                        getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getWorker.Value.ToString()));
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                }
+                catch(Exception ex)
+                {
+
+                }
             });
             pollingTimer = new Timer(_ => StartPolling(), null, 1, Timeout.Infinite);
 

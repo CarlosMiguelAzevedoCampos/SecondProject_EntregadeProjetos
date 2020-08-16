@@ -46,21 +46,24 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                 return ValidationResult;
             }
 
-            if(!await _fileSaverService.DownloadFile(request.DeliveryFile, ""))
+            if(!await _fileSaverService.DownloadFile(request.DeliveryFile, string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Zip\{0}_{1}_{2}_{3}.zip", request.StudentNumber, request.InstituteName,
+               request.StudentName, request.CourseName)))
             {
                 AddError("Failed to save file!");
                 return ValidationResult;
             }
 
             if (!_queueService.SendToQueue(new DeliveryFileSystem(request.Id, request.StudentName, request.InstituteName, request.CourseName,
-                    request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, ""), ""))
+                    request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Zip\{0}_{1}_{2}_{3}.zip", request.StudentNumber, request.InstituteName,
+               request.StudentName, request.CourseName)), "FileLoading"))
             {
                 AddError("A problem happend while sending your submition to the Queue.");
                 return ValidationResult;
             }
 
             await _mediator.PublishEvent(new CreateDeliveryWithFileEvent(new DeliveryFileSystem(request.Id, request.StudentName, request.InstituteName, request.CourseName,
-                    request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, "")));
+                    request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Zip\{0}_{1}_{2}_{3}.zip", request.StudentNumber, request.InstituteName,
+               request.StudentName, request.CourseName))));
             return ValidationResult;
         }
     }

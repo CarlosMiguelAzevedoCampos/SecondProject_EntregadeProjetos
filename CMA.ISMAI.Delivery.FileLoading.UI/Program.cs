@@ -6,6 +6,7 @@ using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileDownload;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileIdentifier;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier;
+using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
@@ -35,10 +36,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             services.AddScoped<IMediatorHandler, InMemoryBus>();
             services.AddScoped<IHttpRequestService, FileDownloadService>();
             services.AddScoped<IFileVerifierService, FileVerifierService>();
+            services.AddScoped<IFileIdentifierService, FileIdentifierService>();
             services.AddScoped<IMediaFileVerifierService, MediaFileVerifierService>();
             services.AddScoped<IPDFVerifierService, PDFVerifierService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ICamundaService, CamundaService>();
+            services.AddScoped<IQueueService, QueueService>();
 
             services.AddScoped<IRequestHandler<DownloadFileFromUrlCommand, ValidationResult>, DownloadFileCommandHandler>();
             services.AddScoped<IRequestHandler<CreateFileIdentifiersCommand, ValidationResult>, FileIdentifiersCommandHandler>();

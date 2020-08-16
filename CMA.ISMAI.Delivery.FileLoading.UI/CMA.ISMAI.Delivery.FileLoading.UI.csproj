@@ -18,6 +18,7 @@
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileDownload\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileDownload.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileIdentifier\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileIdentifier.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier\CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue\CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.Domain\CMA.ISMAI.Delivery.FileLoading.Domain.csproj" />
   </ItemGroup>
 

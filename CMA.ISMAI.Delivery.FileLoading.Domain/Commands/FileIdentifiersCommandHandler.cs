@@ -44,7 +44,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
                     Here they are: <br/>");
             foreach (var item in fileInforation)
             {
-                @string.Append(string.Format("{0} - {1} <br/>", item.Key, item.Value));
+                @string.Append(string.Format("<b>{0}</b> - {1} <br/> <br/>", item.Key, item.Value));
             }
 
             @string.Append("<br/> Thanks, <br/> Notification Service");

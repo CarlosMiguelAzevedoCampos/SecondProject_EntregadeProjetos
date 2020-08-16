@@ -36,7 +36,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
 
         public Task<ValidationResult> Handle(GenerateCoverPageCommand request, CancellationToken cancellationToken)
         {
-            if (_coverPageService.AddCoverPage(request.FilePath, request.Title, request.StudentName, request.Cordenator, request.DeliveryContext))
+            if (!_coverPageService.AddCoverPage(request.FilePath, request.Title, request.StudentName, request.Cordenator, request.DeliveryContext))
                 AddError("A problem happen while adding a cover");
             return Task.FromResult(ValidationResult);
         }
@@ -49,7 +49,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
                 AddError("No jury was found");
                 return Task.FromResult(ValidationResult);
             }
-            if (_generateJuryPageService.AddJuryPage(request.FilePath, jury))
+            if (!_generateJuryPageService.AddJuryPage(request.FilePath, jury))
                 AddError("A problem happen while adding the jury page");
             return Task.FromResult(ValidationResult);
         }
