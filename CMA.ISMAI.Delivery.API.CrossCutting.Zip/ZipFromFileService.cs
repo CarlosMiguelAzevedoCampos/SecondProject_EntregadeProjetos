@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.API.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
@@ -9,6 +10,14 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
 {
     public class ZipFromFileService : IZipFileService
     {
+
+        private readonly ILoggingService _log;
+
+        public ZipFromFileService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public bool DoesTheZipFileContainsaPDF(IFormFile deliveryFile)
         {
             try
@@ -19,7 +28,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
             }
             catch (Exception ex)
             {
-                // Do logging stuff
+                _log.Fatal(ex.ToString());
             }
             return false;
         }
@@ -35,7 +44,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
             }
             catch (Exception ex)
             {
-                // Do logging stuff
+                _log.Fatal(ex.ToString());
             }
             return false;
         }
@@ -49,7 +58,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
             }
             catch (Exception ex)
             {
-                // Do logging stuff
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

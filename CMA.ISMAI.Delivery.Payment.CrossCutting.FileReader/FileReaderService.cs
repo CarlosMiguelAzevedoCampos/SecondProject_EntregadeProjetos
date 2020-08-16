@@ -1,4 +1,5 @@
-﻿using CMA.ISMAI.Delivery.Payment.Domain.Interfaces;
+﻿using CMA.ISMAI.Delivery.Logging.Interface;
+using CMA.ISMAI.Delivery.Payment.Domain.Interfaces;
 using OfficeOpenXml;
 using System;
 using System.IO;
@@ -7,6 +8,12 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader
 {
     public class FileReaderService : IFileReaderService
     {
+        private readonly ILoggingService _log;
+
+        public FileReaderService(ILoggingService log)
+        {
+            _log = log;
+        }
         public bool PaymentHasBeenDone(string studentNumber, string courseName, string institutionName)
         {
             return ReturnFileData(studentNumber, courseName, institutionName);
@@ -36,18 +43,18 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader
                                 }
                                 catch (Exception ex)
                                 {
-                                    //     _log.Info(string.Format("{0}, This error's can happend when empty cells are in the excel..", ex.ToString()));
+                                    _log.Info(string.Format("{0}, This error's can happend when empty cells are in the excel..", ex.ToString()));
                                 }
                             }
                         }
                     }
                     return false;
                 }
-                //   _log.Info("File not found...");
+                _log.Info("File not found...");
             }
             catch (Exception ex)
             {
-                //   _log.Fatal(ex.ToString());
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

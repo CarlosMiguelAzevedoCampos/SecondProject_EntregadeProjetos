@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using iText.Kernel.Pdf;
 using System;
 using System.IO;
@@ -7,6 +8,13 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
 {
     public class PDFVerifierService : IPDFVerifierService
     {
+        private readonly ILoggingService _log;
+
+        public PDFVerifierService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public bool ArePdfFilesOk(string filePath)
         {
             try
@@ -23,7 +31,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

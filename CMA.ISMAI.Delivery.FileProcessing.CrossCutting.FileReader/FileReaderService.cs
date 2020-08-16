@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.FileProcessing.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,13 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader
 {
     public class FileReaderService : IFileReaderService
     {
+        private readonly ILoggingService _log;
+
+        public FileReaderService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public List<string> ReturnJury(string studentNumber, string studentInstitute, string studentCourseName)
         {
             List<string> jury = new List<string>();
@@ -39,18 +47,18 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader
                                 catch (Exception ex)
                                 {
                                     break;
-                                    //     _log.Info(string.Format("{0}, This error's can happend when empty cells are in the excel..", ex.ToString()));
+                                    _log.Info(string.Format("{0}, This error's can happend when empty cells are in the excel..", ex.ToString()));
                                 }
                             }
                         }
                     }
                     return jury;
                 }
-                //   _log.Info("File not found...");
+                _log.Info("File not found...");
             }
             catch (Exception ex)
             {
-                //   _log.Fatal(ex.ToString());
+                   _log.Fatal(ex.ToString());
             }
             return jury;
         }

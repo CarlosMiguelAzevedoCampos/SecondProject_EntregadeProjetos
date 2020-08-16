@@ -2,6 +2,7 @@
 using CamundaClient.Dto;
 using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Core.Model;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.Payment.Domain.Interfaces;
 using CMA.ISMAI.Delivery.Payment.Domain.Model;
@@ -23,8 +24,9 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
         private readonly IMediator _mediator;
         private readonly INotificationService _notificationService;
         private readonly IQueueService _queueService;
+        private readonly ILoggingService _log;
 
-        public CamundaService(IMediator mediator, INotificationService notificationService, IQueueService queueService)
+        public CamundaService(IMediator mediator, INotificationService notificationService, IQueueService queueService, ILoggingService log)
         {
             camundaEngineClient = new CamundaEngineClient(new System.Uri("http://localhost:8080/engine-rest/engine/default/"), null, null);
             filePath = $"CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.WorkFlow.StudentPaymentISMAI.bpmn";
@@ -32,6 +34,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
             _mediator = mediator;
             _notificationService = notificationService;
             _queueService = queueService;
+            _log = log;
         }
 
         public void RegistWorkers()
@@ -51,7 +54,8 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -69,13 +73,22 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                     var result = await _mediator.Send(deliveryPayment);
 
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
-                    dictionaryToPassVariable.Add("paid", result.IsValid);
+                    if (!dictionaryToPassVariable.ContainsKey("paid"))
+                    {
+                        dictionaryToPassVariable.Add("paid", result.IsValid);
+                    }
+                    else
+                    {
+                        dictionaryToPassVariable["paid"] = result.IsValid;
+                    }
+                    _log.Info($"Payment has been done? {result.IsValid}");
                     dictionaryToPassVariable["Worker"] = "verify_payment";
                     camundaEngineClient.ExternalTaskService.Complete("StudentPaymentISMAI", externalTask.Id, dictionaryToPassVariable);
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -101,7 +114,8 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -141,7 +155,8 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -168,7 +183,8 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -191,7 +207,8 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -236,7 +253,8 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
             }
             catch (Exception ex)
             {
-                Thread.Sleep(30000);
+                Console.WriteLine(ex.ToString());
+                _log.Fatal(ex.ToString());
             }
         }
 
@@ -264,6 +282,8 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

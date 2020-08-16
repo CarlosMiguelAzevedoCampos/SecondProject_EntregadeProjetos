@@ -10,10 +10,14 @@ using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.Logging.Interface;
+using CMA.ISMAI.Delivery.Logging.Service;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NetDevPack.Mediator;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using System;
 using System.Reflection;
 
@@ -33,6 +37,17 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
         private static IServiceCollection ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
+            Log.Logger = new LoggerConfiguration()
+       .Enrich.FromLogContext()
+        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200/"))
+        {
+            AutoRegisterTemplate = true,
+        })
+        .CreateLogger();
+
+            services.AddLogging();
+            services.AddScoped<ILoggingService, LoggingService>();
+
             services.AddScoped<IMediatorHandler, InMemoryBus>();
             services.AddScoped<IHttpRequestService, FileDownloadService>();
             services.AddScoped<IFileVerifierService, FileVerifierService>();

@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.API.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -8,6 +9,13 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
 {
     public class ZipFromUrlService : IZipUrlService
     {
+        private readonly ILoggingService _log;
+
+        public ZipFromUrlService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public bool DoesTheZipFileContainsaPDF(MemoryStream deliveryFile)
         {
             try
@@ -17,7 +25,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }
@@ -32,7 +40,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }
@@ -46,7 +54,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

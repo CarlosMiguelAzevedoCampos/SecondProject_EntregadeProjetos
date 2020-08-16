@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Core.Model;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Payment.Domain.Interfaces;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -9,6 +10,12 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Queue
 {
     public class QueueService : IQueueService
     {
+        private readonly ILoggingService _log;
+
+        public QueueService(ILoggingService log)
+        {
+            _log = log;
+        }
 
         public bool SendToQueue(DeliveryFileSystem deliveryFileSystem, string queue)
         {
@@ -45,7 +52,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Queue
             }
             catch (Exception ex)
             {
-                // _log.Fatal(ex.ToString());
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

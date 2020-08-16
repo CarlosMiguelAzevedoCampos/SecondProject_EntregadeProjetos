@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.FileProcessing.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using iText.IO.Font;
 using iText.IO.Font.Constants;
 using iText.IO.Image;
@@ -15,6 +16,13 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
 {
     public class CoverPageService : ICoverPageService
     {
+        private readonly ILoggingService _log;
+
+        public CoverPageService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public bool AddCoverPage(string basepath, string title, string studentName, string cordenatorName, string contextOfDelivery)
         {
             try
@@ -33,7 +41,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

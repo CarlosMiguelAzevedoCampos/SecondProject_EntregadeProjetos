@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using System;
 using System.IO.Compression;
 
@@ -8,12 +9,13 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
     {
         private readonly IPDFVerifierService _pdfVerifierService;
         private readonly IMediaFileVerifierService _audioVerifierService;
+        private readonly ILoggingService _log;
 
-
-        public FileVerifierService(IPDFVerifierService pdfVerifierService, IMediaFileVerifierService audioVerifierService)
+        public FileVerifierService(IPDFVerifierService pdfVerifierService, IMediaFileVerifierService audioVerifierService, ILoggingService log)
         {
             _pdfVerifierService = pdfVerifierService;
             _audioVerifierService = audioVerifierService;
+            _log = log;
         }
 
         public bool UnzipFiles(string filePath, string extractPath)
@@ -27,7 +29,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
                 return true;
             }catch(Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

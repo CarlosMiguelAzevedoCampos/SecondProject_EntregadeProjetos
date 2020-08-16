@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using NReco.VideoInfo;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,13 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
 {
     public class MediaFileVerifierService : IMediaFileVerifierService
     {
+        private readonly ILoggingService _log;
+
+        public MediaFileVerifierService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public bool AreMediaFilesOk(string filePath)
         {
             try
@@ -26,7 +34,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

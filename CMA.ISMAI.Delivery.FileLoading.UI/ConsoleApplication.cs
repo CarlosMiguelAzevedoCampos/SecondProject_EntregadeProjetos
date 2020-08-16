@@ -1,30 +1,31 @@
 ﻿using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Interface;
-using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
-using NetDevPack.Mediator;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace CMA.ISMAI.Delivery.FileLoading.UI
 {
     internal class ConsoleApplication
     {
-        private readonly IMediatorHandler _mediatr;
-        private readonly ICamundaService _ca;
+        private readonly ICamundaService _camundaService;
+        private readonly ILoggingService _log;
 
-        public ConsoleApplication(IMediatorHandler mediatr, ICamundaService ca)
+        public ConsoleApplication(ICamundaService camundaService, ILoggingService log)
         {
-            _mediatr = mediatr;
-            _ca = ca;
+            _camundaService = camundaService;
+            _log = log;
         }
 
         public void StartService()
         {
-            _ca.RegistWorkers();
             try
             {
+                _log.Info($"FileLoading is starting.. {DateTime.Now}");
+
                 var factory = new ConnectionFactory()
                 {
                     HostName = "localhost",
@@ -55,13 +56,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
-                //Console.WriteLine("Retrying in 30 seconds..");
-                //serviceProvider.GetService<ILog>().Fatal(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
-                //Thread.Sleep(30000);
-                //await Main(args);
+                Console.WriteLine(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
+                Console.WriteLine("Retrying in 30 seconds..");
+                _log.Fatal(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
+                Thread.Sleep(30000);
+                StartService();
             }
-            // _ca.StartWorkFlow(new Core.Model.DeliveryWithLink(Guid.NewGuid(), "Carlos", "ISMAI", "Informática", "a029216@ismai.pt", "a029216", DateTime.Now, "", "José", "Mestrado", "Jose", "safa", "safas"));
         }
 
         private void Consumer_Received(object sender, BasicDeliverEventArgs e)
@@ -72,7 +72,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             };
             var notification = JsonConvert.DeserializeObject
                     (Encoding.UTF8.GetString(e.Body.ToArray()), settings);
-            _ca.StartWorkFlow((Core.Model.Delivery)notification);
+            _camundaService.StartWorkFlow((Core.Model.Delivery)notification);
         }
     }
 }

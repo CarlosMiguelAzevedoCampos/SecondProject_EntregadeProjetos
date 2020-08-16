@@ -4,6 +4,7 @@ using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,9 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
         private readonly IMediator _mediator;
         private readonly INotificationService _notificationService;
         private readonly IQueueService _queueService;
-        public CamundaService(IMediator mediator, INotificationService notificationService, IQueueService queueService)
+        private readonly ILoggingService _log;
+
+        public CamundaService(IMediator mediator, INotificationService notificationService, IQueueService queueService, ILoggingService log)
         {
             camundaEngineClient = new CamundaEngineClient(new System.Uri("http://localhost:8080/engine-rest/engine/default/"), null, null);
             filePath = $"CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.WorkFlow.FileLoadingISMAI.bpmn";
@@ -31,6 +34,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
             _mediator = mediator;
             _notificationService = notificationService;
             _queueService = queueService;
+            _log = log;
         }
 
         public bool StartWorkFlow(Core.Model.Delivery delivery)
@@ -106,9 +110,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     dictionaryToPassVariable.Add("Worker", "download_files");
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -133,9 +138,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     dictionaryToPassVariable.Add("files", validation.IsValid);
                     dictionaryToPassVariable["Worker"] = "verify_files";
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -162,9 +169,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
 
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -201,9 +209,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
 
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -225,9 +234,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -248,9 +258,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
             pollingTimer = new Timer(_ => StartPolling(), null, 1, Timeout.Infinite);
@@ -291,7 +302,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
             }
             catch (Exception ex)
             {
-                Thread.Sleep(30000);
+                Console.WriteLine(ex.ToString());
+                _log.Fatal(ex.ToString());
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.FileProcessing.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using iText.IO.Font;
 using iText.IO.Font.Constants;
 using iText.Kernel.Font;
@@ -15,6 +16,13 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
 {
     public class GenerateWaterMarkService : IGenerateWaterMarkService
     {
+        private readonly ILoggingService _log;
+
+        public GenerateWaterMarkService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public bool AddWaterMark(string path, string publicFile, string privateFile)
         {
             try
@@ -27,7 +35,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

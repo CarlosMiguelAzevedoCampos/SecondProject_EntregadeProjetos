@@ -1,25 +1,30 @@
 ﻿using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Interface;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace CMA.ISMAI.Delivery.FileProcessing.UI
 {
     internal class ConsoleApplication
     {
         private readonly ICamundaService _camundaService;
+        private readonly ILoggingService _log;
 
-        public ConsoleApplication(ICamundaService camundaService)
+        public ConsoleApplication(ICamundaService camundaService, ILoggingService log)
         {
             _camundaService = camundaService;
+            _log = log;
         }
 
         public void StartService()
         {
             try
             {
+                _log.Info($"FileProcessing is starting.. {DateTime.Now}");
                 _camundaService.RegistWorkers();
                 var factory = new ConnectionFactory()
                 {
@@ -49,11 +54,11 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
-                //Console.WriteLine("Retrying in 30 seconds..");
-                //serviceProvider.GetService<ILog>().Fatal(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
-                //Thread.Sleep(30000);
-                //await Main(args);
+                Console.WriteLine(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
+                Console.WriteLine("Retrying in 30 seconds..");
+                _log.Fatal(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
+                Thread.Sleep(30000);
+                StartService();
             }
         }
 

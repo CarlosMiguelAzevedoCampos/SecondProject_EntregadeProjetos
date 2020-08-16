@@ -1,5 +1,6 @@
 ﻿using CMA.ISMAI.Core.Model;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
@@ -9,6 +10,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue
 {
     public class QueueService : IQueueService
     {
+        private readonly ILoggingService _log;
+
+        public QueueService(ILoggingService log)
+        {
+            _log = log;
+        }
 
         public bool SendToQueue(DeliveryFileSystem deliveryFileSystem, string queue)
         {
@@ -45,7 +52,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue
             }
             catch (Exception ex)
             {
-                // _log.Fatal(ex.ToString());
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.API.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
@@ -8,6 +9,13 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.FileSaver
 {
     public class FileSaverService : IFileSaverService
     {
+        private readonly ILoggingService _log;
+
+        public FileSaverService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public async Task<bool> DownloadFile(IFormFile file, string filePath)
         {
             try
@@ -20,7 +28,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.FileSaver
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

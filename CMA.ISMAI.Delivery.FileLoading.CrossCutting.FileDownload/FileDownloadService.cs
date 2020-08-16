@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using System;
 using System.Net;
 
@@ -6,6 +7,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileDownload
 {
     public class FileDownloadService : IHttpRequestService
     {
+        private readonly ILoggingService _log;
+
+        public FileDownloadService(ILoggingService log)
+        {
+            _log = log;
+        }
         public bool DownloadFileToHost(string pathToSave, string fileUrl)
         {
             try
@@ -20,7 +27,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileDownload
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

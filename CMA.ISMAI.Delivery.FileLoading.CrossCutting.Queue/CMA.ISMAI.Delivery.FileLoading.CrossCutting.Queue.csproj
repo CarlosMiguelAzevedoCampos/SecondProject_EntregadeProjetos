@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileLoading.Domain\CMA.ISMAI.Delivery.FileLoading.Domain.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Logging.Log\CMA.ISMAI.Delivery.Logging.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,22 +1,28 @@
 ﻿using CMA.ISMAI.Delivery.FileProcessing.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using iText.IO.Font;
 using iText.IO.Font.Constants;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
-using iText.Kernel.Pdf.Extgstate;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
 {
     public class GenerateJuryPageService : IGenerateJuryPageService
     {
+        private readonly ILoggingService _log;
+
+        public GenerateJuryPageService(ILoggingService log)
+        {
+            _log = log;
+        }
+
         public bool AddJuryPage(string filePath, List<string> jury)
         {
             try
@@ -30,7 +36,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

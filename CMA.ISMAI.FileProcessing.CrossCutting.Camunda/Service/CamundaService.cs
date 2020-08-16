@@ -4,6 +4,7 @@ using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Core.Model;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Models;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -21,14 +22,16 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
         private readonly IDictionary<string, Action<ExternalTask>> workers;
         private readonly IMediator _mediator;
         private readonly INotificationService _notificationService;
+        private readonly ILoggingService _log;
 
-        public CamundaService(IMediator mediator, INotificationService notificationService)
+        public CamundaService(IMediator mediator, INotificationService notificationService, ILoggingService log)
         {
             camundaEngineClient = new CamundaEngineClient(new System.Uri("http://localhost:8080/engine-rest/engine/default/"), null, null);
             filePath = $"CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.WorkFlow.FileProcessingISMAI.bpmn";
             workers = new Dictionary<string, Action<ExternalTask>>();
             _mediator = mediator;
             _notificationService = notificationService;
+            _log = log;
         }
 
         public void RegistWorkers()
@@ -58,7 +61,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -85,7 +89,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -107,12 +112,14 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
 
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     dictionaryToPassVariable["ok"] = result.IsValid;
+                    _log.Info($"Jury page was generated? {result.IsValid}");
                     dictionaryToPassVariable["Worker"] = "generate_jurypage";
                     camundaEngineClient.ExternalTaskService.Complete("FileProcessingISMAI", externalTask.Id, dictionaryToPassVariable);
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -136,7 +143,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
                 }
             });
 
@@ -181,7 +189,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
             }
             catch (Exception ex)
             {
-                Thread.Sleep(30000);
+                Console.WriteLine(ex.ToString());
+                _log.Fatal(ex.ToString());
             }
         }
 
@@ -209,6 +218,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
+                _log.Fatal(ex.ToString());
             }
             return false;
         }

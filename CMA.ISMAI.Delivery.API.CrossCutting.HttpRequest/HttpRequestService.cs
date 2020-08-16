@@ -1,4 +1,5 @@
 ﻿using CMA.ISMAI.Delivery.API.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using System;
 using System.IO;
 using System.Net;
@@ -7,6 +8,14 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest
 {
     public class HttpRequestService : IHttpRequestService
     {
+        private readonly ILoggingService _log;
+
+        public HttpRequestService(ILoggingService log)
+        {
+            _log = log;
+        }
+
+
         public HttpWebResponse ReturnObjectFromTheUrl(string url)
         {
             try
@@ -33,6 +42,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest
             }
             catch (Exception ex)
             {
+                _log.Fatal(ex.ToString());
             }
             return null;
         }
@@ -47,7 +57,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return null;
         }
@@ -67,7 +77,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }
@@ -80,7 +90,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest
             }
             catch (Exception ex)
             {
-
+                _log.Fatal(ex.ToString());
             }
             return false;
         }
