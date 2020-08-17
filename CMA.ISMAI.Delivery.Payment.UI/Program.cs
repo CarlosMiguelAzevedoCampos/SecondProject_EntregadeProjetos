@@ -1,5 +1,7 @@
 ﻿using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Core.Service;
+using CMA.ISMAI.Delivery.EventStore.Interface;
+using CMA.ISMAI.Delivery.EventStore.Service;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Logging.Service;
 using CMA.ISMAI.Delivery.Payment.CrossCutting.Bus;
@@ -8,8 +10,10 @@ using CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service;
 using CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader;
 using CMA.ISMAI.Delivery.Payment.CrossCutting.Queue;
 using CMA.ISMAI.Delivery.Payment.Domain.Commands;
+using CMA.ISMAI.Delivery.Payment.Domain.Events;
 using CMA.ISMAI.Delivery.Payment.Domain.Interfaces;
 using CMA.ISMAI.Delivery.Payment.Domain.Model;
+using CMA.ISMAI.Delivery.Payment.Domain.Model.Events;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,8 +51,9 @@ namespace CMA.ISMAI.Delivery.Payment.UI
             services.AddScoped<ILoggingService, LoggingService>();
 
             services.AddScoped<IMediatorHandler, InMemoryBus>();
-            services.AddScoped<IRequestHandler<NotifyActionCommand, ValidationResult>, NotifyActionCommandHandler>();
+            services.AddScoped<IEventStoreService, EventStoreService>();
             services.AddScoped<IRequestHandler<VerifyPaymentOfDeliveryCommand, ValidationResult>, DeliveryPaymentHandler>();
+            services.AddScoped<INotificationHandler<PaymentCompletedEvent>, PaymentEventHandler>();
             services.AddScoped<IFileReaderService, FileReaderService>();
             services.AddScoped<ICamundaService, CamundaService>();
             services.AddScoped<INotificationService, NotificationService>();

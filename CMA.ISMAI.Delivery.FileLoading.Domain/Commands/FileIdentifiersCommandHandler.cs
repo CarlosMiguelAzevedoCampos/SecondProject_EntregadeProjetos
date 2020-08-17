@@ -1,8 +1,10 @@
 ﻿using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Events;
 using FluentValidation.Results;
 using MediatR;
+using NetDevPack.Mediator;
 using NetDevPack.Messaging;
 using System;
 using System.Collections.Generic;
@@ -17,24 +19,30 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
     {
         private readonly IFileIdentifierService _fileIdentifierService;
         private readonly INotificationService _notificationService;
+        private readonly IMediatorHandler _mediator;
 
-        public FileIdentifiersCommandHandler(IFileIdentifierService fileIdentifierService, INotificationService notificationService)
+        public FileIdentifiersCommandHandler(IFileIdentifierService fileIdentifierService, INotificationService notificationService, IMediatorHandler mediator)
         {
             _fileIdentifierService = fileIdentifierService;
             _notificationService = notificationService;
+            _mediator = mediator;
         }
 
-        public Task<ValidationResult> Handle(CreateFileIdentifiersCommand request, CancellationToken cancellationToken)
+        public async Task<ValidationResult> Handle(CreateFileIdentifiersCommand request, CancellationToken cancellationToken)
         {
             ValidationResult.Errors.Clear();
             Dictionary<string, Guid> fileInforation = _fileIdentifierService.GenerateFileIdentifier(request.FilePath);
 
             if (fileInforation.Count == 0)
+            {
                 AddError("A problem happen while generating the identifiers");
+                return await Task.FromResult(ValidationResult);
+            }
             else
                 _notificationService.SendEmail(request.StudentEmail, EmailTextWithIdentifiers(fileInforation));
-            
-            return Task.FromResult(ValidationResult);
+            await _mediator.PublishEvent(new FilesIdentifiedEvent(request.Id, request.FilePath, request.StudentEmail));
+            return await Task.FromResult(ValidationResult);
+
         }
 
         private string EmailTextWithIdentifiers(Dictionary<string, Guid> fileInforation)

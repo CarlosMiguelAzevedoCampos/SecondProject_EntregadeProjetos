@@ -1,5 +1,7 @@
 ﻿using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Core.Service;
+using CMA.ISMAI.Delivery.EventStore.Interface;
+using CMA.ISMAI.Delivery.EventStore.Service;
 using CMA.ISMAI.Delivery.FileLoading.Bus;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service;
@@ -8,8 +10,10 @@ using CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileIdentifier;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Commands;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Events;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Events;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Logging.Service;
 using FluentValidation.Results;
@@ -56,12 +60,18 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             services.AddScoped<IPDFVerifierService, PDFVerifierService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ICamundaService, CamundaService>();
+            services.AddScoped<IEventStoreService, EventStoreService>();
             services.AddScoped<IQueueService, QueueService>();
 
             services.AddScoped<IRequestHandler<DownloadFileFromUrlCommand, ValidationResult>, DownloadFileCommandHandler>();
             services.AddScoped<IRequestHandler<CreateFileIdentifiersCommand, ValidationResult>, FileIdentifiersCommandHandler>();
             services.AddScoped<IRequestHandler<VerifyFilesCommand, ValidationResult>, VerifyFileCommandHandler>();
-            
+
+            services.AddScoped<INotificationHandler<FileDownloadedEvent>, FileLoadingEventHandler>();
+            services.AddScoped<INotificationHandler<FilesIdentifiedEvent>, FileLoadingEventHandler>();
+            services.AddScoped<INotificationHandler<FilesVerifiedEvent>, FileLoadingEventHandler>();
+
+
             services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
             services.AddTransient<ConsoleApplication>();
             return services;

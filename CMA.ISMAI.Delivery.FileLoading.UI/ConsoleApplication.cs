@@ -25,7 +25,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             try
             {
                 _log.Info($"FileLoading is starting.. {DateTime.Now}");
-
+                _camundaService.RegistWorkers();
                 var factory = new ConnectionFactory()
                 {
                     HostName = "localhost",

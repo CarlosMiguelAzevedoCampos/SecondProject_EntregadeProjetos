@@ -1,5 +1,6 @@
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using Moq;
 using Xunit;
 
@@ -14,8 +15,9 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
             // Arrange
             var pdfService = new Mock<IPDFVerifierService>();
             var mediaService = new Mock<IMediaFileVerifierService>();
+            var logService = new Mock<ILoggingService>();
             pdfService.Setup(x => x.ArePdfFilesOk(It.IsAny<string>())).Returns(false);
-            FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object);
+            FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object, logService.Object);
             // Act
             bool result = fileVerifierService.VerifyIfFilesAreCorrupted(It.IsAny<string>());
 
@@ -30,8 +32,9 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
             // Arrange
             var pdfService = new Mock<IPDFVerifierService>();
             var mediaService = new Mock<IMediaFileVerifierService>();
+            var logService = new Mock<ILoggingService>();
             mediaService.Setup(x => x.AreMediaFilesOk(It.IsAny<string>())).Returns(false);
-            FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object);
+            FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object, logService.Object);
             // Act
             bool result = fileVerifierService.VerifyIfFilesAreCorrupted(It.IsAny<string>());
 
@@ -46,9 +49,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
             // Arrange
             var pdfService = new Mock<IPDFVerifierService>();
             var mediaService = new Mock<IMediaFileVerifierService>();
+            var logService = new Mock<ILoggingService>();
+
             mediaService.Setup(x => x.AreMediaFilesOk(It.IsAny<string>())).Returns(true);
             pdfService.Setup(x => x.ArePdfFilesOk(It.IsAny<string>())).Returns(true);
-            FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object);
+            FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object, logService.Object);
             // Act
             bool result = fileVerifierService.VerifyIfFilesAreCorrupted(It.IsAny<string>());
 

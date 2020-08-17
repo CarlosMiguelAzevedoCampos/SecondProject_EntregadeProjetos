@@ -2,6 +2,7 @@ using CMA.ISMAI.Delivery.FileLoading.Domain.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
 using Moq;
+using NetDevPack.Mediator;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,9 +19,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
             // Arrange
             DownloadFileFromUrlCommand donwloadCommand = new DownloadFileFromUrlCommand(Guid.NewGuid(), "", "ISMAI", "Informática", "a029216@ismai.pt", "a029216", DateTime.Now, "José", "Mestado", "Mestrado", "https://1drv.ms/u/s!Aos6ApXpMWOBajj-TKD5KkSWA4A?e=RdfSVJ", "Publico", "Privado");
             var httpRequest = new Mock<IHttpRequestService>();
+            var meditrHandler = new Mock<IMediatorHandler>();
 
             httpRequest.Setup(x => x.DownloadFileToHost(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            var deliveryFileHandler = new DownloadFileCommandHandler(httpRequest.Object);
+            var deliveryFileHandler = new DownloadFileCommandHandler(httpRequest.Object, meditrHandler.Object);
 
             // Act
             var result = deliveryFileHandler.Handle(donwloadCommand, new CancellationToken());
@@ -36,9 +38,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
             // Arrange
             DownloadFileFromUrlCommand donwloadCommand = new DownloadFileFromUrlCommand(Guid.NewGuid(), "", "ISMAI", "Informática", "a029216@ismai.pt", "a029216", DateTime.Now, "José", "Mestado", "Mestrado", "https://1drv.ms/u/s!Aos6ApXpMWOBajj-TKD5KkSWA4A?e=RdfSVJ", "Publico", "Privado");
             var httpRequest = new Mock<IHttpRequestService>();
+            var meditrHandler = new Mock<IMediatorHandler>();
 
             httpRequest.Setup(x => x.DownloadFileToHost(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var deliveryFileHandler = new DownloadFileCommandHandler(httpRequest.Object);
+            var deliveryFileHandler = new DownloadFileCommandHandler(httpRequest.Object, meditrHandler.Object);
 
             // Act
             var result = deliveryFileHandler.Handle(donwloadCommand, new CancellationToken());

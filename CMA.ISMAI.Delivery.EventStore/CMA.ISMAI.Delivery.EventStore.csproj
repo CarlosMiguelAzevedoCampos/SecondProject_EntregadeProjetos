@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EventStore.Client" Version="5.0.8" />
     <PackageReference Include="NetDevPack" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CMA.ISMAI.Delivery.EventStore\CMA.ISMAI.Delivery.EventStore.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Logging.Log\CMA.ISMAI.Delivery.Logging.csproj" />
   </ItemGroup>
 
 </Project>

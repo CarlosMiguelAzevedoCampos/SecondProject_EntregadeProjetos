@@ -1,11 +1,14 @@
 ﻿using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Core.Service;
+using CMA.ISMAI.Delivery.EventStore.Interface;
+using CMA.ISMAI.Delivery.EventStore.Service;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Commands;
+using CMA.ISMAI.Delivery.FileProcessing.Domain.Events;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Models;
 using CMA.ISMAI.Delivery.Logging.Interface;
@@ -27,7 +30,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
         {
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            Console.WriteLine(string.Format("File Loading is starting..! - {0}", DateTime.Now));
+            Console.WriteLine(string.Format("File Processing is starting..! - {0}", DateTime.Now));
             serviceProvider.GetRequiredService<ConsoleApplication>().StartService();
             Console.ReadKey();
         }
@@ -51,6 +54,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
             services.AddScoped<ICoverPageService, CoverPageService>();
             services.AddScoped<IFileReaderService, FileReaderService>();
             services.AddScoped<ICamundaService, CamundaService>();
+            services.AddScoped<IEventStoreService, EventStoreService>();
             services.AddScoped<IMediatorHandler, InMemoryBus>();
             services.AddScoped<INotificationService, NotificationService>();
 
@@ -58,6 +62,10 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
             services.AddScoped<IRequestHandler<GenerateWaterMarkCommand, ValidationResult>, FileProcessingHandler>();
             services.AddScoped<IRequestHandler<GenerateCoverPageCommand, ValidationResult>, FileProcessingHandler>();
             services.AddScoped<IRequestHandler<GenerateJuryPageCommand, ValidationResult>, FileProcessingHandler>();
+
+            services.AddScoped<INotificationHandler<WaterMarkGeneratedEvent>, FileProcessingEventHandler>();
+            services.AddScoped<INotificationHandler<CoverPageGeneratedEvent>, FileProcessingEventHandler>();
+            services.AddScoped<INotificationHandler<JuryPageGeneretedEvent>, FileProcessingEventHandler>();
 
             services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
             services.AddTransient<ConsoleApplication>();

@@ -8,6 +8,9 @@ using CMA.ISMAI.Delivery.API.Domain.Commands.Models;
 using CMA.ISMAI.Delivery.API.Domain.Events;
 using CMA.ISMAI.Delivery.API.Domain.Events.Handlers;
 using CMA.ISMAI.Delivery.API.Domain.Interfaces;
+using CMA.ISMAI.Delivery.EventStore.Interface;
+using CMA.ISMAI.Delivery.Logging.Interface;
+using CMA.ISMAI.Delivery.Logging.Service;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +33,8 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.IoC
 
             // Application - CrossCutting
             services.AddScoped<IZipFileService, ZipFromFileService>();
+            services.AddScoped<IEventStoreService, EventStore.Service.EventStoreService>();
+            services.AddScoped<ILoggingService, LoggingService>();
             services.AddScoped<IZipUrlService, ZipFromUrlService>();
             services.AddScoped<IHttpRequestService, HttpRequestService>();
             services.AddScoped<IQueueService, QueueService>();

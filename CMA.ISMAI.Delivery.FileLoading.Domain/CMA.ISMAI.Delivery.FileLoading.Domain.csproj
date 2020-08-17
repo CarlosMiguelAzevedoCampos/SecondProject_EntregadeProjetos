@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.API.Domain\CMA.ISMAI.Delivery.API.Domain.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Core\CMA.ISMAI.Core.csproj" />
   </ItemGroup>
 

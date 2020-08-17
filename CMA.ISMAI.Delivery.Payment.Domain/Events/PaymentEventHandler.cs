@@ -1,21 +1,22 @@
 ﻿using CMA.ISMAI.Delivery.EventStore.Interface;
+using CMA.ISMAI.Delivery.Payment.Domain.Model.Events;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMA.ISMAI.Delivery.API.Domain.Events.Handlers
+namespace CMA.ISMAI.Delivery.Payment.Domain.Events
 {
-    public class CreateDeliveryWithLinkEventHandler :
-           INotificationHandler<CreateDeliveryWithLinkEvent>
+    public class PaymentEventHandler : INotificationHandler<PaymentCompletedEvent>
     {
         private readonly IEventStoreService _eventStore;
 
-        public CreateDeliveryWithLinkEventHandler(IEventStoreService eventStore)
+        public PaymentEventHandler(IEventStoreService eventStore)
         {
             _eventStore = eventStore;
         }
 
-        public Task Handle(CreateDeliveryWithLinkEvent notification, CancellationToken cancellationToken)
+
+        public Task Handle(PaymentCompletedEvent notification, CancellationToken cancellationToken)
         {
             _eventStore.SaveToEventStore(notification);
             return Task.CompletedTask;
