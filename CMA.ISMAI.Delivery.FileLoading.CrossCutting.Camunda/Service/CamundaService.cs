@@ -6,6 +6,7 @@ using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -25,10 +26,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
         private readonly INotificationService _notificationService;
         private readonly IQueueService _queueService;
         private readonly ILoggingService _log;
+        private readonly IConfiguration _config;
 
-        public CamundaService(IMediator mediator, INotificationService notificationService, IQueueService queueService, ILoggingService log)
+        public CamundaService(IMediator mediator, INotificationService notificationService, IQueueService queueService, ILoggingService log, IConfiguration config)
         {
-            camundaEngineClient = new CamundaEngineClient(new System.Uri("http://localhost:8080/engine-rest/engine/default/"), null, null);
+            _config = config;
+            camundaEngineClient = new CamundaEngineClient(new System.Uri(_config.GetSection("Camunda:Uri").Value), null, null);
             filePath = $"CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.WorkFlow.FileLoadingISMAI.bpmn";
             workers = new Dictionary<string, Action<ExternalTask>>();
             _mediator = mediator;
@@ -128,9 +131,9 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getCourseName = returnVariableValue(delivery, "courseName");
 
-                    VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.Parse(getId.Value.ToString()), string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Zip\{0}_{1}_{2}_{3}.zip", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                    VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.Parse(getId.Value.ToString()), string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
                    getStudentName.Value.ToString(), getCourseName.Value.ToString()),
-                  string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{0}_{1}_{2}_{3}", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                  string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
                    getStudentName.Value.ToString(), getCourseName.Value.ToString()));
                     
                     var validation = await _mediator.Send(verifyFilesCommand);
@@ -158,7 +161,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getCourseName = returnVariableValue(delivery, "courseName");
 
-                    CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{0}_{1}_{2}_{3}", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                    CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
                     getStudentName.Value.ToString(), getCourseName.Value.ToString()), getStudentEmail.Value.ToString());
 
 
@@ -198,7 +201,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
 
                     Core.Model.DeliveryFileSystem deliveryFileSystem = new Core.Model.DeliveryFileSystem(Guid.Parse(getId.Value.ToString())
                         , getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getCourseName.Value.ToString(), getStudentEmail.Value.ToString(), getStudentNumber.Value.ToString(), DateTime.Parse(getDeliveryTime.Value.ToString()),
-                        getCordenatorName.Value.ToString(), getTitle.Value.ToString(), getDefenition.Value.ToString(), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString(), string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{0}_{1}_{2}_{3}", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                        getCordenatorName.Value.ToString(), getTitle.Value.ToString(), getDefenition.Value.ToString(), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString(), string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
                     getStudentName.Value.ToString(), getCourseName.Value.ToString()));
 
 
@@ -253,7 +256,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "worker");
 
-                    _notificationService.SendEmail("carlosmiguelcampos1996@gmail.com", string.Format("Hello, <br/> Something went wrong on the delivery. <br/> <br/> The delivery failed on the File Loading diagram. <br/> <br/> Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/> <br/> It failed on the {4} phase. <br/> <br/> Thanks",
+                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hello, <br/> Something went wrong on the delivery. <br/> <br/> The delivery failed on the File Loading diagram. <br/> <br/> Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/> <br/> It failed on the {4} phase. <br/> <br/> Thanks",
                         getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getWorker.Value.ToString()));
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);

@@ -1,6 +1,7 @@
 ﻿using CMA.ISMAI.Delivery.EventStore.Interface;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using EventStore.ClientAPI;
+using Microsoft.Extensions.Configuration;
 using NetDevPack.Messaging;
 using Newtonsoft.Json;
 using System;
@@ -13,10 +14,11 @@ namespace CMA.ISMAI.Delivery.EventStore.Service
 
         private IEventStoreConnection _connection = null;
         private readonly ILoggingService _log;
-
-        public EventStoreService(ILoggingService log)
+        private readonly IConfiguration _config;
+        public EventStoreService(ILoggingService log, IConfiguration config)
         {
             _log = log;
+            _config = config;
         }
 
         public void SaveToEventStore(Event @event)
@@ -46,7 +48,7 @@ namespace CMA.ISMAI.Delivery.EventStore.Service
         {
             if (_connection != null)
                 return;
-            _connection = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
+            _connection = EventStoreConnection.Create(new Uri(_config.GetSection("EventStore:IPAddress").Value));
             _connection.ConnectAsync().Wait();
         }
     }

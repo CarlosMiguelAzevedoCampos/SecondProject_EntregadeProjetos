@@ -1,6 +1,7 @@
 ﻿using CMA.ISMAI.Core.Model;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.Logging.Interface;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
@@ -11,10 +12,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue
     public class QueueService : IQueueService
     {
         private readonly ILoggingService _log;
-
-        public QueueService(ILoggingService log)
+        private readonly IConfiguration _config;
+        public QueueService(ILoggingService log, IConfiguration config)
         {
             _log = log;
+            _config = config;
         }
 
         public bool SendToQueue(DeliveryFileSystem deliveryFileSystem, string queue)
@@ -23,12 +25,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue
             {
                 var factory = new ConnectionFactory()
                 {
-                    HostName = "localhost",
-                    Port = 5672,
-                    UserName = "admin",
-                    Password = "admin"
+                    HostName = _config.GetSection("RabbitMqCore:Uri").Value,
+                    Port = Convert.ToInt32(_config.GetSection("RabbitMqCore:Port").Value),
+                    UserName = _config.GetSection("RabbitMqCore:Username").Value,
+                    Password = _config.GetSection("RabbitMqCore:Password").Value
                 };
-
                 using (var connection = factory.CreateConnection())
                 using (var channel = connection.CreateModel())
                 {

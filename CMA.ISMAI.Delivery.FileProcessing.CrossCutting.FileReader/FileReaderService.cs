@@ -1,5 +1,6 @@
 ﻿using CMA.ISMAI.Delivery.FileProcessing.Domain.Interfaces;
 using CMA.ISMAI.Delivery.Logging.Interface;
+using Microsoft.Extensions.Configuration;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,11 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader
     public class FileReaderService : IFileReaderService
     {
         private readonly ILoggingService _log;
-
-        public FileReaderService(ILoggingService log)
+        private readonly IConfiguration _config;
+        public FileReaderService(ILoggingService log, IConfiguration config)
         {
             _log = log;
+            _config = config;
         }
 
         public List<string> ReturnJury(string studentNumber, string studentInstitute, string studentCourseName)
@@ -21,7 +23,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader
             List<string> jury = new List<string>();
             try
             {
-                var fi = new FileInfo(@"C:\Users\Carlos Campos\Desktop\jury.xlsx");
+                var fi = new FileInfo(_config.GetSection("FilePathPayment:Path").Value);
                 if (fi.Exists)
                 {
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;

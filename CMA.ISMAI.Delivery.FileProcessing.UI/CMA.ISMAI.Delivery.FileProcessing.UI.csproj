@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.7" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
@@ -24,6 +29,12 @@
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileProcessing.Domain\CMA.ISMAI.Delivery.FileProcessing.Domain.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Logging.Log\CMA.ISMAI.Delivery.Logging.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.FileProcessing.CrossCutting.Camunda\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Models;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -23,15 +24,17 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
         private readonly IMediator _mediator;
         private readonly INotificationService _notificationService;
         private readonly ILoggingService _log;
+        private readonly IConfiguration _config;
 
-        public CamundaService(IMediator mediator, INotificationService notificationService, ILoggingService log)
+        public CamundaService(IMediator mediator, INotificationService notificationService, ILoggingService log, IConfiguration config)
         {
-            camundaEngineClient = new CamundaEngineClient(new System.Uri("http://localhost:8080/engine-rest/engine/default/"), null, null);
+            camundaEngineClient = new CamundaEngineClient(new System.Uri(_config.GetSection("Camunda:Uri").Value), null, null);
             filePath = $"CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.WorkFlow.FileProcessingISMAI.bpmn";
             workers = new Dictionary<string, Action<ExternalTask>>();
             _mediator = mediator;
             _notificationService = notificationService;
             _log = log;
+            _config = config;
         }
 
         public void RegistWorkers()
@@ -136,7 +139,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "worker");
 
-                    _notificationService.SendEmail("carlosmiguelcampos1996@gmail.com", string.Format("Hello, <br/> Something went wrong on the delivery. <br/> <br/> The delivery failed on the Payment diagram.<br/> <br/> Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/> <br/> It failed on the {4} phase. <br/> <br/> Thanks",
+                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hello, <br/> Something went wrong on the delivery. <br/> <br/> The delivery failed on the Payment diagram.<br/> <br/> Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/> <br/> It failed on the {4} phase. <br/> <br/> Thanks",
                         getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getWorker.Value.ToString()));
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("FileProcessingISMAI", externalTask.Id, dictionaryToPassVariable);

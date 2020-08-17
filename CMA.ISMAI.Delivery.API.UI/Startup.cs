@@ -17,9 +17,10 @@ namespace CMA.ISMAI.Delivery.API.UI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
             Log.Logger = new LoggerConfiguration()
               .Enrich.FromLogContext()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200/"))
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration.GetSection("ElasticConfiguration:Uri").Value))
             {
                 AutoRegisterTemplate = true,
                   })

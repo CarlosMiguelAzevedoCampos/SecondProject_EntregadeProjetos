@@ -1,5 +1,6 @@
 ﻿using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Interface;
+using Microsoft.Extensions.Configuration;
 using NetDevPack.Mediator;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -14,11 +15,12 @@ namespace CMA.ISMAI.Delivery.Payment.UI
     {
         private readonly ICamundaService _camundaService;
         private readonly ILoggingService _log;
-
-        public ConsoleApplication(ICamundaService camundaService, ILoggingService log)
+        private readonly IConfiguration _config;
+        public ConsoleApplication(ICamundaService camundaService, ILoggingService log, IConfiguration config)
         {
             _camundaService = camundaService;
             _log = log;
+            _config = config;
         }
 
         public void StartService()
@@ -29,10 +31,10 @@ namespace CMA.ISMAI.Delivery.Payment.UI
                 _camundaService.RegistWorkers();
                 var factory = new ConnectionFactory()
                 {
-                    HostName = "localhost",
-                    Port = 5672,
-                    UserName = "admin",
-                    Password = "admin"
+                    HostName = _config.GetSection("RabbitMqCore:Uri").Value,
+                    Port = Convert.ToInt32(_config.GetSection("RabbitMqCore:Port").Value),
+                    UserName = _config.GetSection("RabbitMqCore:Username").Value,
+                    Password = _config.GetSection("RabbitMqCore:Password").Value
                 };
                 using (var connection = factory.CreateConnection())
                 using (var channel = connection.CreateModel())

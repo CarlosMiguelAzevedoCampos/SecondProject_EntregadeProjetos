@@ -16,17 +16,20 @@ using CMA.ISMAI.Delivery.Payment.Domain.Model;
 using CMA.ISMAI.Delivery.Payment.Domain.Model.Events;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetDevPack.Mediator;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace CMA.ISMAI.Delivery.Payment.UI
 {
     class Program
     {
+        private static IConfiguration _config;
         static void Main(string[] args)
         {
             var services = ConfigureServices();
@@ -39,9 +42,14 @@ namespace CMA.ISMAI.Delivery.Payment.UI
         private static IServiceCollection ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
+            _config = new ConfigurationBuilder()
+                                .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
+                                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                .AddEnvironmentVariables()
+                                .Build();
             Log.Logger = new LoggerConfiguration()
            .Enrich.FromLogContext()
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200/"))
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(_config.GetSection("ElasticConfiguration:Uri").Value))
             {
                 AutoRegisterTemplate = true,
             })
@@ -59,6 +67,7 @@ namespace CMA.ISMAI.Delivery.Payment.UI
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IQueueService, QueueService>();
             services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
+            services.AddSingleton<IConfiguration>();
             services.AddTransient<ConsoleApplication>();
             return services;
         }

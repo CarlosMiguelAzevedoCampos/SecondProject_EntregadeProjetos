@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.7" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -23,6 +28,12 @@
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader\CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.CrossCutting.Queue\CMA.ISMAI.Delivery.Payment.CrossCutting.Queue.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.Domain\CMA.ISMAI.Delivery.Payment.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

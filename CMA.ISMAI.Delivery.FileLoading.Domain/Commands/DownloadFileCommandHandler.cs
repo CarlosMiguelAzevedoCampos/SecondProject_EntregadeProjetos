@@ -5,6 +5,7 @@ using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using NetDevPack.Mediator;
 using NetDevPack.Messaging;
 using System.Threading;
@@ -17,17 +18,19 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
     {
         private readonly IHttpRequestService _httpRequestService;
         private readonly IMediatorHandler _mediator;
+        private readonly IConfiguration _config;
 
-        public DownloadFileCommandHandler(IHttpRequestService httpRequestService, IMediatorHandler mediator)
+        public DownloadFileCommandHandler(IHttpRequestService httpRequestService, IMediatorHandler mediator, IConfiguration configuration)
         {
             _httpRequestService = httpRequestService;
             _mediator = mediator;
+            _config = configuration;
         }
 
         public async Task<ValidationResult> Handle(DownloadFileFromUrlCommand request, CancellationToken cancellationToken)
         {
             ValidationResult.Errors.Clear();
-            if (!_httpRequestService.DownloadFileToHost(string.Format(@"C:\Users\Carlos Campos\Desktop\Teste\Zip\{0}_{1}_{2}_{3}.zip", request.DeliveryWithLink.StudentNumber, request.DeliveryWithLink.InstituteName,
+            if (!_httpRequestService.DownloadFileToHost(string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.DeliveryWithLink.StudentNumber, request.DeliveryWithLink.InstituteName,
                 request.DeliveryWithLink.StudentName, request.DeliveryWithLink.CourseName), request.DeliveryWithLink.Title))
             {
                 AddError("An error happend while downloading!");

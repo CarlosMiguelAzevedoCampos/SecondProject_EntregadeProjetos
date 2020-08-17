@@ -1,5 +1,6 @@
 ﻿using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Payment.Domain.Interfaces;
+using Microsoft.Extensions.Configuration;
 using OfficeOpenXml;
 using System;
 using System.IO;
@@ -9,10 +10,11 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader
     public class FileReaderService : IFileReaderService
     {
         private readonly ILoggingService _log;
-
-        public FileReaderService(ILoggingService log)
+        private readonly IConfiguration _config;
+        public FileReaderService(ILoggingService log, IConfiguration config)
         {
             _log = log;
+            _config = config;
         }
         public bool PaymentHasBeenDone(string studentNumber, string courseName, string institutionName)
         {
@@ -23,7 +25,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader
         {
             try
             {
-                var fi = new FileInfo(@"C:\Users\Carlos Campos\Desktop\excel.xlsx");
+                var fi = new FileInfo(_config.GetSection("FilePathJury:Path").Value);
                 if (fi.Exists)
                 {
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
