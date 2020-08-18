@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.2.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.EventStore\CMA.ISMAI.Delivery.EventStore.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Logging.Log\CMA.ISMAI.Delivery.Logging.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.CrossCutting.Bis\CMA.ISMAI.Delivery.Payment.CrossCutting.Bus.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda\CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader\CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.CrossCutting.Queue\CMA.ISMAI.Delivery.Payment.CrossCutting.Queue.csproj" />
+    <ProjectReference Include="..\CMA.ISMAI.Delivery.Payment.Domain\CMA.ISMAI.Delivery.Payment.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

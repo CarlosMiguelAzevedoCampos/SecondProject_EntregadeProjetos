@@ -15,11 +15,11 @@ namespace CMA.ISMAI.Delivery.Payment.Domain.Tests
         public void VerifyIfThePaymentInTheFile_Sucess()
         {
             // Arrange
-            var deliveryFile = new VerifyPaymentOfDeliveryCommand("A029216", "ISMAI", "Informática");
+            var deliveryFile = new VerifyPaymentOfDeliveryCommand("A029216", "ISMAI", "Informática", It.IsAny<string>());
             var fileReader = new Mock<IFileReaderService>();
             var meditrHandler = new Mock<IMediatorHandler>();
 
-            fileReader.Setup(x => x.PaymentHasBeenDone(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            fileReader.Setup(x => x.PaymentHasBeenDone(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             var deliveryFileHandler = new DeliveryPaymentHandler(fileReader.Object, meditrHandler.Object);
 
             // Act
@@ -34,10 +34,10 @@ namespace CMA.ISMAI.Delivery.Payment.Domain.Tests
         public void VerifyIfThePaymentInTheFile_Fail()
         {
             // Arrange
-            var deliveryFile = new VerifyPaymentOfDeliveryCommand("A029216", "ISMAI", "Informática");
+            var deliveryFile = new VerifyPaymentOfDeliveryCommand("A029216", "ISMAI", "Informática", It.IsAny<string>());
             var fileReader = new Mock<IFileReaderService>();
             var meditrHandler = new Mock<IMediatorHandler>();
-            fileReader.Setup(x => x.PaymentHasBeenDone(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+            fileReader.Setup(x => x.PaymentHasBeenDone(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
             //Act
             var deliveryFileHandler = new DeliveryPaymentHandler(fileReader.Object, meditrHandler.Object);
             // Assert

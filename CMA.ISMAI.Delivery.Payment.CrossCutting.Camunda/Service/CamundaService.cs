@@ -75,7 +75,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                     var getCourseName = returnVariableValue(delivery, "courseName");
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getCordenatorName = returnVariableValue(delivery, "cordenatorName");
-                    var deliveryPayment = new VerifyPaymentOfDeliveryCommand(getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(), getCourseName.Value.ToString());
+                    var deliveryPayment = new VerifyPaymentOfDeliveryCommand(getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(), getCourseName.Value.ToString(), _config.GetSection("FilePathPayment:Path").Value);
 
                     var result = await _mediator.Send(deliveryPayment);
 

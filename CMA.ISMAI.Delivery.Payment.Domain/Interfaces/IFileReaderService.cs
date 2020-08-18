@@ -2,6 +2,6 @@
 {
     public interface IFileReaderService
     {
-        bool PaymentHasBeenDone(string studentNumber, string courseName, string institutionName);
+        bool PaymentHasBeenDone(string studentNumber, string courseName, string institutionName, string filePath);
     }
 }

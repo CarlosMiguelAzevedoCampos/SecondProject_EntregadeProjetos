@@ -25,7 +25,7 @@ namespace CMA.ISMAI.Delivery.Payment.Domain.Commands
         public async Task<ValidationResult> Handle(VerifyPaymentOfDeliveryCommand request, CancellationToken cancellationToken)
         {
             ValidationResult.Errors.Clear();
-            if (!_fileReaderService.PaymentHasBeenDone(request.StudentNumber, request.CourseName, request.InstituteName))
+            if (!_fileReaderService.PaymentHasBeenDone(request.StudentNumber, request.CourseName, request.InstituteName, request.FilePath))
             {
                 AddError("Payment not done");
                 return await Task.FromResult(ValidationResult);

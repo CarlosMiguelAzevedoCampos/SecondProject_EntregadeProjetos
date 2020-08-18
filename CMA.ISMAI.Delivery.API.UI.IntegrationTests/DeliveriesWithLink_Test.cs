@@ -88,5 +88,43 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
             // Assert
             Assert.Equal(200, resultObject.StatusCode.Value);
         }
+
+        [Fact(DisplayName = "Invalid link Request")]
+        [Trait("DeliveryController", "Submit a delivery")]
+        public async Task LinkIsntfromaTrustedHost()
+        {
+            // Arrange
+            var builder = new WebHostBuilder()
+                          .UseEnvironment("Development")
+                          .UseStartup<Startup>();
+            TestServer testServer = new TestServer(builder);
+            HttpClient client = testServer.CreateClient();
+
+            var formData = new Dictionary<string, string>() { //<---- NOTE HERE
+                { "StudentName", "Carlops" },
+                {"InstituteName", "ISMAI" },
+                {"CourseName", "Informática" },
+                {"StudentEmail", "carlosmiguelcampos1996@gmail.com" },
+                {"StudentNumber", "A029216" },
+                {"FileLink", "https://meocloud.pt/link/8ea5686b-aba1-43b5-9f7c-c41bd0075eed/New%20Compressed%20%28zipped%29%20Folder.zip/" },
+                {"CordenatorName", "José" },
+                {"Title", "Entrega de Dissertação 210" },
+                {"DefenitionOfDelivery", "Mestrado" },
+                {"PublicPDFVersionName", "PrivateProjectDelivery" },
+                {"PrivatePDFVersionName", "public" },
+                {"DeliveryTime", DateTime.Now.ToString() }
+            };
+
+
+
+            // Act
+            var content = new FormUrlEncodedContent(formData);
+            var response = await client.PostAsync("/api/Deliveries/UploadWithLink", content);
+            var result = await response.Content.ReadAsStringAsync();
+            var resultObject = JsonConvert.DeserializeObject<ValidationProblemDetails>(result);
+
+            // Assert
+            Assert.Equal(400, resultObject.Status.Value);
+        }
     }
 }
