@@ -127,6 +127,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - EventStore", "5 - Event
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.EventStore", "CMA.ISMAI.Delivery.EventStore\CMA.ISMAI.Delivery.EventStore.csproj", "{C5D10852-A32A-4BCF-9E11-CB04A971C07C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileLoading.IntegrationTests", "CMA.ISMAI.Delivery.FileLoading.IntegrationTests\CMA.ISMAI.Delivery.FileLoading.IntegrationTests.csproj", "{9EC083DD-B676-4A6D-AAE6-AD1252B71BAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -281,6 +283,10 @@ Global
 		{C5D10852-A32A-4BCF-9E11-CB04A971C07C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5D10852-A32A-4BCF-9E11-CB04A971C07C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5D10852-A32A-4BCF-9E11-CB04A971C07C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EC083DD-B676-4A6D-AAE6-AD1252B71BAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EC083DD-B676-4A6D-AAE6-AD1252B71BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EC083DD-B676-4A6D-AAE6-AD1252B71BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EC083DD-B676-4A6D-AAE6-AD1252B71BAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -341,6 +347,7 @@ Global
 		{97CCBC33-EAEF-4BB5-ADD7-E3A1B8579383} = {C7CFE0F7-28C6-4F63-A1DB-F9FE0381769F}
 		{4E974D09-DA07-4A8A-A2A2-9316C710DA7A} = {ED00F0E3-B804-418F-95B3-79CA6693B8CF}
 		{C5D10852-A32A-4BCF-9E11-CB04A971C07C} = {2403E703-9E46-4F30-8880-59F01A90FC7D}
+		{9EC083DD-B676-4A6D-AAE6-AD1252B71BAB} = {D41E3FA5-A8A8-4B9C-88AF-9B644BFE270C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A59F4A0-411C-49CF-A5C3-E87C108B33FE}

@@ -9,25 +9,28 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using System;
+using System.IO;
 
 namespace CMA.ISMAI.Delivery.API.UI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
-
+            Configuration = new ConfigurationBuilder()
+                                          .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
+                                          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).AddEnvironmentVariables()
+                                          .Build();
             Log.Logger = new LoggerConfiguration()
               .Enrich.FromLogContext()
             .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(Configuration.GetSection("ElasticConfiguration:Uri").Value))
             {
                 AutoRegisterTemplate = true,
-                  })
+            })
                .CreateLogger();
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
