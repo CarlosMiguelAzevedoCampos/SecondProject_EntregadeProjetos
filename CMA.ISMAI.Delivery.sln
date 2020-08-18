@@ -115,17 +115,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda", "CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda\CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.csproj", "{6400DE37-5A36-455D-B269-4E185C017C90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda", "CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda\CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.csproj", "{F85EF5DE-5D46-4417-99F3-8C96E5DF33BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda", "CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda\CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.csproj", "{F85EF5DE-5D46-4417-99F3-8C96E5DF33BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda", "CMA.ISMAI.FileProcessing.CrossCutting.Camunda\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.csproj", "{97CCBC33-EAEF-4BB5-ADD7-E3A1B8579383}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda", "CMA.ISMAI.FileProcessing.CrossCutting.Camunda\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.csproj", "{97CCBC33-EAEF-4BB5-ADD7-E3A1B8579383}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Logging", "4 - Logging", "{ED00F0E3-B804-418F-95B3-79CA6693B8CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.Logging", "CMA.ISMAI.Delivery.Logging.Log\CMA.ISMAI.Delivery.Logging.csproj", "{4E974D09-DA07-4A8A-A2A2-9316C710DA7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.Logging", "CMA.ISMAI.Delivery.Logging.Log\CMA.ISMAI.Delivery.Logging.csproj", "{4E974D09-DA07-4A8A-A2A2-9316C710DA7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - EventStore", "5 - EventStore", "{2403E703-9E46-4F30-8880-59F01A90FC7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.EventStore", "CMA.ISMAI.Delivery.EventStore\CMA.ISMAI.Delivery.EventStore.csproj", "{C5D10852-A32A-4BCF-9E11-CB04A971C07C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.EventStore", "CMA.ISMAI.Delivery.EventStore\CMA.ISMAI.Delivery.EventStore.csproj", "{C5D10852-A32A-4BCF-9E11-CB04A971C07C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

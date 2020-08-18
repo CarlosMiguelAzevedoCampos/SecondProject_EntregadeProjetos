@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
+using System.IO;
 using System.Text;
 
 namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue
@@ -16,7 +17,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue
         public QueueService(ILoggingService log, IConfiguration config)
         {
             _log = log;
-            _config = config;
+            _config = new ConfigurationBuilder()
+                                                      .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
+                                                      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                                      .AddEnvironmentVariables()
+                                                      .Build();
         }
 
         public bool SendToQueue(DeliveryFileSystem deliveryFileSystem, string queue)

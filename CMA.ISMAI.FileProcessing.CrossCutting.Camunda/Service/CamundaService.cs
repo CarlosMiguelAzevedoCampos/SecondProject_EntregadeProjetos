@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,15 +27,19 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
         private readonly ILoggingService _log;
         private readonly IConfiguration _config;
 
-        public CamundaService(IMediator mediator, INotificationService notificationService, ILoggingService log, IConfiguration config)
+        public CamundaService(IMediator mediator, INotificationService notificationService, ILoggingService log)
         {
+            _config = new ConfigurationBuilder()
+                                                      .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
+                                                      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                                      .AddEnvironmentVariables()
+                                                      .Build();
             camundaEngineClient = new CamundaEngineClient(new System.Uri(_config.GetSection("Camunda:Uri").Value), null, null);
             filePath = $"CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.WorkFlow.FileProcessingISMAI.bpmn";
             workers = new Dictionary<string, Action<ExternalTask>>();
             _mediator = mediator;
             _notificationService = notificationService;
             _log = log;
-            _config = config;
         }
 
         public void RegistWorkers()

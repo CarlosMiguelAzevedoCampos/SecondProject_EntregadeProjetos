@@ -11,7 +11,10 @@
   <ItemGroup>
     <PackageReference Include="BerndRuecker.Sample.CamundaClient" Version="0.1.1" />
     <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.7" />
   </ItemGroup>
 
   <ItemGroup>

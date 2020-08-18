@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using NetDevPack.Mediator;
 using NetDevPack.Messaging;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,11 +21,15 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
         private readonly IMediatorHandler _mediator;
         private readonly IConfiguration _config;
 
-        public DownloadFileCommandHandler(IHttpRequestService httpRequestService, IMediatorHandler mediator, IConfiguration configuration)
+        public DownloadFileCommandHandler(IHttpRequestService httpRequestService, IMediatorHandler mediator)
         {
             _httpRequestService = httpRequestService;
             _mediator = mediator;
-            _config = configuration;
+            _config = new ConfigurationBuilder()
+                                           .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
+                                           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                           .AddEnvironmentVariables()
+                                           .Build();
         }
 
         public async Task<ValidationResult> Handle(DownloadFileFromUrlCommand request, CancellationToken cancellationToken)

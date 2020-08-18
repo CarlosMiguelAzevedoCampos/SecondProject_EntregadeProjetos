@@ -75,7 +75,6 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
             services.AddScoped<INotificationHandler<WaterMarkGeneratedEvent>, FileProcessingEventHandler>();
             services.AddScoped<INotificationHandler<CoverPageGeneratedEvent>, FileProcessingEventHandler>();
             services.AddScoped<INotificationHandler<JuryPageGeneretedEvent>, FileProcessingEventHandler>();
-            services.AddSingleton<IConfiguration>();
 
             services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
             services.AddTransient<ConsoleApplication>();

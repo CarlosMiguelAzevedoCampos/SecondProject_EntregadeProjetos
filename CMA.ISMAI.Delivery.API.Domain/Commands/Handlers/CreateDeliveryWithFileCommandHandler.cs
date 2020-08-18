@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using NetDevPack.Mediator;
 using NetDevPack.Messaging;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,13 +23,17 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
         private readonly IConfiguration _config;
 
         
-        public CreateDeliveryWithFileCommandHandler(IZipFileService zipFileService, IMediatorHandler mediator, IQueueService queueService, IFileSaverService fileSaverService, IConfiguration config)
+        public CreateDeliveryWithFileCommandHandler(IZipFileService zipFileService, IMediatorHandler mediator, IQueueService queueService, IFileSaverService fileSaverService)
         {
             _zipFileService = zipFileService;
             _mediator = mediator;
             _queueService = queueService;
             _fileSaverService = fileSaverService;
-            _config = config;
+            _config = new ConfigurationBuilder()
+                                                                 .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
+                                                                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                                                 .AddEnvironmentVariables()
+                                                                 .Build();
         }
 
         public async Task<ValidationResult> Handle(CreateDeliveryWithFileCommand request, CancellationToken cancellationToken)

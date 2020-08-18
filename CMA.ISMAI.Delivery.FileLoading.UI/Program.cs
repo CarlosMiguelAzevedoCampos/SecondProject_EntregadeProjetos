@@ -78,8 +78,6 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             services.AddScoped<INotificationHandler<FileDownloadedEvent>, FileLoadingEventHandler>();
             services.AddScoped<INotificationHandler<FilesIdentifiedEvent>, FileLoadingEventHandler>();
             services.AddScoped<INotificationHandler<FilesVerifiedEvent>, FileLoadingEventHandler>();
-            services.AddSingleton<IConfiguration>();
-
             services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
             services.AddTransient<ConsoleApplication>();
          

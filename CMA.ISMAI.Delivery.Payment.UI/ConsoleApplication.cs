@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.IO;
 using System.Text;
 using System.Threading;
 
@@ -16,11 +17,15 @@ namespace CMA.ISMAI.Delivery.Payment.UI
         private readonly ICamundaService _camundaService;
         private readonly ILoggingService _log;
         private readonly IConfiguration _config;
-        public ConsoleApplication(ICamundaService camundaService, ILoggingService log, IConfiguration config)
+        public ConsoleApplication(ICamundaService camundaService, ILoggingService log)
         {
             _camundaService = camundaService;
             _log = log;
-            _config = config;
+            _config = new ConfigurationBuilder()
+                                                      .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
+                                                      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                                      .AddEnvironmentVariables()
+                                                      .Build();
         }
 
         public void StartService()

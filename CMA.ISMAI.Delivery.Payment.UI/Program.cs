@@ -46,7 +46,7 @@ namespace CMA.ISMAI.Delivery.Payment.UI
                                 .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
                                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                                 .AddEnvironmentVariables()
-                                .Build();
+                                .Build();          
             Log.Logger = new LoggerConfiguration()
            .Enrich.FromLogContext()
             .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(_config.GetSection("ElasticConfiguration:Uri").Value))
@@ -67,7 +67,6 @@ namespace CMA.ISMAI.Delivery.Payment.UI
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IQueueService, QueueService>();
             services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
-            services.AddSingleton<IConfiguration>();
             services.AddTransient<ConsoleApplication>();
             return services;
         }

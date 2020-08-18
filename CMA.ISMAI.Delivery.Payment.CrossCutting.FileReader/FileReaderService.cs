@@ -11,10 +11,14 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.FileReader
     {
         private readonly ILoggingService _log;
         private readonly IConfiguration _config;
-        public FileReaderService(ILoggingService log, IConfiguration config)
+        public FileReaderService(ILoggingService log)
         {
             _log = log;
-            _config = config;
+            _config = new ConfigurationBuilder()
+                                                      .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
+                                                      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                                      .AddEnvironmentVariables()
+                                                      .Build();
         }
         public bool PaymentHasBeenDone(string studentNumber, string courseName, string institutionName)
         {
