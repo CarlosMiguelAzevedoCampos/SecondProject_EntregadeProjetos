@@ -23,8 +23,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Tests
             var generateJuryPage = new Mock<IGenerateJuryPageService>();
             var fileReader = new Mock<IFileReaderService>();
             var meditrHandler = new Mock<IMediatorHandler>();
-            fileReader.Setup(x => x.ReturnJury(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<string>());
-            var generateJuryPageCommand = new GenerateJuryPageCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), @"C:\DSV");
+            fileReader.Setup(x => x.ReturnJury(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<string>());
+            var generateJuryPageCommand = new GenerateJuryPageCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), @"C:\DSV", It.IsAny<string>());
             // Act
             var fileHandler = new FileProcessingHandler(pdfProcessor.Object, coverProcessor.Object, generateJuryPage.Object, fileReader.Object, meditrHandler.Object);
             var result = fileHandler.Handle(generateJuryPageCommand, new CancellationToken());
@@ -44,9 +44,9 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Tests
             var generateJuryPage = new Mock<IGenerateJuryPageService>();
             var fileReader = new Mock<IFileReaderService>();
             var meditrHandler = new Mock<IMediatorHandler>();
-            fileReader.Setup(x => x.ReturnJury(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<string>() { "José" });
+            fileReader.Setup(x => x.ReturnJury(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<string>() { "José" });
 
-            var generateJuryPageCommand = new GenerateJuryPageCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), @"C:\DSV");
+            var generateJuryPageCommand = new GenerateJuryPageCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), @"C:\DSV", It.IsAny<string>());
             generateJuryPage.Setup(x => x.AddJuryPage(It.IsAny<string>(), new List<string>())).Returns(false);
             // Act
             var fileHandler = new FileProcessingHandler(pdfProcessor.Object, coverProcessor.Object, generateJuryPage.Object, fileReader.Object, meditrHandler.Object);
@@ -66,9 +66,9 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Tests
             var coverProcessor = new Mock<ICoverPageService>();
             var meditrHandler = new Mock<IMediatorHandler>();
             var generateJuryPage = new Mock<IGenerateJuryPageService>();
-            var generateJuryPageCommand = new GenerateJuryPageCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), @"C:\DSV");
+            var generateJuryPageCommand = new GenerateJuryPageCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), @"C:\DSV", It.IsAny<string>());
             var fileReader = new Mock<IFileReaderService>();
-            fileReader.Setup(x => x.ReturnJury(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<string>() { "José" });
+            fileReader.Setup(x => x.ReturnJury(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<string>() { "José" });
             generateJuryPage.Setup(x => x.AddJuryPage(It.IsAny<string>(), new List<string>() { "José" })).Returns(true);
             // Act
             var fileHandler = new FileProcessingHandler(pdfProcessor.Object, coverProcessor.Object, generateJuryPage.Object, fileReader.Object, meditrHandler.Object);

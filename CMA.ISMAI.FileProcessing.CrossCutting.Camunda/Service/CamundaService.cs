@@ -113,7 +113,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getPath = returnVariableValue(delivery, "deliveryPath");
 
-                    var generateJuryPageCommand = new GenerateJuryPageCommand(getStudentName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getInstituteName.Value.ToString(), getPath.Value.ToString());
+                    var generateJuryPageCommand = new GenerateJuryPageCommand(getStudentName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getInstituteName.Value.ToString(), getPath.Value.ToString(), _config.GetSection("FilePathJury:Path").Value);
 
 
                     var result = await _mediator.Send(generateJuryPageCommand);

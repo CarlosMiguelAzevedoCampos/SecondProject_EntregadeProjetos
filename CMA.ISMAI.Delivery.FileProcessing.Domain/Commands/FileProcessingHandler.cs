@@ -63,7 +63,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
         {
             ValidationResult.Errors.Clear();
 
-            List<string> jury = _fileReaderService.ReturnJury(request.StudentNumber, request.StudentInstituteName, request.StudentCourseName);
+            List<string> jury = _fileReaderService.ReturnJury(request.StudentNumber, request.StudentInstituteName, request.StudentCourseName, request.JuryFile);
             if (jury.Count == 0)
             {
                 AddError("No jury was found");

@@ -11,23 +11,17 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader
     public class FileReaderService : IFileReaderService
     {
         private readonly ILoggingService _log;
-        private readonly IConfiguration _config;
         public FileReaderService(ILoggingService log)
         {
             _log = log;
-            _config = new ConfigurationBuilder()
-                                                      .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
-                                                      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                                                      .AddEnvironmentVariables()
-                                                      .Build();
         }
 
-        public List<string> ReturnJury(string studentNumber, string studentInstitute, string studentCourseName)
+        public List<string> ReturnJury(string studentNumber, string studentInstitute, string studentCourseName, string filePath)
         {
             List<string> jury = new List<string>();
             try
             {
-                var fi = new FileInfo(_config.GetSection("FilePathPayment:Path").Value);
+                var fi = new FileInfo(filePath);
                 if (fi.Exists)
                 {
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
