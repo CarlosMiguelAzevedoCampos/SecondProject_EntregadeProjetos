@@ -7,6 +7,9 @@ services:
       - network_cmaismai
     container_name: cmaismaitrelloapi
     restart: always
+    ports:
+    - 5668:80
+    - 5669:443
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.API.UI/Dockerfile
@@ -27,6 +30,7 @@ services:
     networks:
       - network_cmaismai
     container_name: cmaismaideliverypaymentui
+    restart: always
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.Payment.UI/Dockerfile
@@ -37,6 +41,7 @@ services:
     networks:
       - network_cmaismai
     container_name: cmaismaideliveryfileloadingui
+    restart: always
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.FileLoading.UI/Dockerfile
