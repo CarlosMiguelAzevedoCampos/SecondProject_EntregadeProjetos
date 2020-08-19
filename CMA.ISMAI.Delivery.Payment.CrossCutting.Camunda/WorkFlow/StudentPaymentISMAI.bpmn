@@ -19,23 +19,22 @@
     <bpmn:sequenceFlow id="Flow_00xei12" name="Yes" sourceRef="Gateway_19dj0fg" targetRef="Activity_0pgbtb1">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{paid}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_04v8mo8" sourceRef="Activity_0iekjob" targetRef="Activity_19iy3o0" />
     <bpmn:serviceTask id="Activity_0yzzskb" name="Notify student that payment is available" camunda:type="external" camunda:topic="notify_for_payment">
       <bpmn:incoming>Flow_1cqxfm0</bpmn:incoming>
       <bpmn:outgoing>Flow_0dnuro3</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_19iy3o0" name="Verify user payment" camunda:type="external" camunda:topic="verify_payment">
-      <bpmn:incoming>Flow_04v8mo8</bpmn:incoming>
       <bpmn:incoming>Flow_1levhlz</bpmn:incoming>
+      <bpmn:incoming>Flow_1raaazj</bpmn:incoming>
       <bpmn:outgoing>Flow_18ks7fc</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_0pgbtb1" name="Notify university" camunda:type="external" camunda:topic="notify_university">
       <bpmn:incoming>Flow_00xei12</bpmn:incoming>
       <bpmn:outgoing>Flow_1bq8nmc</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0iekjob" name="Notify student" camunda:type="external" camunda:topic="notify_student">
+    <bpmn:serviceTask id="Activity_0iekjob" name="Notify student" camunda:type="external" camunda:topic="notify_student_payment">
       <bpmn:incoming>Flow_1imz7cw</bpmn:incoming>
-      <bpmn:outgoing>Flow_04v8mo8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1raaazj</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_0d14axx" name="Send to broker" camunda:type="external" camunda:topic="send_to_broker">
       <bpmn:incoming>Flow_1lotoi2</bpmn:incoming>
@@ -50,7 +49,7 @@
     <bpmn:sequenceFlow id="Flow_1levhlz" name="Yes" sourceRef="Gateway_0nho2tl" targetRef="Activity_19iy3o0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{ok}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="Activity_1hheuby" name="Send to manual processing" camunda:type="external" camunda:topic="manual_processing">
+    <bpmn:serviceTask id="Activity_1hheuby" name="Send to manual processing" camunda:type="external" camunda:topic="manual_processing_payment">
       <bpmn:incoming>Flow_07fn3yp</bpmn:incoming>
       <bpmn:incoming>Flow_037ab4p</bpmn:incoming>
       <bpmn:incoming>Flow_1r3jy1u</bpmn:incoming>
@@ -88,9 +87,19 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1kqwdoq" sourceRef="Activity_1hheuby" targetRef="Event_0g3rqhg" />
     <bpmn:sequenceFlow id="Flow_18ks7fc" sourceRef="Activity_19iy3o0" targetRef="Gateway_19dj0fg" />
+    <bpmn:sequenceFlow id="Flow_1raaazj" sourceRef="Activity_0iekjob" targetRef="Activity_19iy3o0" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="StudentPaymentISMAI">
+      <bpmndi:BPMNEdge id="Flow_1raaazj_di" bpmnElement="Flow_1raaazj">
+        <di:waypoint x="510" y="250" />
+        <di:waypoint x="420" y="250" />
+        <di:waypoint x="420" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18ks7fc_di" bpmnElement="Flow_18ks7fc">
+        <di:waypoint x="470" y="130" />
+        <di:waypoint x="535" y="130" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1kqwdoq_di" bpmnElement="Flow_1kqwdoq">
         <di:waypoint x="520" y="430" />
         <di:waypoint x="520" y="462" />
@@ -157,11 +166,6 @@
         <di:waypoint x="270" y="170" />
         <di:waypoint x="270" y="215" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04v8mo8_di" bpmnElement="Flow_04v8mo8">
-        <di:waypoint x="510" y="250" />
-        <di:waypoint x="420" y="250" />
-        <di:waypoint x="420" y="170" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_00xei12_di" bpmnElement="Flow_00xei12">
         <di:waypoint x="585" y="130" />
         <di:waypoint x="670" y="130" />
@@ -180,12 +184,14 @@
         <di:waypoint x="188" y="130" />
         <di:waypoint x="220" y="130" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_18ks7fc_di" bpmnElement="Flow_18ks7fc">
-        <di:waypoint x="470" y="130" />
-        <di:waypoint x="535" y="130" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_12jdkd0_di" bpmnElement="Event_12jdkd0">
         <dc:Bounds x="152" y="112" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_19dj0fg_di" bpmnElement="Gateway_19dj0fg" isMarkerVisible="true">
+        <dc:Bounds x="535" y="105" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="542" y="81" width="68" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_05fzssg_di" bpmnElement="Event_05fzssg">
         <dc:Bounds x="1012" y="112" width="36" height="36" />
@@ -228,12 +234,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0g3rqhg_di" bpmnElement="Event_0g3rqhg">
         <dc:Bounds x="502" y="462" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_19dj0fg_di" bpmnElement="Gateway_19dj0fg" isMarkerVisible="true">
-        <dc:Bounds x="535" y="105" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="542" y="81" width="68" height="14" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -30,6 +30,7 @@ namespace CMA.ISMAI.Delivery.API.UI.Controllers
                 AddError("Your file must be a ZIP file!");
                 return CustomResponse();
             }
+            deliveryDto.DeliveryTime = DateTime.Now;
             var registerCommand = _mapper.Map<CreateDeliveryWithFileCommand>(deliveryDto);
             var fileValidation = await _mediator.SendCommand(registerCommand);
             return CustomResponse(fileValidation, fileValidation.IsValid ? string.Format("The submition ended at {0}. The file delivered was {1}. " +
@@ -41,6 +42,7 @@ namespace CMA.ISMAI.Delivery.API.UI.Controllers
         [HttpPost("UploadWithLink")]
         public async Task<IActionResult> UploadWithLink([FromForm]DeliveryWithLinkDto deliveryDto)
         {
+            deliveryDto.DeliveryTime = DateTime.Now;
             var registerCommand = _mapper.Map<CreateDeliveryWithLinkCommand>(deliveryDto);
             var fileValidation = await _mediator.SendCommand(registerCommand);
             return CustomResponse(fileValidation, fileValidation.IsValid ? string.Format("The submition ended at {0}. The URL delivered was {1}. " +

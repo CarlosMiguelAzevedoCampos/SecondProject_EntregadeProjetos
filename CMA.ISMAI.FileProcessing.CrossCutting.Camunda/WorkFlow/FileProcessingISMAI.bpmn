@@ -71,7 +71,7 @@
       <bpmn:incoming>Flow_11wz9bp</bpmn:incoming>
       <bpmn:outgoing>Flow_0b5t8yg</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1y42bm4" name="Send to manual processing" camunda:type="external" camunda:topic="send_to_manual">
+    <bpmn:serviceTask id="Activity_1y42bm4" name="Send to manual processing" camunda:type="external" camunda:topic="manual_processing_processing">
       <bpmn:incoming>Flow_0mnhpn7</bpmn:incoming>
       <bpmn:incoming>Flow_1bi5j26</bpmn:incoming>
       <bpmn:incoming>Flow_1s0nq53</bpmn:incoming>

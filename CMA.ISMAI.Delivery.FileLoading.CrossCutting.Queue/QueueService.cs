@@ -14,7 +14,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Queue
     {
         private readonly ILoggingService _log;
         private readonly IConfiguration _config;
-        public QueueService(ILoggingService log, IConfiguration config)
+        public QueueService(ILoggingService log)
         {
             _log = log;
             _config = new ConfigurationBuilder()

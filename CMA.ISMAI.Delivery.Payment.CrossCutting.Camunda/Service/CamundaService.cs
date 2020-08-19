@@ -170,7 +170,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
 
 
 
-            registerWorker("notify_student", externalTask =>
+            registerWorker("notify_student_payment", externalTask =>
             {
                 try
                 {
@@ -195,7 +195,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                 }
             });
 
-            registerWorker("manual_processing", externalTask =>
+            registerWorker("manual_processing_payment", externalTask =>
             {
                 try
                 {
@@ -219,7 +219,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                 }
             });
 
-            pollingTimer = new Timer(_ => StartPolling(), null, 1, Timeout.Infinite);
+            pollingTimer = new Timer(_ => StartPolling(), null, Convert.ToInt64(_config.GetSection("TimeToFetch:Time").Value), Timeout.Infinite);
 
         }
 
@@ -242,14 +242,14 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
         private void StartPolling()
         {
             PollTasks();
-            pollingTimer.Change(1, Timeout.Infinite);
+            pollingTimer.Change(Convert.ToInt64(_config.GetSection("TimeToFetch:Time").Value), Timeout.Infinite);
         }
 
         private void PollTasks()
         {
             try
             {
-                var tasks = camundaEngineClient.ExternalTaskService.FetchAndLockTasks("StudentPaymentISMAI", 1000000, workers.Keys, 30000, null);
+                var tasks = camundaEngineClient.ExternalTaskService.FetchAndLockTasks("StudentPaymentISMAI", Convert.ToInt32(_config.GetSection("TaskPerFetch:Tasks").Value), workers.Keys, Convert.ToInt64(_config.GetSection("TimeToFetch:Time").Value) / 2, null);
                 Parallel.ForEach(
                     tasks,
                     new ParallelOptions { MaxDegreeOfParallelism = 1 },
