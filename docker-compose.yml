@@ -6,6 +6,7 @@ services:
     networks:
       - network_cmaismai
     container_name: cmaismaitrelloapi
+    restart: always
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.API.UI/Dockerfile
@@ -14,6 +15,7 @@ services:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileprocessingui
     networks:
       - network_cmaismai
+    restart: always
     container_name: cmaismaideliveryfileprocessingui
     build:
       context: .
