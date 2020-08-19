@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CMA.ISMAI.Delivery.FileLoading.UI": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
