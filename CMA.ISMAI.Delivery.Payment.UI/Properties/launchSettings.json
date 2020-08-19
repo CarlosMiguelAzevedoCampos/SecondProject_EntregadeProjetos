@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CMA.ISMAI.Delivery.Payment.UI": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

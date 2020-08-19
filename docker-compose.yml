@@ -1,0 +1,113 @@
+version: '3.4'
+
+services:
+  cma.ismai.delivery.api.ui:
+    image: ${DOCKER_REGISTRY-}cmaismaideliveryapiui
+    networks:
+      - network_cmaismai
+    container_name: cmaismaitrelloapi
+    build:
+      context: .
+      dockerfile: CMA.ISMAI.Delivery.API.UI/Dockerfile
+
+  cma.ismai.delivery.fileprocessing.ui:
+    image: ${DOCKER_REGISTRY-}cmaismaideliveryfileprocessingui
+    networks:
+      - network_cmaismai
+    container_name: cmaismaideliveryfileprocessingui
+    build:
+      context: .
+      dockerfile: CMA.ISMAI.Delivery.FileProcessing.UI/Dockerfile
+
+
+  cma.ismai.delivery.payment.ui:
+    image: ${DOCKER_REGISTRY-}cmaismaideliverypaymentui
+    networks:
+      - network_cmaismai
+    container_name: cmaismaideliverypaymentui
+    build:
+      context: .
+      dockerfile: CMA.ISMAI.Delivery.Payment.UI/Dockerfile
+
+
+  cma.ismai.delivery.fileloading.ui:
+    image: ${DOCKER_REGISTRY-}cmaismaideliveryfileloadingui
+    networks:
+      - network_cmaismai
+    container_name: cmaismaideliveryfileloadingui
+    build:
+      context: .
+      dockerfile: CMA.ISMAI.Delivery.FileLoading.UI/Dockerfile
+  # Containers auxiliares a solução
+  
+  elasticsearch:
+   image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+   container_name: elasticsearch
+   ports:
+    - "9200:9200"
+   volumes:
+    - elasticsearch-data:/usr/share/elasticsearch/data
+   networks:
+    - network_cmaismai
+   restart: always
+
+  kibana:
+   image: docker.elastic.co/kibana/kibana:6.2.4
+   container_name: kibana
+   ports:
+    - "5601:5601"
+   depends_on:
+    - elasticsearch
+   networks:
+    - network_cmaismai
+   restart: always
+
+  rabbitmq:
+   image: rabbitmq:management
+   container_name: rabbitmq
+   hostname: rabbitmq
+   environment:
+    RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+    RABBITMQ_DEFAULT_USER: "admin"
+    RABBITMQ_DEFAULT_PASS: "admin"
+    RABBITMQ_DEFAULT_VHOST: "/"
+   ports:
+    - "5672:5672"
+    - "15672:15672"
+   networks:
+   - network_cmaismai
+   restart: always
+
+  camunda:
+   container_name: camunda
+   image: camunda/camunda-bpm-platform:latest
+   ports:
+    - "8080:8080"
+   networks:
+    - network_cmaismai
+   restart: always
+
+  eventstore.db:
+    container_name: eventstore
+    image: eventstore/eventstore:release-5.0.8
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_INT_TCP_PORT=1112
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_INT_HTTP_PORT=2112
+      - EVENTSTORE_EXT_HTTP_PORT=2113
+    ports:
+      - "1112:1112"
+      - "1113:1113"
+      - "2112:2112"
+      - "2113:2113"
+    networks:
+    - network_cmaismai
+    restart: always
+
+networks: # Todos os projetos devem estar na mesma network. as
+  network_cmaismai:
+    driver: bridge
+volumes:
+  elasticsearch-data:
+
