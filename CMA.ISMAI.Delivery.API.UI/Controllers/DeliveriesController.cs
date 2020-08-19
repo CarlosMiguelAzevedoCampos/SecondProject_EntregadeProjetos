@@ -34,8 +34,7 @@ namespace CMA.ISMAI.Delivery.API.UI.Controllers
             var registerCommand = _mapper.Map<CreateDeliveryWithFileCommand>(deliveryDto);
             var fileValidation = await _mediator.SendCommand(registerCommand);
             return CustomResponse(fileValidation, fileValidation.IsValid ? string.Format("The submition ended at {0}. The file delivered was {1}. " +
-                "You will recive a e-mail with a confirmation, but if you don't, this proves you delivered the file. " +
-                "After this e-mail, you will recivce another one validating your files. Process ID - {2}", DateTime.Now, deliveryDto.DeliveryFile.FileName, registerCommand.Id) : string.Empty);
+                "After this, if everything is correct, you will recive an e-mail saying that you can pay your delivery! Process ID - {2}", DateTime.Now, deliveryDto.DeliveryFile.FileName, registerCommand.Id) : string.Empty);
         }
 
 
@@ -45,9 +44,8 @@ namespace CMA.ISMAI.Delivery.API.UI.Controllers
             deliveryDto.DeliveryTime = DateTime.Now;
             var registerCommand = _mapper.Map<CreateDeliveryWithLinkCommand>(deliveryDto);
             var fileValidation = await _mediator.SendCommand(registerCommand);
-            return CustomResponse(fileValidation, fileValidation.IsValid ? string.Format("The submition ended at {0}. The URL delivered was {1}. " +
-                "If you stop the file sharing, the process will stop and you will be notified. You will recive a e-mail with a confirmation, but if you don't, this proves you delivered the file. " +
-                "After this e-mail, you will recivce another one validating your files. Process ID - {2}", DateTime.Now, deliveryDto.FileLink, registerCommand.Id) : string.Empty);
+            return CustomResponse(fileValidation, fileValidation.IsValid ? string.Format("The submition ended at {0}. The link delivered was {1}. " +
+                           "After this, if everything is correct, you will recive an e-mail saying that you can pay your delivery! Process ID - {2}", DateTime.Now, deliveryDto.FileLink, registerCommand.Id) : string.Empty);
         }
 
         private bool IsAZipFile(IFormFile deliveryFile)
