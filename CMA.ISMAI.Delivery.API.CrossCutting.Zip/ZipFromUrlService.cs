@@ -21,6 +21,7 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
             try
             {
                 ZipArchive archive = new ZipArchive(deliveryFile);
+                
                 return archive.Entries.Where(x => Path.GetExtension(x.FullName).ToLower() == ".pdf").Count() > 0;
             }
             catch (Exception ex)

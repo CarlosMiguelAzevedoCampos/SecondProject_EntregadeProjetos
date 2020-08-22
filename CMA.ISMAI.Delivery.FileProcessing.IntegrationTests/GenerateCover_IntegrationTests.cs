@@ -5,12 +5,15 @@ using CMA.ISMAI.Delivery.EventStore.Service;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service;
+using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Commands;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Events;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Models;
+using CMA.ISMAI.Delivery.FileProcessing.Domain.Models.Commands;
+using CMA.ISMAI.Delivery.FileProcessing.Domain.Models.Events;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Logging.Service;
 using FluentValidation.Results;
@@ -90,15 +93,18 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             services.AddScoped<IEventStoreService, EventStoreService>();
             services.AddScoped<IMediatorHandler, InMemoryBus>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IFileTransferService, FileTransferService>();
 
 
             services.AddScoped<IRequestHandler<GenerateWaterMarkCommand, ValidationResult>, FileProcessingHandler>();
             services.AddScoped<IRequestHandler<GenerateCoverPageCommand, ValidationResult>, FileProcessingHandler>();
             services.AddScoped<IRequestHandler<GenerateJuryPageCommand, ValidationResult>, FileProcessingHandler>();
+            services.AddScoped<IRequestHandler<FileTransferCommand, ValidationResult>, FileProcessingHandler>();
 
             services.AddScoped<INotificationHandler<WaterMarkGeneratedEvent>, FileProcessingEventHandler>();
             services.AddScoped<INotificationHandler<CoverPageGeneratedEvent>, FileProcessingEventHandler>();
             services.AddScoped<INotificationHandler<JuryPageGeneretedEvent>, FileProcessingEventHandler>();
+            services.AddScoped<INotificationHandler<FileTransferCompletedEvent>, FileProcessingEventHandler>();
 
             services.AddMediatR(typeof(GenerateCover_IntegrationTests).GetTypeInfo().Assembly);
             return services;

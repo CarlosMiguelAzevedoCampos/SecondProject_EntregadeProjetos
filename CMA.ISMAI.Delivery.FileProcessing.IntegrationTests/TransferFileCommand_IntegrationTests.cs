@@ -1,4 +1,4 @@
-using CMA.ISMAI.Core.Interface;
+Ôªøusing CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Core.Service;
 using CMA.ISMAI.Delivery.EventStore.Interface;
 using CMA.ISMAI.Delivery.EventStore.Service;
@@ -31,54 +31,24 @@ using Xunit;
 
 namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
 {
-    public class GenerateWaterMark_IntegrationTests
+    public class TransferFileCommand_IntegrationTests
     {
-        [Fact(DisplayName = "Valid water mark generation")]
-        [Trait("GenerateWaterMarkCommand", "Generate Water Mark")]
+        [Fact(DisplayName = "Valid file transfer move")]
+        [Trait("FileTransferCommand", "File Transfer")]
         public async Task GenerateCover()
         {
+
+            File.Delete("C:\\Users\\Carlos Campos\\OneDrive\\Documentos\\A029216_ISMAI_Carlos Campos_Inform√°tica.zip");
             // Arrange
-            File.Delete(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Inform·tica_WaterMarkTest\PrivateWaterMark.pdf");
-            File.Delete(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Inform·tica_WaterMarkTest\PublicWaterMark.pdf");
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Inform·tica_WaterMarkTest", "Informm·tica", "ISMAI", DateTime.Now,
-                "public.pdf", "PrivateProjectDelivery.pdf");
+            var fileTransferCommand = new FileTransferCommand(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Inform√°tica",
+                "C:\\Users\\Carlos Campos\\OneDrive\\Documentos", "carlosmiguelcampos1996@gmail.com");
+
             // Act
-            var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateWaterMark);
+            var result = await serviceProvider.GetRequiredService<IMediator>().Send(fileTransferCommand);
             //Assert
             Assert.True(result.IsValid);
-        }
-
-        [Fact(DisplayName = "Fail water mark generation - Private file")]
-        [Trait("GenerateWaterMarkCommand", "Generate Water Mark")]
-        public async Task FailWaterMarkGeneration_PrivateFileNotFound()
-        {
-            // Arrange
-            var services = ConfigureServices();
-            var serviceProvider = services.BuildServiceProvider();
-            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Inform·tica_WaterMarkTest", "Informm·tica", "ISMAI", DateTime.Now,
-                "public.pdf", "private.pdf");
-            // Act
-            var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateWaterMark);
-            //Assert
-            Assert.False(result.IsValid);
-        }
-
-
-        [Fact(DisplayName = "Fail water mark generation - Public file")]
-        [Trait("GenerateWaterMarkCommand", "Generate Water Mark")]
-        public async Task FailWaterMarkGeneration_PublicFileNotFound()
-        {
-            // Arrange
-            var services = ConfigureServices();
-            var serviceProvider = services.BuildServiceProvider();
-            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Inform·tica_WaterMarkTest", "Informm·tica", "ISMAI", DateTime.Now,
-                "PublicDelivery.pdf", "PrivateProjectDelivery.pdf");
-            // Act
-            var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateWaterMark);
-            //Assert
-            Assert.False(result.IsValid);
         }
 
         private static IServiceCollection ConfigureServices()
@@ -96,6 +66,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
                 AutoRegisterTemplate = true,
             })
         .CreateLogger();
+
             services.AddLogging();
             services.AddScoped<ILoggingService, LoggingService>();
 
@@ -120,7 +91,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             services.AddScoped<INotificationHandler<JuryPageGeneretedEvent>, FileProcessingEventHandler>();
             services.AddScoped<INotificationHandler<FileTransferCompletedEvent>, FileProcessingEventHandler>();
 
-            services.AddMediatR(typeof(GenerateCover_IntegrationTests).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(TransferFileCommand_IntegrationTests).GetTypeInfo().Assembly);
             return services;
         }
     }

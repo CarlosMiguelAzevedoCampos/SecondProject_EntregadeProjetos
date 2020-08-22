@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Core\CMA.ISMAI.Core.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Bus.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing.csproj" />

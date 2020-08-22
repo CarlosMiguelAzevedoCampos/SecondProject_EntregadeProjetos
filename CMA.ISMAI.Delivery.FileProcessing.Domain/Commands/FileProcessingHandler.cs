@@ -1,5 +1,7 @@
 ﻿using CMA.ISMAI.Delivery.FileProcessing.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Models;
+using CMA.ISMAI.Delivery.FileProcessing.Domain.Models.Commands;
+using CMA.ISMAI.Delivery.FileProcessing.Domain.Models.Events;
 using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Mediator;
@@ -13,21 +15,24 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
     public class FileProcessingHandler : CommandHandler,
         IRequestHandler<GenerateWaterMarkCommand, ValidationResult>,
         IRequestHandler<GenerateCoverPageCommand, ValidationResult>,
-        IRequestHandler<GenerateJuryPageCommand, ValidationResult>
+        IRequestHandler<GenerateJuryPageCommand, ValidationResult>,
+        IRequestHandler<FileTransferCommand, ValidationResult>
     {
         private readonly IGenerateWaterMarkService _generateWaterMarkService;
         private readonly ICoverPageService _coverPageService;
         private readonly IGenerateJuryPageService _generateJuryPageService;
         private readonly IFileReaderService _fileReaderService;
         private readonly IMediatorHandler _mediator;
+        private readonly IFileTransferService _fileTransferService;
 
-        public FileProcessingHandler(IGenerateWaterMarkService generateWaterMarkService, ICoverPageService coverPageService, IGenerateJuryPageService generateJuryPageService, IFileReaderService fileReaderService, IMediatorHandler mediator)
+        public FileProcessingHandler(IGenerateWaterMarkService generateWaterMarkService, ICoverPageService coverPageService, IGenerateJuryPageService generateJuryPageService, IFileReaderService fileReaderService, IMediatorHandler mediator, IFileTransferService fileTransferService)
         {
             _generateWaterMarkService = generateWaterMarkService;
             _coverPageService = coverPageService;
             _generateJuryPageService = generateJuryPageService;
             _fileReaderService = fileReaderService;
             _mediator = mediator;
+            _fileTransferService = fileTransferService;
         }
 
         public async Task<ValidationResult> Handle(GenerateWaterMarkCommand request, CancellationToken cancellationToken)
@@ -78,6 +83,21 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
                 request.FilePath));
             return await Task.FromResult(ValidationResult);
 
+        }
+
+        public async Task<ValidationResult> Handle(FileTransferCommand request, CancellationToken cancellationToken)
+        {
+            ValidationResult.Errors.Clear();
+
+            bool result = _fileTransferService.TransferFile(request.FilePath, request.OneDrivePath);
+
+            if(!result)
+            {
+                AddError("File transfer failed!");
+                return await Task.FromResult(ValidationResult);
+            }
+            await _mediator.PublishEvent(new FileTransferCompletedEvent(request.StudentEmail, request.FilePath, request.OneDrivePath));
+            return await Task.FromResult(ValidationResult);
         }
     }
 }

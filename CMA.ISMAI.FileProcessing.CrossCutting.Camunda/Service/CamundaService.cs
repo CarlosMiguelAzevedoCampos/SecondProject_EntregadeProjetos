@@ -4,6 +4,7 @@ using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Core.Model;
 using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.FileProcessing.Domain.Models;
+using CMA.ISMAI.Delivery.FileProcessing.Domain.Models.Commands;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -130,6 +131,32 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                     _log.Fatal(ex.ToString());
                 }
             });
+
+            registerWorker("send_to_cloud", async externalTask =>
+            {
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getPath = returnVariableValue(delivery, "deliveryPath");
+                    var getStudentEmail = returnVariableValue(delivery, "studentEmail");
+
+                    var generateJuryPageCommand = new FileTransferCommand(getPath.Value.ToString(), _config.GetSection("OneDrive:Path").Value, getStudentEmail.Value.ToString());
+
+
+                    var result = await _mediator.Send(generateJuryPageCommand);
+
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    dictionaryToPassVariable["ok"] = result.IsValid;
+                    dictionaryToPassVariable["Worker"] = "send_to_cloud";
+                    camundaEngineClient.ExternalTaskService.Complete("FileProcessingISMAI", externalTask.Id, dictionaryToPassVariable);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
+                }
+            });
+
 
 
             registerWorker("manual_processing_processing", externalTask =>
