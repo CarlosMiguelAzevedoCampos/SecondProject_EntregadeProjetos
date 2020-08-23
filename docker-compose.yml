@@ -13,6 +13,20 @@ services:
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.API.UI/Dockerfile
+    volumes:
+      - C:/Users/Carlos Campos/Desktop/Production/Unzip:/Production/Unzip # caminho do host :/ caminho onde estará no container
+      - C:/Users/Carlos Campos/Desktop/Production/Zip:/Production/Zip # caminho do host :/ caminho onde estará no container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
+      - RabbitMqCore__Username=admin # username do rabbitmq
+      - RabbitMqCore__Password=admin # password do rabbitmq
+      - RabbitMqCore__Queue=NotificationsQueue # Queue do rabbitmq
+      - RabbitMqCore__Port=5672 # Porta do rabbitmq
+      - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
+      - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta
+      - FilePathZip__Path=//Production//Zip #  Localização de salvar o ficheiro zip
+      - FilePathUnzip__Path=//Production//Unzip #  Localização de salvar o ficheiro unzip
 
   cma.ismai.delivery.fileprocessing.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileprocessingui
@@ -23,7 +37,25 @@ services:
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.FileProcessing.UI/Dockerfile
-
+    volumes:
+      - C:/Users/Carlos Campos/OneDrive/Document:/Document/OneDrive # caminho do host :/ caminho onde estará no container
+      - C:/Users/Carlos Campos/Desktop/ismai.xlsx:/Jury/ismai.xlsx # caminho do host :/ caminho onde estará no container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      - COMPOSE_CONVERT_WINDOWS_PATHS=1 # Caso o host seja um SO Windows.
+      - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
+      - RabbitMqCore__Username=admin # username do rabbitmq
+      - RabbitMqCore__Password=admin # password do rabbitmq
+      - RabbitMqCore__Queue=NotificationsQueue # Queue do rabbitmq
+      - RabbitMqCore__Port=5672 # Porta do rabbitmq
+      - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
+      - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta
+      - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/ # URL para a API exposta do container do camunda
+      - FilePathJury__Path=//Jury//ismai.xlsx #  Localização do ficheiro de juri
+      - OneDrive__Path=//Document//OneDrive #  Localização do onedrive
+      - TimeToFetch__Time=43200 # Tempo para o worker funcionar
+      - TaskPerFetch__Time=30 # Numero de tasks
+      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade
 
   cma.ismai.delivery.payment.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliverypaymentui
@@ -34,7 +66,23 @@ services:
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.Payment.UI/Dockerfile
-
+    volumes:
+      - C:/Users/Carlos Campos/Desktop/excel.xlsx:/Payment/excel.xlsx # caminho do host :/ caminho onde estará no container
+   environment:
+      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      - COMPOSE_CONVERT_WINDOWS_PATHS=1 # Caso o host seja um SO Windows.
+      - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
+      - RabbitMqCore__Username=admin # username do rabbitmq
+      - RabbitMqCore__Password=admin # password do rabbitmq
+      - RabbitMqCore__Queue=NotificationsQueue # Queue do rabbitmq
+      - RabbitMqCore__Port=5672 # Porta do rabbitmq
+      - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
+      - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta
+      - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/ # URL para a API exposta do container do camunda
+      - FilePathPayment__Path=//Payment//excel.xlsx #  Localização do ficheiro de juri
+      - TimeToFetch__Time=86400 # Tempo para o worker funcionar
+      - TaskPerFetch__Time=30 # Numero de tasks
+      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade
 
   cma.ismai.delivery.fileloading.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileloadingui
@@ -45,6 +93,24 @@ services:
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.FileLoading.UI/Dockerfile
+    volumes:
+      - C:/Users/Carlos Campos/Desktop/Production/Unzip:/Production/Unzip # caminho do host :/ caminho onde estará no container
+      - C:/Users/Carlos Campos/Desktop/Production/Zip:/Production/Zip # caminho do host :/ caminho onde estará no container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      - COMPOSE_CONVERT_WINDOWS_PATHS=1 # Caso o host seja um SO Windows.
+      - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
+      - RabbitMqCore__Username=admin # username do rabbitmq
+      - RabbitMqCore__Password=admin # password do rabbitmq
+      - RabbitMqCore__Queue=NotificationsQueue # Queue do rabbitmq
+      - RabbitMqCore__Port=5672 # Porta do rabbitmq
+      - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
+      - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta
+      - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/ # URL para a API exposta do container do camunda
+      - FilePathZip__Path=//Production//Zip #  Localização de salvar o ficheiro zip
+      - FilePathUnzip__Path=//Production//Unzip #  Localização de salvar o ficheiro unzip
+      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade
+
   # Containers auxiliares a solução
   
   elasticsearch:
