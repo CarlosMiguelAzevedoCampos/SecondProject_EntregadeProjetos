@@ -249,7 +249,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
         {
             try
             {
-                var tasks = camundaEngineClient.ExternalTaskService.FetchAndLockTasks("StudentPaymentISMAI", Convert.ToInt32(_config.GetSection("TaskPerFetch:Tasks").Value), workers.Keys, Convert.ToInt64(_config.GetSection("TimeToFetch:Time").Value) / 2, null);
+                var tasks = camundaEngineClient.ExternalTaskService.FetchAndLockTasks("StudentPaymentISMAI", Convert.ToInt32(_config.GetSection("TaskPerFetch:Tasks").Value), workers.Keys,80, null);
                 Parallel.ForEach(
                     tasks,
                     new ParallelOptions { MaxDegreeOfParallelism = 1 },

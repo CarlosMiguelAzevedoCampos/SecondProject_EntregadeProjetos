@@ -21,7 +21,6 @@ services:
       - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
       - RabbitMqCore__Username=admin # username do rabbitmq
       - RabbitMqCore__Password=admin # password do rabbitmq
-      - RabbitMqCore__Queue=NotificationsQueue # Queue do rabbitmq
       - RabbitMqCore__Port=5672 # Porta do rabbitmq
       - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta
@@ -46,7 +45,6 @@ services:
       - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
       - RabbitMqCore__Username=admin # username do rabbitmq
       - RabbitMqCore__Password=admin # password do rabbitmq
-      - RabbitMqCore__Queue=NotificationsQueue # Queue do rabbitmq
       - RabbitMqCore__Port=5672 # Porta do rabbitmq
       - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta
@@ -74,7 +72,6 @@ services:
       - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
       - RabbitMqCore__Username=admin # username do rabbitmq
       - RabbitMqCore__Password=admin # password do rabbitmq
-      - RabbitMqCore__Queue=NotificationsQueue # Queue do rabbitmq
       - RabbitMqCore__Port=5672 # Porta do rabbitmq
       - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta
@@ -83,6 +80,7 @@ services:
       - TimeToFetch__Time=86400 # Tempo para o worker funcionar
       - TaskPerFetch__Time=30 # Numero de tasks
       - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade
+      - Notificaiton__University=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade de pagamento
 
   cma.ismai.delivery.fileloading.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileloadingui
@@ -102,7 +100,6 @@ services:
       - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
       - RabbitMqCore__Username=admin # username do rabbitmq
       - RabbitMqCore__Password=admin # password do rabbitmq
-      - RabbitMqCore__Queue=NotificationsQueue # Queue do rabbitmq
       - RabbitMqCore__Port=5672 # Porta do rabbitmq
       - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta

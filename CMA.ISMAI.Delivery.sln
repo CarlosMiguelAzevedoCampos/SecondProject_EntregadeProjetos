@@ -133,9 +133,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.Payment.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.IntegrationTests", "CMA.ISMAI.Delivery.FileProcessing.IntegrationTests\CMA.ISMAI.Delivery.FileProcessing.IntegrationTests.csproj", "{0A0EE3F4-01D9-4041-890A-96D8CAE4EA56}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8C7B5497-F128-49B9-A7A9-295164D84144}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover", "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover.csproj", "{89C9081B-9B85-4BB3-8AAF-F93EC5B7AA14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover", "..\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover\CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover.csproj", "{E4DBB93A-6FB8-4E23-94D9-9A027B2F1F9A}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1CE43DB0-9917-49F9-B910-C46221E8846D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -303,14 +303,14 @@ Global
 		{0A0EE3F4-01D9-4041-890A-96D8CAE4EA56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A0EE3F4-01D9-4041-890A-96D8CAE4EA56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A0EE3F4-01D9-4041-890A-96D8CAE4EA56}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C7B5497-F128-49B9-A7A9-295164D84144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C7B5497-F128-49B9-A7A9-295164D84144}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C7B5497-F128-49B9-A7A9-295164D84144}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C7B5497-F128-49B9-A7A9-295164D84144}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4DBB93A-6FB8-4E23-94D9-9A027B2F1F9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4DBB93A-6FB8-4E23-94D9-9A027B2F1F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4DBB93A-6FB8-4E23-94D9-9A027B2F1F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4DBB93A-6FB8-4E23-94D9-9A027B2F1F9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C9081B-9B85-4BB3-8AAF-F93EC5B7AA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C9081B-9B85-4BB3-8AAF-F93EC5B7AA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C9081B-9B85-4BB3-8AAF-F93EC5B7AA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C9081B-9B85-4BB3-8AAF-F93EC5B7AA14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CE43DB0-9917-49F9-B910-C46221E8846D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE43DB0-9917-49F9-B910-C46221E8846D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE43DB0-9917-49F9-B910-C46221E8846D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE43DB0-9917-49F9-B910-C46221E8846D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -374,7 +374,7 @@ Global
 		{9EC083DD-B676-4A6D-AAE6-AD1252B71BAB} = {D41E3FA5-A8A8-4B9C-88AF-9B644BFE270C}
 		{FC42A87A-C777-4D3C-9EA5-A7C5F513F523} = {B80EEA14-2B19-4E43-A50E-8E3C925E8EDD}
 		{0A0EE3F4-01D9-4041-890A-96D8CAE4EA56} = {9B791183-F15D-4E2A-A7C9-C85D0361D5EE}
-		{E4DBB93A-6FB8-4E23-94D9-9A027B2F1F9A} = {C7CFE0F7-28C6-4F63-A1DB-F9FE0381769F}
+		{89C9081B-9B85-4BB3-8AAF-F93EC5B7AA14} = {C7CFE0F7-28C6-4F63-A1DB-F9FE0381769F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A59F4A0-411C-49CF-A5C3-E87C108B33FE}
