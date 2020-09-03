@@ -1,6 +1,7 @@
 ﻿using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Interface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using NetDevPack.Mediator;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -9,6 +10,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CMA.ISMAI.Delivery.Payment.UI
 {
@@ -28,7 +30,7 @@ namespace CMA.ISMAI.Delivery.Payment.UI
                                                       .Build();
         }
 
-        public void StartService()
+        public async Task StartServiceAsync()
         {
             try
             {
@@ -55,12 +57,9 @@ namespace CMA.ISMAI.Delivery.Payment.UI
                     channel.BasicConsume(queue: "PaymentProcessing",
                          autoAck: true,
                          consumer: consumer);
-
-
-                    Console.ReadKey();
+                    var hostBuilder = new HostBuilder();
+                    await hostBuilder.RunConsoleAsync();
                 }
-                Console.ReadKey();
-
             }
             catch (Exception ex)
             {
@@ -68,7 +67,7 @@ namespace CMA.ISMAI.Delivery.Payment.UI
                 Console.WriteLine("Retrying in 30 seconds..");
                 _log.Fatal(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
                 Thread.Sleep(30000);
-                StartService();
+                await StartServiceAsync();
             }
         }
 

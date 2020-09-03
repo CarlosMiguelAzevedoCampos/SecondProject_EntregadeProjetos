@@ -34,11 +34,12 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest
             try
             {
                 var responseStream = httpWebRequest.GetResponseStream();
-
-                var ms = new MemoryStream();
-                // Copy entire file into memory. Use a file if you expect a lot of data
-                responseStream.CopyTo(ms);
-                return ms;
+                using (var ms = new MemoryStream())
+                {
+                    // Copy entire file into memory. Use a file if you expect a lot of data
+                    responseStream.CopyTo(ms);
+                    return ms;
+                }
             }
             catch (Exception ex)
             {

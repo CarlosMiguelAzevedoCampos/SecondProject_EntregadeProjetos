@@ -16,6 +16,20 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.FileSaver
             _log = log;
         }
 
+        public bool DeleteFile(string filePath)
+        {
+            try
+            {
+                File.Delete(filePath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _log.Fatal(ex.ToString());
+            }
+            return false;
+        }
+
         public async Task<bool> DownloadFile(IFormFile file, string filePath)
         {
             try

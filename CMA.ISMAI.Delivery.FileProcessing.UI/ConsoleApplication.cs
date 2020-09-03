@@ -1,6 +1,7 @@
 ﻿using CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -27,7 +28,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
                                                       .Build();
         }
 
-        public void StartService()
+        public async System.Threading.Tasks.Task StartServiceAsync()
         {
             try
             {
@@ -54,10 +55,9 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
                     channel.BasicConsume(queue: "FileProcessing",
                          autoAck: true,
                          consumer: consumer);
-                    Console.ReadKey();
+                    var hostBuilder = new HostBuilder();
+                    await hostBuilder.RunConsoleAsync();
                 }
-                Console.ReadKey();
-
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
                 Console.WriteLine("Retrying in 30 seconds..");
                 _log.Fatal(string.Format("{0}, RabbitMQ starting..? ", ex.ToString()));
                 Thread.Sleep(30000);
-                StartService();
+                await StartServiceAsync();
             }
         }
 

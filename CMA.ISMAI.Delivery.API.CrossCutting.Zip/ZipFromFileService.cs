@@ -22,9 +22,12 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
         {
             try
             {
-                var zipArchive = new ZipArchive(deliveryFile.OpenReadStream());
-
-                return zipArchive.Entries.Where(x => Path.GetExtension(x.Name).ToLower() == ".pdf").Count() > 0;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    deliveryFile.CopyTo(ms);
+                    var zipArchive = new ZipArchive(ms);
+                    return zipArchive.Entries.Where(x => Path.GetExtension(x.Name).ToLower() == ".pdf").Count() > 0;
+                }
             }
             catch (Exception ex)
             {
@@ -37,10 +40,13 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
         {
             try
             {
-                var zipArchive = new ZipArchive(deliveryFile.OpenReadStream());
-
-                return zipArchive.Entries.Where(x => (x.Name.Contains(publicVersion) && (Path.GetExtension(x.Name).ToLower() == ".pdf"))
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    deliveryFile.CopyTo(ms);
+                    var zipArchive = new ZipArchive(ms);
+                    return zipArchive.Entries.Where(x => (x.Name.Contains(publicVersion) && (Path.GetExtension(x.Name).ToLower() == ".pdf"))
                                    || (x.Name.Contains(privateVersion) && (Path.GetExtension(x.Name).ToLower() == ".pdf"))).Count() > 0;
+                }
             }
             catch (Exception ex)
             {
@@ -53,8 +59,13 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.Zip
         {
             try
             {
-                ZipArchive archive = new ZipArchive(file.OpenReadStream());
-                return archive.Entries.Count > 0;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    file.CopyTo(ms);
+                    ZipArchive archive = new ZipArchive(ms);
+                    return archive.Entries.Count > 0;
+                }
+
             }
             catch (Exception ex)
             {

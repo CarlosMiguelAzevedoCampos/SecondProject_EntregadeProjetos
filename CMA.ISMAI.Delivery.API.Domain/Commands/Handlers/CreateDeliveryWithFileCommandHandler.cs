@@ -66,6 +66,8 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                     request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.StudentNumber, request.InstituteName,
                request.StudentName, request.CourseName)), "FileLoading"))
             {
+                _fileSaverService.DeleteFile(string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.StudentNumber, request.InstituteName,
+               request.StudentName, request.CourseName));
                 AddError("A problem happend while sending your submition to the Queue.");
                 return ValidationResult;
             }

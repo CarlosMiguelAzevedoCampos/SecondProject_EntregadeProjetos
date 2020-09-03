@@ -20,25 +20,28 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NetDevPack.Mediator;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CMA.ISMAI.Delivery.FileLoading.UI
 {
     class Program
     {
         private static IConfiguration _config;
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
             Console.WriteLine(string.Format("File Loading is starting..! - {0}", DateTime.Now));
-            serviceProvider.GetRequiredService<ConsoleApplication>().StartService();
-            Console.ReadKey();
+            serviceProvider.GetRequiredService<ConsoleApplication>().StartServiceAsync();
+            var hostBuilder = new HostBuilder();
+            await hostBuilder.RunConsoleAsync();
         }
 
         private static IServiceCollection ConfigureServices()

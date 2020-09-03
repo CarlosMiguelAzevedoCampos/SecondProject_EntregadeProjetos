@@ -5,11 +5,11 @@ services:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryapiui
     networks:
       - network_cmaismai
-    container_name: cmaismaitrelloapi
+    container_name: cmaismaideliveryapiui
     restart: always
     ports:
-    - 5668:80
-    - 5669:443
+    - 5670:80
+    - 5671:443
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.API.UI/Dockerfile
@@ -17,7 +17,7 @@ services:
       - C:/Users/Carlos Campos/Desktop/Production/Unzip:/Production/Unzip # caminho do host :/ caminho onde estará no container
       - C:/Users/Carlos Campos/Desktop/Production/Zip:/Production/Zip # caminho do host :/ caminho onde estará no container
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      # - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
       - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
       - RabbitMqCore__Username=admin # username do rabbitmq
       - RabbitMqCore__Password=admin # password do rabbitmq
@@ -40,7 +40,7 @@ services:
       - C:/Users/Carlos Campos/OneDrive/Document:/Document/OneDrive # caminho do host :/ caminho onde estará no container
       - C:/Users/Carlos Campos/Desktop/ismai.xlsx:/Jury/ismai.xlsx # caminho do host :/ caminho onde estará no container
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      #- ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
       - COMPOSE_CONVERT_WINDOWS_PATHS=1 # Caso o host seja um SO Windows.
       - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
       - RabbitMqCore__Username=admin # username do rabbitmq
@@ -53,7 +53,7 @@ services:
       - OneDrive__Path=//Document//OneDrive #  Localização do onedrive
       - TimeToFetch__Time=43200 # Tempo para o worker funcionar
       - TaskPerFetch__Time=30 # Numero de tasks
-      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade
+      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade para processamento manual
 
   cma.ismai.delivery.payment.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliverypaymentui
@@ -67,7 +67,7 @@ services:
     volumes:
       - C:/Users/Carlos Campos/Desktop/excel.xlsx:/Payment/excel.xlsx # caminho do host :/ caminho onde estará no container
    environment:
-      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      #- ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
       - COMPOSE_CONVERT_WINDOWS_PATHS=1 # Caso o host seja um SO Windows.
       - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
       - RabbitMqCore__Username=admin # username do rabbitmq
@@ -79,7 +79,7 @@ services:
       - FilePathPayment__Path=//Payment//excel.xlsx #  Localização do ficheiro de juri
       - TimeToFetch__Time=86400 # Tempo para o worker funcionar
       - TaskPerFetch__Time=30 # Numero de tasks
-      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade
+      - Notificaiton__ManualProcessing=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade para processamento manual
       - Notificaiton__University=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade de pagamento
 
   cma.ismai.delivery.fileloading.ui:
@@ -95,7 +95,7 @@ services:
       - C:/Users/Carlos Campos/Desktop/Production/Unzip:/Production/Unzip # caminho do host :/ caminho onde estará no container
       - C:/Users/Carlos Campos/Desktop/Production/Zip:/Production/Zip # caminho do host :/ caminho onde estará no container
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      #- ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
       - COMPOSE_CONVERT_WINDOWS_PATHS=1 # Caso o host seja um SO Windows.
       - RabbitMqCore__Uri=rabbitmq # Nome do conainer do rabbitmq. Os containers internamente comunicam pelo seu nome
       - RabbitMqCore__Username=admin # username do rabbitmq
@@ -106,7 +106,25 @@ services:
       - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/ # URL para a API exposta do container do camunda
       - FilePathZip__Path=//Production//Zip #  Localização de salvar o ficheiro zip
       - FilePathUnzip__Path=//Production//Unzip #  Localização de salvar o ficheiro unzip
-      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade
+      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com # Email de notificacao de universidade para processamento manual
+   cma.ismai.delivery.ui:
+    image: ${DOCKER_REGISTRY-}cmaismaideliveryui
+    networks:
+      - network_cmaismai
+    container_name: cmaismaideliveryui
+    restart: always
+    ports:
+    - 5672:80
+    - 5673:443
+    build:
+      context: .
+      dockerfile: CMA.ISMAI.Delivery.UI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development # Ambiente em que o projeto executará
+      - ElasticConfiguration__Uri=http://elasticsearch:9200/ # Nome do conainer do ElasticSearch. Os containers internamente comunicam pelo seu nome
+      - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 # Ligação ao EventStore - tcp://username:password@nomedocontainer:portaExposta
+      - API_File_ZIP__Uri=http://localhost:5670/api/Deliveries/UploadWithFile #  URL para a api para processar zip files
+      - API_File_URL__Uri=http://localhost:5671/api/Deliveries/UploadWithLink #  URL para api para processar entregas por link
 
   # Containers auxiliares a solução
   

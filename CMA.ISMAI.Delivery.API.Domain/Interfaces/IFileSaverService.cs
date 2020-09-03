@@ -6,5 +6,6 @@ namespace CMA.ISMAI.Delivery.API.Domain.Interfaces
     public interface IFileSaverService
     {
         Task<bool> DownloadFile(IFormFile file, string filePath);
+        bool DeleteFile(string filePath);
     }
 }

@@ -15,26 +15,26 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Models.Validations
         {
             RuleFor(c => c.InstituteName)
                 .NotEmpty().WithMessage("Please ensure you have entered the Institution")
-                .Length(2, 150).WithMessage("The Name must have between 2 and 150 characters");
+                .Length(2, 150).WithMessage("The Institution Name must have between 2 and 150 characters");
         }
 
         protected void ValidateStudentCourseName()
         {
             RuleFor(c => c.CourseName)
                 .NotEmpty().WithMessage("Please ensure you have entered the Course Name")
-                .Length(2, 150).WithMessage("The Name must have between 2 and 150 characters");
+                .Length(2, 150).WithMessage("The Course Name must have between 2 and 150 characters");
         }
         protected void ValidateStudentNumber()
         {
             RuleFor(c => c.CourseName)
                 .NotEmpty().WithMessage("Please ensure you have entered the Student Number")
-                .Length(2, 150).WithMessage("The Name must have between 2 and 150 characters");
+                .Length(2, 150).WithMessage("The Student Number must have between 2 and 150 characters");
         }
 
         protected void ValidateStudentEmail()
         {
             RuleFor(c => c.StudentEmail)
-                .NotEmpty().WithMessage("Please ensure you have entered the Student Number")
+                .NotEmpty().WithMessage("Please ensure you have entered the E-mail")
                 .EmailAddress().WithMessage("E-mail is invalid.");
         }
         protected void ValidateCordenator()

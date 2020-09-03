@@ -18,6 +18,7 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NetDevPack.Mediator;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
@@ -30,13 +31,14 @@ namespace CMA.ISMAI.Delivery.Payment.UI
     class Program
     {
         private static IConfiguration _config;
-        static void Main(string[] args)
+        static async System.Threading.Tasks.Task Main(string[] args)
         {
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
             Console.WriteLine(string.Format("Payment is starting..! - {0}", DateTime.Now));
-            serviceProvider.GetRequiredService<ConsoleApplication>().StartService();
-            Console.ReadKey();
+            serviceProvider.GetRequiredService<ConsoleApplication>().StartServiceAsync();
+            var hostBuilder = new HostBuilder();
+            await hostBuilder.RunConsoleAsync();
         }
 
         private static IServiceCollection ConfigureServices()

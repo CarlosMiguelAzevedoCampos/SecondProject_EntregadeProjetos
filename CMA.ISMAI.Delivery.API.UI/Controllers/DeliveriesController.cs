@@ -50,8 +50,8 @@ namespace CMA.ISMAI.Delivery.API.UI.Controllers
 
         private bool IsAZipFile(IFormFile deliveryFile)
         {
-            if(deliveryFile != null)
-                return deliveryFile.ContentType == "application/zip";
+            if (deliveryFile != null)
+                return deliveryFile.FileName.ToLower().Contains(".zip");
             return false;
         }
     }
