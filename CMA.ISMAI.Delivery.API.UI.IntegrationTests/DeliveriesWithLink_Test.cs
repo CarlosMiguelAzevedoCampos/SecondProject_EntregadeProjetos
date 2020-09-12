@@ -12,8 +12,8 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
 {
     public class DeliveriesWithLink_Test
     {
-        [Fact(DisplayName = "Invalid Request")]
-        [Trait("DeliveryController", "Submit a delivery")]
+        [Fact(DisplayName = "Invalid Request - Link Delivery")]
+        [Trait("DeliveryController", "Submit a delivery - Link Delivery")]
         public async Task ABadDeliverieDone()
         {
             // Arrange
@@ -51,8 +51,8 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
 
         }
 
-        [Fact(DisplayName = "Valid Request")]
-        [Trait("DeliveryController", "Submit a delivery")]
+        [Fact(DisplayName = "Valid Request - Link Delivery")]
+        [Trait("DeliveryController", "Submit a delivery - Link Delivery")]
         public async Task AGoodDeliveryDone()
         {
             // Arrange
@@ -89,8 +89,8 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
             Assert.Equal(200, resultObject.StatusCode.Value);
         }
 
-        [Fact(DisplayName = "Invalid link Request")]
-        [Trait("DeliveryController", "Submit a delivery")]
+        [Fact(DisplayName = "Invalid link Request - Link Delivery")]
+        [Trait("DeliveryController", "Submit a delivery - Link Delivery")]
         public async Task LinkIsntfromaTrustedHost()
         {
             // Arrange
@@ -127,8 +127,8 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
             Assert.Equal(400, resultObject.Status.Value);
         }
 
-        [Fact(DisplayName = "Invalid public and private version name")]
-        [Trait("DeliveryController", "Submit a delivery")]
+        [Fact(DisplayName = "Invalid public and private version name - Link Delivery")]
+        [Trait("DeliveryController", "Submit a delivery - Link Delivery")]
         public async Task InvalidPrivateAndPublicVersion()
         {
             // Arrange
@@ -165,8 +165,8 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
             Assert.Equal(400, resultObject.Status.Value);
         }
 
-        [Fact(DisplayName = "File isnt a ZIP file")]
-        [Trait("DeliveryController", "Submit a delivery")]
+        [Fact(DisplayName = "File isnt a ZIP file - Link Delivery")]
+        [Trait("DeliveryController", "Submit a delivery - Link Delivery")]
         public async Task FileIsntAZipFile()
         {
             // Arrange
