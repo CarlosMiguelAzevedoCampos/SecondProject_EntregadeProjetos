@@ -14,10 +14,7 @@ namespace CMA.ISMAI.Delivery.API.UI
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().UseKestrel(options =>
-                    {
-                        options.Limits.MaxRequestBodySize = 52428800; //50MB
-                    });
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }
