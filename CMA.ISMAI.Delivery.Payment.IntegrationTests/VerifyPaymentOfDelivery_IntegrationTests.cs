@@ -32,7 +32,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
     public class VerifyPaymentOfDelivery_IntegrationTests
     {
         [Fact(DisplayName = "Valid Payment Command")]
-        [Trait("VerifyPaymentOfDeliveryCommand", "Payment has been done")]
+        [Trait("VerifyPaymentOfDeliveryCommand", "Payment has been done - Integration Tests")]
         public async Task PaymentDone()
         {
             // Arrange
@@ -45,7 +45,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
         }
 
         [Fact(DisplayName = "Dind't find payment Command")]
-        [Trait("VerifyPaymentOfDeliveryCommand", "Payment has been done")]
+        [Trait("VerifyPaymentOfDeliveryCommand", "Payment has been done - Integration Tests")]
         public async Task PaymentNotFound()
         {
             // Arrange
@@ -58,7 +58,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
         }
 
         [Fact(DisplayName = "File not found Command")]
-        [Trait("VerifyPaymentOfDeliveryCommand", "Payment has been done")]
+        [Trait("VerifyPaymentOfDeliveryCommand", "Payment has been done - Integration Tests")]
         public async Task FileNotFound()
         {
             // Arrange

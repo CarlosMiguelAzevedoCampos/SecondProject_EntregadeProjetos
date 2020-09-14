@@ -102,55 +102,6 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
             Assert.Equal(200, resultObject.StatusCode);
         }
 
-        [Fact(DisplayName = "Invalid public and private version name")]
-        [Trait("DeliveryController", "Submit a delivery - File Delivery")]
-        public async Task InvalidPrivateAndPublicVersion()
-        {
-            // Arrange
-            var builder = new WebHostBuilder()
-                          .UseEnvironment("Development")
-                          .UseStartup<Startup>();
-            TestServer testServer = new TestServer(builder);
-            HttpClient client = testServer.CreateClient();
-
-            FormFile file = null;
-            var stream = File.OpenRead(@"C:\Users\Carlos Campos\Desktop\A029217_ISMAI_Carlos_Informática.zip");
-
-            file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = "application/zip"
-            };
-
-            byte[] data;
-            var br = new BinaryReader(file.OpenReadStream());
-            data = br.ReadBytes((int)file.OpenReadStream().Length);
-
-            ByteArrayContent bytes = new ByteArrayContent(data);
-            MultipartFormDataContent multiContent = new MultipartFormDataContent();
-
-            multiContent.Add(bytes, "DeliveryFile", file.FileName);
-            multiContent.Add(new StringContent("Carlos"), "StudentName");
-            multiContent.Add(new StringContent("A029217"), "InstituteName");
-            multiContent.Add(new StringContent("Informática"), "CourseName");
-            multiContent.Add(new StringContent("a029216@ismai.pt"), "StudentEmail");
-            multiContent.Add(new StringContent("a029216"), "StudentNumber");
-            multiContent.Add(new StringContent("Alexandre Sousa"), "CordenatorName");
-            multiContent.Add(new StringContent("BPMN"), "Title");
-            multiContent.Add(new StringContent("Mestrado"), "DefenitionOfDelivery");
-            multiContent.Add(new StringContent("y.pdf"), "PublicPDFVersionName");
-            multiContent.Add(new StringContent("x.pdf"), "PrivatePDFVersionName");
-
-
-            // Act
-            var response = await client.PostAsync("api/Deliveries/UploadWithFile", (HttpContent)multiContent);
-            var result = await response.Content.ReadAsStringAsync();
-            var resultObject = JsonConvert.DeserializeObject<ValidationProblemDetails>(result);
-
-            // Assert
-            Assert.Equal(400, resultObject.Status.Value);
-            Assert.Single(resultObject.Errors["Messages"]);
-        }
 
         [Fact(DisplayName = "File isn't a zip file")]
         [Trait("DeliveryController", "Submit a delivery - File Delivery")]

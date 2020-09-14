@@ -4,6 +4,7 @@ using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Commands;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -34,7 +35,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                                                       .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
                                                       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                                                       .AddEnvironmentVariables()
-                                                      .Build(); 
+                                                      .Build();
             camundaEngineClient = new CamundaEngineClient(new System.Uri(_config.GetSection("Camunda:Uri").Value), null, null);
             filePath = $"CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.WorkFlow.FileLoadingISMAI.bpmn";
             workers = new Dictionary<string, Action<ExternalTask>>();
@@ -124,6 +125,42 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                 }
             });
 
+            registerWorker("verify_files_names", async externalTask =>
+            {
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getId = returnVariableValue(delivery, "id");
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
+                    var getpublicdefenition = returnVariableValue(delivery, "publicPDFVersionName");
+                    var getprivatedefenition = returnVariableValue(delivery, "privatePDFVersionName");
+
+
+                    VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.Parse(getId.Value.ToString()), string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                   getStudentName.Value.ToString(), getCourseName.Value.ToString()),
+                  string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                   getStudentName.Value.ToString(), getCourseName.Value.ToString()), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString());
+
+                
+
+                    var validation = await _mediator.Send(verifyFilesCommand);
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    dictionaryToPassVariable.Add("filesnames", validation.IsValid);
+                    dictionaryToPassVariable["Worker"] = "verify_files_names";
+                    camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
+                }
+            });
+
+
+
             registerWorker("verify_files", async externalTask =>
             {
                 try
@@ -135,11 +172,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getCourseName = returnVariableValue(delivery, "courseName");
 
-                    VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.Parse(getId.Value.ToString()), string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
-                   getStudentName.Value.ToString(), getCourseName.Value.ToString()),
-                  string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
-                   getStudentName.Value.ToString(), getCourseName.Value.ToString()));
-                    
+                    VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.Parse(getId.Value.ToString()),
+                           string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                 getStudentName.Value.ToString(), getCourseName.Value.ToString()));
+
                     var validation = await _mediator.Send(verifyFilesCommand);
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     dictionaryToPassVariable.Add("files", validation.IsValid);
@@ -222,6 +258,32 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     _log.Fatal(ex.ToString());
                 }
             });
+
+
+            registerWorker("notify_student_loading", externalTask =>
+            {
+                try
+                {
+                    var delivery = externalTask.Variables;
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getDeliveryUrl = returnVariableValue(delivery, "fileUrl");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getStudentEmail = returnVariableValue(delivery, "studentEmail");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
+                    var getWorker = returnVariableValue(delivery, "Worker");
+
+                    _notificationService.SendEmail(getStudentEmail.Value.ToString(), string.Format("Hello, <br/> No public or private file was found on your Delivery. Please, contact the university for more information. <br/> Thanks, <br/> Delivery System."));
+                    Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
+                    camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    _log.Fatal(ex.ToString());
+                }
+            });
+
 
 
             registerWorker("notify_student_loading", externalTask =>

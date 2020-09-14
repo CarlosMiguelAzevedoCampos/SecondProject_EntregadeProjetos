@@ -34,7 +34,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
     public class GenerateWaterMark_IntegrationTests
     {
         [Fact(DisplayName = "Valid water mark generation")]
-        [Trait("GenerateWaterMarkCommand", "Generate Water Mark")]
+        [Trait("GenerateWaterMarkCommand", "Generate Water Mark - Integration Tests")]
         public async Task GenerateCover()
         {
             // Arrange
@@ -51,7 +51,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
         }
 
         [Fact(DisplayName = "Fail water mark generation - Private file")]
-        [Trait("GenerateWaterMarkCommand", "Generate Water Mark")]
+        [Trait("GenerateWaterMarkCommand", "Generate Water Mark - Integration Tests")]
         public async Task FailWaterMarkGeneration_PrivateFileNotFound()
         {
             // Arrange
@@ -67,7 +67,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
 
 
         [Fact(DisplayName = "Fail water mark generation - Public file")]
-        [Trait("GenerateWaterMarkCommand", "Generate Water Mark")]
+        [Trait("GenerateWaterMarkCommand", "Generate Water Mark - Integration Tests")]
         public async Task FailWaterMarkGeneration_PublicFileNotFound()
         {
             // Arrange

@@ -11,6 +11,7 @@ using CMA.ISMAI.Delivery.FileLoading.Domain.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Events;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Events;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Logging.Service;
@@ -29,34 +30,52 @@ using Xunit;
 
 namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
 {
-    public class FileIdentifier_IntegrationTests
+    public class FileNameVerifier_IntegrationTests
     {
-        [Fact(DisplayName = "Identifiers created")]
-        [Trait("CreateFileIdentifiersCommand", "FileIdentifiers - Integration Tests")]
-        public async Task IdentifiersCreated()
+        [Fact(DisplayName = "Everything went ok")]
+        [Trait("VerifyFilesNameCommand", "VerifyCommand - Integration Tests")]
+        public async Task EverythingWentWell()
         {
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Unzip\A029216_ISMAI_Carlos Campos_Informática", "a029216@ismai.pt", "carlosmiguelcampos1996@gmail.com");
+            VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Zip\A029216_ISMAI_Carlos Campos_Informática.zip",
+                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática", "public.pdf", "PrivateProjectDelivery.pdf");
 
             // Act
-            var result = await serviceProvider.GetRequiredService<IMediator>().Send(createFileIdentifiersCommand);
+            var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);
             //Assert
             Assert.True(result.IsValid);
         }
 
-        [Fact(DisplayName = "Identifiers failed to be created")]
-        [Trait("CreateFileIdentifiersCommand", "FileIdentifiers - Integration Tests")]
-        public async Task FilePathNotFound()
+        [Fact(DisplayName = "No public file found")]
+        [Trait("VerifyFilesNameCommand", "VerifyCommand - Integration Tests")]
+        public async Task NoPublicFileFound()
         {
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Unzip\A029216_ISMAI_Carlos Campos_Informática","a029216@ismai.pt", "carlosmiguelcampos1996@gmail.com");
+            VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Zip\A029216_ISMAI_Carlos Campos_Informática.zip",
+                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática", "publicFile.pdf", "PrivateProjectDelivery.pdf");
 
             // Act
-            var result = await serviceProvider.GetRequiredService<IMediator>().Send(createFileIdentifiersCommand);
+            var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);
+            //Assert
+            Assert.False(result.IsValid);
+        }
+
+        [Fact(DisplayName = "No private file found")]
+        [Trait("VerifyFilesNameCommand", "VerifyCommand - Integration Tests")]
+        public async Task NoPrivateFileFound()
+        {
+            // Arrange
+            var services = ConfigureServices();
+            var serviceProvider = services.BuildServiceProvider();
+            VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Zip\A029216_ISMAI_Carlos Campos_Informática.zip",
+                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática", "public.pdf", "private.pdf");
+
+            // Act
+            var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);
             //Assert
             Assert.False(result.IsValid);
         }
@@ -93,6 +112,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             services.AddScoped<IRequestHandler<DownloadFileFromUrlCommand, ValidationResult>, DownloadFileCommandHandler>();
             services.AddScoped<IRequestHandler<CreateFileIdentifiersCommand, ValidationResult>, FileIdentifiersCommandHandler>();
             services.AddScoped<IRequestHandler<VerifyFilesCommand, ValidationResult>, VerifyFileCommandHandler>();
+            services.AddScoped<IRequestHandler<VerifyFilesNameCommand, ValidationResult>, VerifyFileNameCommandHandler>();
 
             services.AddScoped<INotificationHandler<FileDownloadedEvent>, FileLoadingEventHandler>();
             services.AddScoped<INotificationHandler<FilesIdentifiedEvent>, FileLoadingEventHandler>();
@@ -102,5 +122,6 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
 
             return services;
         }
+
     }
 }

@@ -13,7 +13,6 @@
     <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.FileSaver\CMA.ISMAI.Delivery.API.CrossCutting.FileSaver.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest\CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.Queue\CMA.ISMAI.Delivery.API.CrossCutting.Queue.csproj" />
-    <ProjectReference Include="..\CMA.ISMAI.Delivery.API.CrossCutting.Zip\CMA.ISMAI.Delivery.API.CrossCutting.Zip.csproj" />
     <ProjectReference Include="..\CMA.ISMAI.Delivery.API.Domain\CMA.ISMAI.Delivery.API.Domain.csproj" />
   </ItemGroup>
 

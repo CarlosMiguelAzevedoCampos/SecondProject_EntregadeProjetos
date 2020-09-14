@@ -16,16 +16,14 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
     public class CreateDeliveryWithFileCommandHandler : CommandHandler,
         IRequestHandler<CreateDeliveryWithFileCommand, ValidationResult>
     {
-        private readonly IZipFileService _zipFileService;
         private readonly IMediatorHandler _mediator;
         private readonly IQueueService _queueService;
         private readonly IFileSaverService _fileSaverService;
         private readonly IConfiguration _config;
 
-        
-        public CreateDeliveryWithFileCommandHandler(IZipFileService zipFileService, IMediatorHandler mediator, IQueueService queueService, IFileSaverService fileSaverService)
+
+        public CreateDeliveryWithFileCommandHandler(IMediatorHandler mediator, IQueueService queueService, IFileSaverService fileSaverService)
         {
-            _zipFileService = zipFileService;
             _mediator = mediator;
             _queueService = queueService;
             _fileSaverService = fileSaverService;
@@ -39,21 +37,7 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
         public async Task<ValidationResult> Handle(CreateDeliveryWithFileCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid()) return request.ValidationResult;
-            if (!_zipFileService.DoesZipFileContainsFiles(request.DeliveryFile))
-            {
-                AddError("Zip file dosen't contains files!");
-                return ValidationResult;
-            }
-            if (!_zipFileService.DoesTheZipFileContainsaPDF(request.DeliveryFile))
-            {
-                AddError("No PDF file was found.");
-                return ValidationResult;
-            }
-            if (!_zipFileService.DoesTheZipFileContainsAVersionForPublicAndPrivateDelivery(request.DeliveryFile, request.PublicPDFVersionName, request.PrivatePDFVersionName))
-            {
-                AddError("No public or private PDF version of your project was found.");
-                return ValidationResult;
-            }
+
 
             if (!await _fileSaverService.DownloadFile(request.DeliveryFile, string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.StudentNumber, request.InstituteName,
                request.StudentName, request.CourseName)))
@@ -72,7 +56,7 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                 return ValidationResult;
             }
 
-            
+
             await _mediator.PublishEvent(new CreateDeliveryWithFileEvent(new DeliveryFileSystem(request.Id, request.StudentName, request.InstituteName, request.CourseName,
                     request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.StudentNumber, request.InstituteName,
                request.StudentName, request.CourseName))));

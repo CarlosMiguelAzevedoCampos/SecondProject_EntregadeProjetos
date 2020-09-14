@@ -31,6 +31,7 @@ namespace CMA.ISMAI.Delivery.API.UI.Controllers
                 AddError("Your file must be a ZIP file!");
                 return CustomResponse();
             }
+
             deliveryDto.DeliveryTime = DateTime.Now;
             var registerCommand = _mapper.Map<CreateDeliveryWithFileCommand>(deliveryDto);
             var fileValidation = await _mediator.SendCommand(registerCommand);

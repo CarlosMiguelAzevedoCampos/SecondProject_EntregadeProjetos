@@ -11,6 +11,7 @@ using CMA.ISMAI.Delivery.FileLoading.Domain.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Events;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Events;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Logging.Service;
@@ -32,7 +33,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
     public class DownloadFileFromUrl_IntegrationTests
     {
         [Fact(DisplayName = "Valid Download Command")]
-        [Trait("DownloadFileFromUrlCommand", "Download Command phase")]
+        [Trait("DownloadFileFromUrlCommand", "Download Command phase - Integration Tests")]
         public async Task DonwloadHasBeenDone()
         {
             // Arrange
@@ -79,6 +80,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
 
             services.AddScoped<IRequestHandler<DownloadFileFromUrlCommand, ValidationResult>, DownloadFileCommandHandler>();
             services.AddScoped<IRequestHandler<CreateFileIdentifiersCommand, ValidationResult>, FileIdentifiersCommandHandler>();
+            services.AddScoped<IRequestHandler<VerifyFilesNameCommand, ValidationResult>, VerifyFileNameCommandHandler>();
             services.AddScoped<IRequestHandler<VerifyFilesCommand, ValidationResult>, VerifyFileCommandHandler>();
 
             services.AddScoped<INotificationHandler<FileDownloadedEvent>, FileLoadingEventHandler>();

@@ -18,7 +18,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
         public void VerifyFileDownload_Success()
         {
             // Arrange
-            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), It.IsAny<string>(), It.IsAny<string>());
+            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), It.IsAny<string>(),It.IsAny<string>(), It.IsAny<string>());
             var fileIdentifierService = new Mock<IFileIdentifierService>();
             var meditrHandler = new Mock<IMediatorHandler>();
             var notifyService = new Mock<INotificationService>();
@@ -39,7 +39,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
         public void VerifyFileDownload_Fail()
         {
             // Arrange
-            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), It.IsAny<string>(), It.IsAny<string>());
+            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
             var fileIdentifierService = new Mock<IFileIdentifierService>();
             var notifyService = new Mock<INotificationService>();
             var meditrHandler = new Mock<IMediatorHandler>();

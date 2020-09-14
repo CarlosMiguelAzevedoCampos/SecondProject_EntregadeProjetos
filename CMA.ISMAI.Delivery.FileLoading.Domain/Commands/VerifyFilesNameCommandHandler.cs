@@ -1,0 +1,41 @@
+﻿using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Commands;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Events;
+using FluentValidation.Results;
+using MediatR;
+using NetDevPack.Mediator;
+using NetDevPack.Messaging;
+using System.Threading;
+using System.Threading.Tasks;
+
+public class VerifyFileNameCommandHandler : CommandHandler,
+      IRequestHandler<VerifyFilesNameCommand, ValidationResult>
+{
+    private readonly IFileVerifierService _fileVerifierService;
+    private readonly IMediatorHandler _mediator;
+
+    public VerifyFileNameCommandHandler(IFileVerifierService fileVerifierService, IMediatorHandler mediator)
+    {
+        _fileVerifierService = fileVerifierService;
+        _mediator = mediator;
+    }
+
+    public async Task<ValidationResult> Handle(VerifyFilesNameCommand request, CancellationToken cancellationToken)
+    {
+        ValidationResult.Errors.Clear();
+        if (!_fileVerifierService.UnzipFiles(request.FilePath, request.FilePathExtract))
+        {
+            AddError("An error happend while extracting the files");
+            return await Task.FromResult(ValidationResult);
+        }
+
+        if (!_fileVerifierService.VerifyIfPublicAndPriateFilesExist(request.FilePathExtract, request.PrivateFile, request.PublicFile))
+        {
+            AddError("Public or Private file not found!");
+            return await Task.FromResult(ValidationResult);
+        }
+         await _mediator.PublishEvent(new FilesNameVerifiedEvent(request.Id, request.FilePath, request.FilePathExtract, request.PrivateFile, request.PublicFile));
+        return await Task.FromResult(ValidationResult);
+    }
+}

@@ -25,19 +25,14 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
         public async Task<ValidationResult> Handle(VerifyFilesCommand request, CancellationToken cancellationToken)
         {
             ValidationResult.Errors.Clear();
-            if (!_fileVerifierService.UnzipFiles(request.FilePath, request.FilePathExtract))
-            {
-                AddError("An error happend while extracting the files");
-                return await Task.FromResult(ValidationResult);
-            }
+
             if (_fileVerifierService.VerifyIfFilesAreCorrupted(request.FilePathExtract))
             {
                 AddError("A corrupted file was found!");
                 return await Task.FromResult(ValidationResult);
             }
-            await _mediator.PublishEvent(new FilesVerifiedEvent(request.Id, request.FilePath, request.FilePathExtract));
+            await _mediator.PublishEvent(new FilesVerifiedEvent(request.Id, request.FilePathExtract));
             return await Task.FromResult(ValidationResult);
-
         }
     }
 }

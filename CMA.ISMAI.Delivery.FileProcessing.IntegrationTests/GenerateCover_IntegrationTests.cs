@@ -34,7 +34,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
     public class GenerateCover_IntegrationTests
     {
         [Fact(DisplayName = "Valid cover generation")]
-        [Trait("GenerateCoverPageCommand", "Generate Cover")]
+        [Trait("GenerateCoverPageCommand", "Generate Cover - Integration Tests")]
         public async Task GenerateCover()
         {
             File.Delete(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_CoverTest\PrivateCover.pdf");
@@ -52,7 +52,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
         }
 
         [Fact(DisplayName = "Invalid cover generation")]
-        [Trait("GenerateCoverPageCommand", "Generate Cover")]
+        [Trait("GenerateCoverPageCommand", "Generate Cover - Integration Tests")]
         public async Task FailToFindPath()
         {
             // Arrange

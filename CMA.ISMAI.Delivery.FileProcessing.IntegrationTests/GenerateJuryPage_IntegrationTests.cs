@@ -34,7 +34,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
     public class GenerateJuryPage_IntegrationTests
     {
         [Fact(DisplayName = "Valid jury page generation")]
-        [Trait("GenerateJuryPageCommand", "Generate Jury page")]
+        [Trait("GenerateJuryPageCommand", "Generate Jury page - Integration Tests")]
         public async Task GenerateCover()
         {
 
@@ -52,7 +52,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
         }
 
         [Fact(DisplayName = "Path not found for jury page generation")]
-        [Trait("GenerateJuryPageCommand", "Generate Jury page")]
+        [Trait("GenerateJuryPageCommand", "Generate Jury page - Integration Tests")]
         public async Task FailToFindPath()
         {
            // Arrange
@@ -82,7 +82,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
         }
 
         [Fact(DisplayName = "Jury file not found")]
-        [Trait("GenerateJuryPageCommand", "Generate Jury page")]
+        [Trait("GenerateJuryPageCommand", "Generate Jury page - Integration Tests")]
         public async Task JuryFileNotFound()
         {
             // Arrange

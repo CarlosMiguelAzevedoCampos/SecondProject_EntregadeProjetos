@@ -14,15 +14,13 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
     public class CreateDeliveryWithLinkCommandHandler : CommandHandler,
        IRequestHandler<CreateDeliveryWithLinkCommand, ValidationResult>
     {
-        private readonly IZipUrlService _zipUrlService;
         private readonly IMediatorHandler _mediator;
         private readonly IHttpRequestService _httpRequest;
         private readonly IQueueService _queueService;
 
 
-        public CreateDeliveryWithLinkCommandHandler(IZipUrlService zipUrlService, IMediatorHandler mediator, IHttpRequestService httpRequest, IQueueService queueService)
+        public CreateDeliveryWithLinkCommandHandler(IMediatorHandler mediator, IHttpRequestService httpRequest, IQueueService queueService)
         {
-            _zipUrlService = zipUrlService;
             _mediator = mediator;
             _httpRequest = httpRequest;
             _queueService = queueService;
@@ -59,10 +57,6 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                 return ValidationResult;
             }
 
-            ValidationResult = DoZipOperations(webReponse, request.PublicPDFVersionName, request.PrivatePDFVersionName);
-
-            if (!ValidationResult.IsValid)
-                return ValidationResult;
 
             if (!_queueService.SendToQueue(new DeliveryWithLink(request.Id, request.StudentName, request.InstituteName, request.CourseName,
                request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.LinkFile, request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName), "FileLoading"))
@@ -74,34 +68,6 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
             await _mediator.PublishEvent(new CreateDeliveryWithLinkEvent(new DeliveryWithLink(request.Id, request.StudentName, request.InstituteName, request.CourseName,
                     request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.LinkFile, request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName)));
 
-            return ValidationResult;
-        }
-
-        private ValidationResult DoZipOperations(System.Net.HttpWebResponse webReponse, string publicPDFVersionName, string privatePDFVersionName)
-        {
-            var memoryZip = _httpRequest.ReturnZipFileFromTheUrl(webReponse);
-            if (memoryZip == null)
-            {
-                AddError("A problem happend with the zip file, please, try again.");
-                return ValidationResult;
-            }
-
-            if (!_zipUrlService.DoesZipFileContainsFiles(memoryZip))
-            {
-                AddError("Zip file dosen't contains files!");
-                return ValidationResult;
-            }
-
-            if (!_zipUrlService.DoesTheZipFileContainsaPDF(memoryZip))
-            {
-                AddError("No PDF file was found.");
-                return ValidationResult;
-            }
-            if (!_zipUrlService.DoesTheZipFileContainsAVersionForPublicAndPrivateDelivery(memoryZip, publicPDFVersionName, privatePDFVersionName))
-            {
-                AddError("No public or private PDF version of your project was found.");
-                return ValidationResult;
-            }
             return ValidationResult;
         }
     }

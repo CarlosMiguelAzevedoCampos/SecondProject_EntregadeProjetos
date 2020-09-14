@@ -34,7 +34,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
     public class TransferFileCommand_IntegrationTests
     {
         [Fact(DisplayName = "Valid file transfer move")]
-        [Trait("FileTransferCommand", "File Transfer")]
+        [Trait("FileTransferCommand", "File Transfer - Integration Tests")]
         public async Task GenerateCover()
         {
 

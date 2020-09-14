@@ -2,7 +2,6 @@
 using CMA.ISMAI.Delivery.API.CrossCutting.FileSaver;
 using CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest;
 using CMA.ISMAI.Delivery.API.CrossCutting.Queue;
-using CMA.ISMAI.Delivery.API.CrossCutting.Zip;
 using CMA.ISMAI.Delivery.API.Domain.Commands.Handlers;
 using CMA.ISMAI.Delivery.API.Domain.Commands.Models;
 using CMA.ISMAI.Delivery.API.Domain.Events;
@@ -32,10 +31,8 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.IoC
             services.AddScoped<INotificationHandler<CreateDeliveryWithLinkEvent>, CreateDeliveryWithLinkEventHandler>();
 
             // Application - CrossCutting
-            services.AddScoped<IZipFileService, ZipFromFileService>();
             services.AddScoped<IEventStoreService, EventStore.Service.EventStoreService>();
             services.AddScoped<ILoggingService, LoggingService>();
-            services.AddScoped<IZipUrlService, ZipFromUrlService>();
             services.AddScoped<IHttpRequestService, HttpRequestService>();
             services.AddScoped<IQueueService, QueueService>();
             services.AddScoped<IFileSaverService, FileSaverService>();

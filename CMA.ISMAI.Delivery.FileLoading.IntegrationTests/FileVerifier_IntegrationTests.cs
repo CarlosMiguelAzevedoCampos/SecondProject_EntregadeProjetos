@@ -11,6 +11,7 @@ using CMA.ISMAI.Delivery.FileLoading.Domain.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Events;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model;
+using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Commands;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Events;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Logging.Service;
@@ -32,14 +33,14 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
     public class FileVerifier_IntegrationTests
     {
         [Fact(DisplayName = "Verify went ok")]
-        [Trait("VerifyFilesCommand", "VerifyCommand")]
+        [Trait("VerifyFilesCommand", "VerifyCommand - Integration Tests")]
         public async Task VerifyWentWell()
         {
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Zip\A029216_ISMAI_Carlos Campos_Informática.zip",
-                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática");
+            VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(),
+                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Informática");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);
@@ -47,30 +48,14 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             Assert.True(result.IsValid);
         }
 
-        [Fact(DisplayName = "Verify failed  zip not found")]
-        [Trait("VerifyFilesCommand", "VerifyCommand")]
-        public async Task VerifyFailed()
-        {
-            // Arrange
-            var services = ConfigureServices();
-            var serviceProvider = services.BuildServiceProvider();
-            VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Zip\A02_ISMAI_Carlos Campos_Informática.zip",
-                @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\a02_ISMAI_Carlos Campos_Informática");
-
-            // Act
-            var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);
-            //Assert
-            Assert.False(result.IsValid);
-            Assert.True(result.Errors.Count == 1);
-        }
         [Fact(DisplayName = "Corrupted file found")]
-        [Trait("VerifyFilesCommand", "VerifyCommand")]
+        [Trait("VerifyFilesCommand", "VerifyCommand - Integration Tests")]
         public async Task CorruptedFileFound()
         {
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(), @$"C:\Users\Carlos Campos\Desktop\Teste\Zip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática_Corrupted.zip",
+            VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(),
                 @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Informática_Corrupted");
 
             // Act
@@ -112,6 +97,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             services.AddScoped<IRequestHandler<DownloadFileFromUrlCommand, ValidationResult>, DownloadFileCommandHandler>();
             services.AddScoped<IRequestHandler<CreateFileIdentifiersCommand, ValidationResult>, FileIdentifiersCommandHandler>();
             services.AddScoped<IRequestHandler<VerifyFilesCommand, ValidationResult>, VerifyFileCommandHandler>();
+            services.AddScoped<IRequestHandler<VerifyFilesNameCommand, ValidationResult>, VerifyFileNameCommandHandler>();
 
             services.AddScoped<INotificationHandler<FileDownloadedEvent>, FileLoadingEventHandler>();
             services.AddScoped<INotificationHandler<FilesIdentifiedEvent>, FileLoadingEventHandler>();

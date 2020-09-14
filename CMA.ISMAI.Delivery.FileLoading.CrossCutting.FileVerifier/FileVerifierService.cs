@@ -1,6 +1,7 @@
 ﻿using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using System;
+using System.IO;
 using System.IO.Compression;
 
 namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
@@ -41,6 +42,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
             if (!_audioVerifierService.AreMediaFilesOk(filePath))
                 return true;
             return false;
+        }
+
+        public bool VerifyIfPublicAndPriateFilesExist(string filePathExtract, string privateFile, string publicFile)
+        {
+            return (File.Exists(string.Format("{0}/{1}", filePathExtract, publicFile)) && (Path.GetExtension(string.Format("{0}/{1}", filePathExtract, publicFile)).ToLower() == ".pdf"))
+                || (File.Exists(string.Format("{0}/{1}", filePathExtract, privateFile)) && (Path.GetExtension(string.Format("{0}/{1}", filePathExtract, privateFile)).ToLower() == ".pdf"));
         }
     }
 }

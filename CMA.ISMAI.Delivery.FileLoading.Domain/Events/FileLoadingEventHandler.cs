@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CMA.ISMAI.Delivery.FileLoading.Domain.Events
 {
     public class FileLoadingEventHandler : INotificationHandler<FileDownloadedEvent>,
-        INotificationHandler<FilesIdentifiedEvent>, INotificationHandler<FilesVerifiedEvent>
+        INotificationHandler<FilesIdentifiedEvent>, INotificationHandler<FilesVerifiedEvent>, INotificationHandler<FilesNameVerifiedEvent>
     {
         private readonly IEventStoreService _eventStore;
 
@@ -29,6 +29,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Events
         }
 
         public Task Handle(FilesVerifiedEvent notification, CancellationToken cancellationToken)
+        {
+            _eventStore.SaveToEventStore(notification);
+            return Task.CompletedTask;
+        }
+
+        public Task Handle(FilesNameVerifiedEvent notification, CancellationToken cancellationToken)
         {
             _eventStore.SaveToEventStore(notification);
             return Task.CompletedTask;
