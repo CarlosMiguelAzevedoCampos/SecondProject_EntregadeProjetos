@@ -23,6 +23,7 @@ namespace CMA.ISMAI.Delivery.API.UI.Controllers
         }
 
         [HttpPost("UploadWithFile")]
+        [RequestSizeLimit(53428800)]
         public async Task<IActionResult> UploadWithFile([FromForm]DeliveryWithFileDto deliveryDto)
         {
             if (!IsAZipFile(deliveryDto.DeliveryFile))
