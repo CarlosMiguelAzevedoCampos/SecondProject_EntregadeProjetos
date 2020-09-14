@@ -166,7 +166,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getCourseName = returnVariableValue(delivery, "courseName");
 
                     CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
-                    getStudentName.Value.ToString(), getCourseName.Value.ToString()), getStudentEmail.Value.ToString());
+                    getStudentName.Value.ToString(), getCourseName.Value.ToString()), getStudentEmail.Value.ToString(), _config.GetSection("Notification:Email").Value);
 
 
                     var validation = await _mediator.Send(createFileIdentifiersCommand);

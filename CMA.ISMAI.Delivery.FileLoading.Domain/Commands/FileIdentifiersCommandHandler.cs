@@ -39,8 +39,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
                 return await Task.FromResult(ValidationResult);
             }
             else
-                _notificationService.SendEmail(request.StudentEmail, EmailTextWithIdentifiers(fileInforation));
-            await _mediator.PublishEvent(new FilesIdentifiedEvent(request.Id, request.FilePath, request.StudentEmail));
+            {
+                string filesEmail = EmailTextWithIdentifiers(fileInforation);
+                _notificationService.SendEmail(request.StudentEmail, filesEmail);
+                _notificationService.SendEmail(request.UniversityEmail, filesEmail);
+            }
+                await _mediator.PublishEvent(new FilesIdentifiedEvent(request.Id, request.FilePath, request.StudentEmail));
             return await Task.FromResult(ValidationResult);
 
         }
