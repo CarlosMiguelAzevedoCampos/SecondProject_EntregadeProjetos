@@ -93,7 +93,6 @@ namespace CMA.ISMAI.Delivery.API.Domain.Tests
             CreateDeliveryWithLinkCommandHandler deliveryCommandHandler = new CreateDeliveryWithLinkCommandHandler(mediatrMock.Object, httpRequest.Object, queueMock.Object);
             Task<ValidationResult> result = deliveryCommandHandler.Handle(createDeliveryCommand, new CancellationToken());
             //Assert
-            httpRequest.Verify(x => x.ReturnZipFileFromTheUrl(It.IsAny<HttpWebResponse>()), Times.Never);
             Assert.False(result.Result.IsValid);
         }
 
@@ -111,7 +110,6 @@ namespace CMA.ISMAI.Delivery.API.Domain.Tests
             httpRequest.Setup(x => x.IsAZipFile(It.IsAny<HttpWebResponse>())).Returns(true);
             httpRequest.Setup(x => x.VerifyIfLinkIsFromTheTrustedHoster(It.IsAny<HttpWebResponse>())).Returns(true);
             httpRequest.Setup(x => x.ReturnFileInformation(It.IsAny<HttpWebResponse>())).Returns(new HttpWebResponse());
-            httpRequest.Setup(x => x.ReturnZipFileFromTheUrl(It.IsAny<HttpWebResponse>())).Returns((MemoryStream)null);
             CreateDeliveryWithLinkCommand createDeliveryCommand = new CreateDeliveryWithLinkCommand("A029216", "Informática", "ISMAI", "Carlos Campos", "A029216@ismai.pt", "https://1drv.ms/u/s!Aos6ApXpMWOBajj-TKD5KkSWA4A?e=RdfSVJ", "José", "A029216 TESTE", "Mestrado", "Private", "Public");
             CreateDeliveryWithLinkCommandHandler deliveryCommandHandler = new CreateDeliveryWithLinkCommandHandler(mediatrMock.Object, httpRequest.Object, queueMock.Object);
             Task<ValidationResult> result = deliveryCommandHandler.Handle(createDeliveryCommand, new CancellationToken());
@@ -135,12 +133,35 @@ namespace CMA.ISMAI.Delivery.API.Domain.Tests
             httpRequest.Setup(x => x.IsAZipFile(It.IsAny<HttpWebResponse>())).Returns(true);
             httpRequest.Setup(x => x.VerifyIfLinkIsFromTheTrustedHoster(It.IsAny<HttpWebResponse>())).Returns(true);
             httpRequest.Setup(x => x.ReturnFileInformation(It.IsAny<HttpWebResponse>())).Returns(new HttpWebResponse());
-            httpRequest.Setup(x => x.ReturnZipFileFromTheUrl(It.IsAny<HttpWebResponse>())).Returns(new MemoryStream());
             queueMock.Setup(x => x.SendToQueue(It.IsAny<Core.Model.Delivery>(), It.IsAny<string>())).Returns(false);
             CreateDeliveryWithLinkCommand createDeliveryCommand = new CreateDeliveryWithLinkCommand("A029216", "Informática", "ISMAI", "Carlos Campos", "A029216@ismai.pt", "https://1drv.ms/u/s!Aos6ApXpMWOBajj-TKD5KkSWA4A?e=RdfSVJ", "José", "A029216 TESTE", "Mestrado", "Private", "Public");
             CreateDeliveryWithLinkCommandHandler deliveryCommandHandler = new CreateDeliveryWithLinkCommandHandler(mediatrMock.Object, httpRequest.Object, queueMock.Object);
             Task<ValidationResult> result = deliveryCommandHandler.Handle(createDeliveryCommand, new CancellationToken());
             //Assert
+            mediatrMock.Verify(x => x.PublishEvent(It.IsAny<Event>()), Times.Never);
+            Assert.False(result.Result.IsValid);
+        }
+
+        [Fact(DisplayName = "File is bigger than 5 GB")]
+        [Trait("CreateDeliveryWithLinkCommand", "Creating the Delivery object and actions")]
+        public void FileIsBiggerThan5GB()
+        {
+            // Act
+            var mediatrMock = new Mock<IMediatorHandler>();
+            var httpRequest = new Mock<IHttpRequestService>();
+            var queueMock = new Mock<IQueueService>();
+
+            // Arrange
+            httpRequest.Setup(x => x.ReturnObjectFromTheUrl(It.IsAny<string>())).Returns(new HttpWebResponse());
+            httpRequest.Setup(x => x.IsAZipFile(It.IsAny<HttpWebResponse>())).Returns(true);
+            httpRequest.Setup(x => x.IsTheFileSmallerThanFiveGB(It.IsAny<HttpWebResponse>())).Returns(false);
+            httpRequest.Setup(x => x.VerifyIfLinkIsFromTheTrustedHoster(It.IsAny<HttpWebResponse>())).Returns(true);
+            httpRequest.Setup(x => x.ReturnFileInformation(It.IsAny<HttpWebResponse>())).Returns(new HttpWebResponse());
+            queueMock.Setup(x => x.SendToQueue(It.IsAny<Core.Model.Delivery>(), It.IsAny<string>())).Returns(true);
+            CreateDeliveryWithLinkCommand createDeliveryCommand = new CreateDeliveryWithLinkCommand("A029216", "Informática", "ISMAI", "Carlos Campos", "A029216@ismai.pt", "https://1drv.ms/u/s!Aos6ApXpMWOBajj-TKD5KkSWA4A?e=RdfSVJ", "José", "A029216 TESTE", "Mestrado", "Private", "Public");
+            CreateDeliveryWithLinkCommandHandler deliveryCommandHandler = new CreateDeliveryWithLinkCommandHandler(mediatrMock.Object, httpRequest.Object, queueMock.Object);
+            Task<ValidationResult> result = deliveryCommandHandler.Handle(createDeliveryCommand, new CancellationToken());
+            // Assert
             mediatrMock.Verify(x => x.PublishEvent(It.IsAny<Event>()), Times.Never);
             Assert.False(result.Result.IsValid);
         }
@@ -160,7 +181,6 @@ namespace CMA.ISMAI.Delivery.API.Domain.Tests
             httpRequest.Setup(x => x.IsAZipFile(It.IsAny<HttpWebResponse>())).Returns(true);
             httpRequest.Setup(x => x.VerifyIfLinkIsFromTheTrustedHoster(It.IsAny<HttpWebResponse>())).Returns(true);
             httpRequest.Setup(x => x.ReturnFileInformation(It.IsAny<HttpWebResponse>())).Returns(new HttpWebResponse());
-            httpRequest.Setup(x => x.ReturnZipFileFromTheUrl(It.IsAny<HttpWebResponse>())).Returns(new MemoryStream());
             queueMock.Setup(x => x.SendToQueue(It.IsAny<Core.Model.Delivery>(), It.IsAny<string>())).Returns(true);
             CreateDeliveryWithLinkCommand createDeliveryCommand = new CreateDeliveryWithLinkCommand("A029216", "Informática", "ISMAI", "Carlos Campos", "A029216@ismai.pt", "https://1drv.ms/u/s!Aos6ApXpMWOBajj-TKD5KkSWA4A?e=RdfSVJ", "José", "A029216 TESTE", "Mestrado", "Private", "Public");
             CreateDeliveryWithLinkCommandHandler deliveryCommandHandler = new CreateDeliveryWithLinkCommandHandler(mediatrMock.Object, httpRequest.Object, queueMock.Object);

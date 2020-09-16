@@ -24,25 +24,6 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest
             }
             catch (Exception ex)
             {
-
-            }
-            return null;
-        }
-
-        public MemoryStream ReturnZipFileFromTheUrl(HttpWebResponse httpWebRequest)
-        {
-            try
-            {
-                var responseStream = httpWebRequest.GetResponseStream();
-                using (var ms = new MemoryStream())
-                {
-                    // Copy entire file into memory. Use a file if you expect a lot of data
-                    responseStream.CopyTo(ms);
-                    return ms;
-                }
-            }
-            catch (Exception ex)
-            {
                 _log.Fatal(ex.ToString());
             }
             return null;
@@ -94,6 +75,19 @@ namespace CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest
                 _log.Fatal(ex.ToString());
             }
             return false;
+        }
+
+        public bool IsTheFileSmallerThanFiveGB(HttpWebResponse webReponse)
+        {
+            try
+            {
+                return webReponse.ContentLength <= 5000000000;
+            }
+            catch (Exception ex)
+            {
+                _log.Fatal(ex.ToString());
+            }
+            return true;
         }
     }
 }

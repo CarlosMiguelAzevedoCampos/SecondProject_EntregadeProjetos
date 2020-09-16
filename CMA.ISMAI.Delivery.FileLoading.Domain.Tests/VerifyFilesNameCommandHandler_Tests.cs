@@ -1,5 +1,6 @@
 ﻿using CMA.ISMAI.Delivery.FileLoading.Domain.Interfaces;
 using CMA.ISMAI.Delivery.FileLoading.Domain.Model.Commands;
+using CMA.ISMAI.Delivery.Logging.Interface;
 using Moq;
 using NetDevPack.Mediator;
 using System;
@@ -17,10 +18,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
             // Arrange
             VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
             var fileVerifier = new Mock<IFileVerifierService>();
+            var loggingService = new Mock<ILoggingService>();
             var meditrHandler = new Mock<IMediatorHandler>();
             fileVerifier.Setup(x => x.UnzipFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
 
-            VerifyFileNameCommandHandler verifyFileCommandHandler = new VerifyFileNameCommandHandler(fileVerifier.Object, meditrHandler.Object);
+            VerifyFileNameCommandHandler verifyFileCommandHandler = new VerifyFileNameCommandHandler(fileVerifier.Object, meditrHandler.Object, loggingService.Object);
 
             // Act
             var result = verifyFileCommandHandler.Handle(verifyFilesCommand, new CancellationToken());
@@ -37,10 +39,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
             VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
             var fileVerifier = new Mock<IFileVerifierService>();
             var meditrHandler = new Mock<IMediatorHandler>();
+            var loggingService = new Mock<ILoggingService>();
+
             fileVerifier.Setup(x => x.UnzipFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             fileVerifier.Setup(x => x.VerifyIfPublicAndPriateFilesExist(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
 
-            VerifyFileNameCommandHandler verifyFileCommandHandler = new VerifyFileNameCommandHandler(fileVerifier.Object, meditrHandler.Object);
+            VerifyFileNameCommandHandler verifyFileCommandHandler = new VerifyFileNameCommandHandler(fileVerifier.Object, meditrHandler.Object, loggingService.Object);
 
             // Act
             var result = verifyFileCommandHandler.Handle(verifyFilesCommand, new CancellationToken());
@@ -57,10 +61,12 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
             VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
             var fileVerifier = new Mock<IFileVerifierService>();
             var meditrHandler = new Mock<IMediatorHandler>();
+            var loggingService = new Mock<ILoggingService>();
+
             fileVerifier.Setup(x => x.UnzipFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             fileVerifier.Setup(x => x.VerifyIfPublicAndPriateFilesExist(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
 
-            VerifyFileNameCommandHandler verifyFileCommandHandler = new VerifyFileNameCommandHandler(fileVerifier.Object, meditrHandler.Object);
+            VerifyFileNameCommandHandler verifyFileCommandHandler = new VerifyFileNameCommandHandler(fileVerifier.Object, meditrHandler.Object, loggingService.Object);
 
             // Act
             var result = verifyFileCommandHandler.Handle(verifyFilesCommand, new CancellationToken());

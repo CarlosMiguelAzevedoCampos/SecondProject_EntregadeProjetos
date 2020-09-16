@@ -62,6 +62,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
             }
             catch (Exception ex)
             {
+                _log.Fatal(ex.ToString());
             }
             return false;
         }
@@ -260,7 +261,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
             });
 
 
-            registerWorker("notify_student_loading", externalTask =>
+            registerWorker("notify_student_fileverifier", externalTask =>
             {
                 try
                 {

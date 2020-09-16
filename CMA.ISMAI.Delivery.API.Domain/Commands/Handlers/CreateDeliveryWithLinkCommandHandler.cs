@@ -57,6 +57,12 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                 return ValidationResult;
             }
 
+            if(!_httpRequest.IsTheFileSmallerThanFiveGB(webReponse))
+            {
+                AddError("Your delivery is bigger than 5GB!, please, contact the University.");
+                return ValidationResult;
+            }
+
 
             if (!_queueService.SendToQueue(new DeliveryWithLink(request.Id, request.StudentName, request.InstituteName, request.CourseName,
                request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.LinkFile, request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName), "FileLoading"))
