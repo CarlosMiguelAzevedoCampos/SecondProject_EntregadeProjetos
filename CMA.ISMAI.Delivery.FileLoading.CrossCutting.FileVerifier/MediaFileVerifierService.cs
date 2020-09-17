@@ -26,7 +26,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
                 {
                     FileInfo info = new FileInfo(item);
                     var ffProbe = new FFProbe();
-                    var mediaInfo = ffProbe.GetMediaInfo(filePath);
+                    var mediaInfo = ffProbe.GetMediaInfo(item);
                     if(mediaInfo.Duration == TimeSpan.Zero)
                         return false;
                 }
@@ -42,8 +42,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
         private List<string> ReturnAllFilesInADirectory(string filepath)
         {
             string[] mediaExtensions = {
-                    ".WAV", ".MID", ".MIDI", ".WMA", ".MP3", ".OGG", ".RMA", //etc
-                    ".AVI", ".MP4", ".DIVX", ".WMV", //etc
+                    "*.WAV","*.WMA", "*.MP3", //etc
+                    "*.AVI", "*.MP4", "*.WMV", //etc
                 };
             List<string> files = new List<string>();
             foreach (var item in mediaExtensions)
