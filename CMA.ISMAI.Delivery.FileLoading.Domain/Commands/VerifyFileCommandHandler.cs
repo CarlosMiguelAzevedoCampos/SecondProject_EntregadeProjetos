@@ -28,7 +28,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
 
             if (_fileVerifierService.VerifyIfFilesAreCorrupted(request.FilePathExtract))
             {
-                AddError("A corrupted file was found!");
+                AddError("A corrupted file was found or some file was found with an incorrect extesion!");
                 return await Task.FromResult(ValidationResult);
             }
             await _mediator.PublishEvent(new FilesVerifiedEvent(request.Id, request.FilePathExtract));

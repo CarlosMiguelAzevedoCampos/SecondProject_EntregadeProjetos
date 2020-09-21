@@ -1,4 +1,5 @@
-﻿using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Interface;
+﻿using CMA.ISMAI.Core.Interface;
+using CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Interface;
 using CMA.ISMAI.Delivery.Logging.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -16,12 +17,14 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
     internal class ConsoleApplication
     {
         private readonly ICamundaService _camundaService;
+        private readonly INotificationService _notificationService;
         private readonly ILoggingService _log;
         private readonly IConfiguration _config;
-        public ConsoleApplication(ICamundaService camundaService, ILoggingService log)
+        public ConsoleApplication(ICamundaService camundaService, ILoggingService log, INotificationService notificationService)
         {
             _camundaService = camundaService;
             _log = log;
+            _notificationService = notificationService;
             _config = new ConfigurationBuilder()
                                                       .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
                                                       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -79,7 +82,13 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             };
             var notification = JsonConvert.DeserializeObject
                     (Encoding.UTF8.GetString(e.Body.ToArray()), settings);
-            _camundaService.StartWorkFlow((Core.Model.Delivery)notification);
+            var parseObject = (Core.Model.DeliveryFileSystem)notification;
+            if (!_camundaService.StartWorkFlow(parseObject))
+            {
+                _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hey!, <br/> <br/> Delivery from {0} failed! <br/> <br/>  Is delivery items are: " +
+                    "<br/> <br/> Name: {1} <br/> <br/> Student Number {1} <br/> <br/> Course name: {3} <br/> <br/> Thanks.", parseObject.StudentName, parseObject.StudentNumber,
+                    parseObject.CourseName));
+            }
         }
     }
 }

@@ -4,12 +4,12 @@ services:
   cma.ismai.delivery.api.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryapiui
     networks:
-      - network_cmaismai
-    container_name: cmaismaideliveryapiui
-    restart: always
+      - deliveryproject_network
+    container_name: cmaismaitrelloapi
     ports:
-    - 5670:80
-    - 5671:443
+    - 5666:80
+    - 5667:443
+    restart: always
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.API.UI/Dockerfile
@@ -29,7 +29,7 @@ services:
   cma.ismai.delivery.fileprocessing.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileprocessingui
     networks:
-      - network_cmaismai
+      - deliveryproject_network
     restart: always
     container_name: cmaismaideliveryfileprocessingui
     build:
@@ -54,7 +54,7 @@ services:
   cma.ismai.delivery.payment.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliverypaymentui
     networks:
-      - network_cmaismai
+      - deliveryproject_network
     container_name: cmaismaideliverypaymentui
     restart: always
     build:
@@ -74,12 +74,12 @@ services:
       - FilePathPayment__Path=//Payment//excel.xlsx 
       - TimeToFetch__Time=86400
       - TaskPerFetch__Time=30
-      - Notificaiton__ManualProcessing=carlosmiguelcampos1996@gmail.com 
-      - Notificaiton__University=carlosmiguelcampos1996@gmail.com 
+      - Notification__ManualProcessing=carlosmiguelcampos1996@gmail.com 
+      - Notification__University=carlosmiguelcampos1996@gmail.com 
   cma.ismai.delivery.fileloading.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileloadingui
     networks:
-      - network_cmaismai
+      - deliveryproject_network
     container_name: cmaismaideliveryfileloadingui
     restart: always
     build:
@@ -102,20 +102,20 @@ services:
   cma.ismai.delivery.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryui
     networks:
-      - network_cmaismai
+      - deliveryproject_network
     container_name: cmaismaideliveryui
     restart: always
     ports:
-    - 5672:80
-    - 5673:443
+    - 5775:80
+    - 5776:443
     build:
       context: .
       dockerfile: CMA.ISMAI.Delivery.UI/Dockerfile
     environment:
       - ElasticConfiguration__Uri=http://elasticsearch:9200/ 
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113
-      - API_File_ZIP__Uri=http://localhost:5670/api/Deliveries/UploadWithFile
-      - API_File_URL__Uri=http://localhost:5671/api/Deliveries/UploadWithLink
+      - API_File_ZIP__Uri=http://cmaismaitrelloapi/api/Deliveries/UploadWithFile
+      - API_File_URL__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithLink
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
     container_name: elasticsearch
@@ -124,7 +124,7 @@ services:
     volumes:
      - elasticsearch-data:/usr/share/elasticsearch/data
     networks:
-     - network_cmaismai
+     - deliveryproject_network
     restart: always
   kibana:
     image: docker.elastic.co/kibana/kibana:6.2.4
@@ -134,7 +134,7 @@ services:
     depends_on:
      - elasticsearch
     networks:
-     - network_cmaismai
+     - deliveryproject_network
     restart: always
 
   rabbitmq:
@@ -150,7 +150,7 @@ services:
      - "5672:5672"
      - "15672:15672"
     networks:
-     - network_cmaismai
+     - deliveryproject_network
     restart: always
 
   camunda:
@@ -159,7 +159,7 @@ services:
    ports:
     - "8080:8080"
    networks:
-    - network_cmaismai
+    - deliveryproject_network
    restart: always
 
   eventstore.db:
@@ -181,5 +181,5 @@ services:
 volumes:
   elasticsearch-data:
 networks:
-  network_cmaismai:
+  deliveryproject_network:
     driver: bridge

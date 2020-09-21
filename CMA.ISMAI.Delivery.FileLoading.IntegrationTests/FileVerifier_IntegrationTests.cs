@@ -65,6 +65,23 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             Assert.True(result.Errors.Count == 1);
         }
 
+
+        [Fact(DisplayName = "File in the wrong format")]
+        [Trait("VerifyFilesCommand", "VerifyCommand - Integration Tests")]
+        public async Task FileInTheWrongFormat()
+        {
+            // Arrange
+            var services = ConfigureServices();
+            var serviceProvider = services.BuildServiceProvider();
+            VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(),
+                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Informática_MediaCorrupted");
+
+            // Act
+            var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);
+            //Assert
+            Assert.False(result.IsValid);
+            Assert.True(result.Errors.Count == 1);
+        }
         private IServiceCollection ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
@@ -88,7 +105,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             services.AddScoped<IHttpRequestService, FileDownloadService>();
             services.AddScoped<IFileVerifierService, FileVerifierService>();
             services.AddScoped<IFileIdentifierService, FileIdentifierService>();
-            services.AddScoped<IMediaFileVerifierService, MediaFileVerifierService>();
+            services.AddScoped<IVerifyFilesExtensions, VerifyFilesExtensions>();
             services.AddScoped<IPDFVerifierService, PDFVerifierService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IEventStoreService, EventStoreService>();

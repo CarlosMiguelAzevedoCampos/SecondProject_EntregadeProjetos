@@ -1,0 +1,127 @@
+﻿@model CMA.ISMAI.Delivery.UI.Models.DeliveryDto
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Criar entrega</h1>
+
+<hr />
+<div class="row">
+    <div class="col-12">
+        @if (TempData["result"] != null)
+        {
+            <center><h3><strong id="creditacaoSubmit_Result">@TempData["result"]</strong></h3></center>
+            <br />
+        }
+        @if (TempData["unkn_result"] != null)
+        {
+            <center><h3><strong>@TempData["unkn_result"]</strong></h3></center>
+            <br />
+        }
+        @if (TempData["bad_result"] != null)
+        {
+            foreach (var item in @TempData["bad_result"] as string[])
+            {
+                <br />
+                <center><h5><strong> Error - @item .</strong></h5></center>
+                <br />
+            }
+        }
+    </div>
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StudentName" class="control-label"></label>
+                <input asp-for="StudentName" class="form-control" />
+                <span asp-validation-for="StudentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstituteName" class="control-label"></label>
+                <input asp-for="InstituteName" class="form-control" />
+                <span asp-validation-for="InstituteName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseName" class="control-label"></label>
+                <input asp-for="CourseName" class="form-control" />
+                <span asp-validation-for="CourseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentEmail" class="control-label"></label>
+                <input asp-for="StudentEmail" class="form-control" />
+                <span asp-validation-for="StudentEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentNumber" class="control-label"></label>
+                <input asp-for="StudentNumber" class="form-control" />
+                <span asp-validation-for="StudentNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CordenatorName" class="control-label"></label>
+                <input asp-for="CordenatorName" class="form-control" />
+                <span asp-validation-for="CordenatorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DefenitionOfDelivery" class="control-label"></label>
+                <input asp-for="DefenitionOfDelivery" class="form-control" />
+                <span asp-validation-for="DefenitionOfDelivery" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublicPDFVersionName" class="control-label"></label>
+                <input asp-for="PublicPDFVersionName" class="form-control" />
+                <span asp-validation-for="PublicPDFVersionName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrivatePDFVersionName" class="control-label"></label>
+                <input asp-for="PrivatePDFVersionName" class="form-control" />
+                <span asp-validation-for="PrivatePDFVersionName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryType" class="control-label"></label>
+                <input onclick="hideFunction();" id="checkUrl" asp-for="DeliveryType" class="custom-checkbox" />
+                <span asp-validation-for="DeliveryType" class="text-danger"></span>
+            </div>
+            <div id="FileUrlDiv" style="display: none;" class="form-group">
+                <label asp-for="FileUrl" class="control-label"></label>
+                <input type="text" asp-for="FileUrl" class="form-control" />
+                <span asp-validation-for="FileUrl" class="text-danger"></span>
+            </div>
+            <div id="FormFileDiv" class="form-group">
+                <label asp-for="FormFile" class="control-label"></label>
+                <input type="file" asp-for="FormFile" class="form-control" />
+                <span asp-validation-for="FormFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="submitDelivery" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    function hideFunction() {
+        if (document.getElementById("checkUrl").checked) {
+            document.getElementById("FileUrlDiv").style.display = "block";
+            document.getElementById("FormFileDiv").style.display = "none";
+        } else {
+            document.getElementById("FileUrlDiv").style.display = "none";
+            document.getElementById("FormFileDiv").style.display = "block";
+        }
+    }
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

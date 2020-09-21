@@ -17,7 +17,6 @@ COPY ["CMA.ISMAI.Delivery.Core/CMA.ISMAI.Core.csproj", "CMA.ISMAI.Delivery.Core/
 COPY ["CMA.ISMAI.Delivery.EventStore/CMA.ISMAI.Delivery.EventStore.csproj", "CMA.ISMAI.Delivery.EventStore/"]
 COPY ["CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest/CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest.csproj", "CMA.ISMAI.Delivery.API.CrossCutting.HttpRequest/"]
 COPY ["CMA.ISMAI.Delivery.API.CrossCutting.Queue/CMA.ISMAI.Delivery.API.CrossCutting.Queue.csproj", "CMA.ISMAI.Delivery.API.CrossCutting.Queue/"]
-COPY ["CMA.ISMAI.Delivery.API.CrossCutting.Zip/CMA.ISMAI.Delivery.API.CrossCutting.Zip.csproj", "CMA.ISMAI.Delivery.API.CrossCutting.Zip/"]
 RUN dotnet restore "CMA.ISMAI.Delivery.API.UI/CMA.ISMAI.Delivery.API.UI.csproj"
 COPY . .
 WORKDIR "/src/CMA.ISMAI.Delivery.API.UI"

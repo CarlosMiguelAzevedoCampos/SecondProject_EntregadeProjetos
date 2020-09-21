@@ -9,10 +9,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
     public class FileVerifierService : IFileVerifierService
     {
         private readonly IPDFVerifierService _pdfVerifierService;
-        private readonly IMediaFileVerifierService _audioVerifierService;
+        private readonly IVerifyFilesExtensions _audioVerifierService;
         private readonly ILoggingService _log;
 
-        public FileVerifierService(IPDFVerifierService pdfVerifierService, IMediaFileVerifierService audioVerifierService, ILoggingService log)
+        public FileVerifierService(IPDFVerifierService pdfVerifierService, IVerifyFilesExtensions audioVerifierService, ILoggingService log)
         {
             _pdfVerifierService = pdfVerifierService;
             _audioVerifierService = audioVerifierService;
@@ -39,7 +39,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
         {
             if (!_pdfVerifierService.ArePdfFilesOk(filePath))
                 return true;
-            if (!_audioVerifierService.AreMediaFilesOk(filePath))
+            if (!_audioVerifierService.AreFilesInTheCorrectFormat(filePath))
                 return true;
             return false;
         }

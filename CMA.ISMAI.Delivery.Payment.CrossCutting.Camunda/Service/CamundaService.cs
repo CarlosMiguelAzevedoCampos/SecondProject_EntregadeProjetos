@@ -1,4 +1,5 @@
-﻿using CamundaClient;
+﻿
+using CamundaClient;
 using CamundaClient.Dto;
 using CMA.ISMAI.Core.Interface;
 using CMA.ISMAI.Core.Model;
@@ -249,7 +250,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
         {
             try
             {
-                var tasks = camundaEngineClient.ExternalTaskService.FetchAndLockTasks("StudentPaymentISMAI", Convert.ToInt32(_config.GetSection("TaskPerFetch:Tasks").Value), workers.Keys,80, null);
+                var tasks = camundaEngineClient.ExternalTaskService.FetchAndLockTasks("StudentPaymentISMAI", Convert.ToInt32(_config.GetSection("TaskPerFetch:Tasks").Value), workers.Keys, long.Parse((Convert.ToInt64(_config.GetSection("TimeToFetch:Time").Value) / 2).ToString()), null);
                 Parallel.ForEach(
                     tasks,
                     new ParallelOptions { MaxDegreeOfParallelism = 1 },

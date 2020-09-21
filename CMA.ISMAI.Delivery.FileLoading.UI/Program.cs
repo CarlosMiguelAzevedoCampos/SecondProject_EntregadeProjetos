@@ -68,7 +68,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             services.AddScoped<IHttpRequestService, FileDownloadService>();
             services.AddScoped<IFileVerifierService, FileVerifierService>();
             services.AddScoped<IFileIdentifierService, FileIdentifierService>();
-            services.AddScoped<IMediaFileVerifierService, MediaFileVerifierService>();
+            services.AddScoped<IVerifyFilesExtensions, VerifyFilesExtensions>();
             services.AddScoped<IPDFVerifierService, PDFVerifierService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ICamundaService, CamundaService>();

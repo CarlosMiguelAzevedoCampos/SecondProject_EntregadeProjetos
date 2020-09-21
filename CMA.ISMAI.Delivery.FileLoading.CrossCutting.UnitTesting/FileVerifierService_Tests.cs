@@ -14,7 +14,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
         {
             // Arrange
             var pdfService = new Mock<IPDFVerifierService>();
-            var mediaService = new Mock<IMediaFileVerifierService>();
+            var mediaService = new Mock<IVerifyFilesExtensions>();
             var logService = new Mock<ILoggingService>();
             pdfService.Setup(x => x.ArePdfFilesOk(It.IsAny<string>())).Returns(false);
             FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object, logService.Object);
@@ -31,7 +31,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
         {
             // Arrange
             var pdfService = new Mock<IPDFVerifierService>();
-            var mediaService = new Mock<IMediaFileVerifierService>();
+            var mediaService = new Mock<IVerifyFilesExtensions>();
             var logService = new Mock<ILoggingService>();
             mediaService.Setup(x => x.AreMediaFilesOk(It.IsAny<string>())).Returns(false);
             FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object, logService.Object);
@@ -48,7 +48,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
         {
             // Arrange
             var pdfService = new Mock<IPDFVerifierService>();
-            var mediaService = new Mock<IMediaFileVerifierService>();
+            var mediaService = new Mock<IVerifyFilesExtensions>();
             var logService = new Mock<ILoggingService>();
 
             mediaService.Setup(x => x.AreMediaFilesOk(It.IsAny<string>())).Returns(true);
