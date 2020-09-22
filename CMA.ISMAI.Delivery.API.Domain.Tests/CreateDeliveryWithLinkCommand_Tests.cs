@@ -179,6 +179,7 @@ namespace CMA.ISMAI.Delivery.API.Domain.Tests
             // Arrange
             httpRequest.Setup(x => x.ReturnObjectFromTheUrl(It.IsAny<string>())).Returns(new HttpWebResponse());
             httpRequest.Setup(x => x.IsAZipFile(It.IsAny<HttpWebResponse>())).Returns(true);
+            httpRequest.Setup(x => x.IsTheFileSmallerThanFiveGB(It.IsAny<HttpWebResponse>())).Returns(true);
             httpRequest.Setup(x => x.VerifyIfLinkIsFromTheTrustedHoster(It.IsAny<HttpWebResponse>())).Returns(true);
             httpRequest.Setup(x => x.ReturnFileInformation(It.IsAny<HttpWebResponse>())).Returns(new HttpWebResponse());
             queueMock.Setup(x => x.SendToQueue(It.IsAny<Core.Model.Delivery>(), It.IsAny<string>())).Returns(true);

@@ -74,7 +74,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
             VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(),
-                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Informática_MediaCorrupted");
+                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Informática_WrongFileExtension");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);

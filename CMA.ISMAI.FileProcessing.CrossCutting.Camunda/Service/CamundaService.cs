@@ -236,7 +236,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
         }
 
 
-        public bool StartWorkFlow(DeliveryFileSystem delivery)
+        public bool StartWorkFlow(Core.Model.Delivery delivery)
         {
 
             try
@@ -267,7 +267,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
 
 
 
-        private Dictionary<string, object> AddValuesToTheDictionary(Dictionary<string, object> parameters, Core.Model.DeliveryFileSystem message)
+        private Dictionary<string, object> AddValuesToTheDictionary(Dictionary<string, object> parameters, Core.Model.Delivery message)
         {
             foreach (PropertyInfo propertyInfo in message.GetType().GetProperties())
                 parameters.Add(propertyInfo.Name, propertyInfo.GetValue(message, null));

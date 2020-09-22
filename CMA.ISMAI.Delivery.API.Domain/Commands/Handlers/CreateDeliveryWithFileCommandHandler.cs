@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using NetDevPack.Mediator;
 using NetDevPack.Messaging;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,7 +46,7 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                 AddError("Failed to save file!");
                 return ValidationResult;
             }
-
+            request = VerifyFileNames(request);
             if (!_queueService.SendToQueue(new DeliveryFileSystem(request.Id, request.StudentName, request.InstituteName, request.CourseName,
                     request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.StudentNumber, request.InstituteName,
                request.StudentName, request.CourseName)), "FileLoading"))
@@ -61,6 +62,15 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                     request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.CordenatorName, request.Title, request.DefenitionOfDelivery, request.PublicPDFVersionName, request.PrivatePDFVersionName, string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.StudentNumber, request.InstituteName,
                request.StudentName, request.CourseName))));
             return ValidationResult;
+        }
+
+        private CreateDeliveryWithFileCommand VerifyFileNames(CreateDeliveryWithFileCommand request)
+        {
+            if (!request.PrivatePDFVersionName.Contains(".pdf"))
+                request.PrivatePDFVersionName = string.Format("{0}.pdf", request.PrivatePDFVersionName);
+            if (!request.PublicPDFVersionName.Contains(".pdf"))
+                request.PublicPDFVersionName = string.Format("{0}.pdf", request.PublicPDFVersionName);
+            return request;
         }
     }
 }

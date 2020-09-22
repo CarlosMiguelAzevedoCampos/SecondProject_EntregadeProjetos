@@ -2,7 +2,7 @@
 {
     public interface ICamundaService
     {
-        bool StartWorkFlow(Core.Model.DeliveryFileSystem delivery);
+        bool StartWorkFlow(Core.Model.Delivery delivery);
         void RegistWorkers();
     }
 }

@@ -31,16 +31,16 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
         public async Task<ValidationResult> Handle(CreateFileIdentifiersCommand request, CancellationToken cancellationToken)
         {
             ValidationResult.Errors.Clear();
-            Dictionary<string, Guid> fileInforation = _fileIdentifierService.GenerateFileIdentifier(request.FilePath);
+            Dictionary<string, Guid> fileInformation = _fileIdentifierService.GenerateFileIdentifier(request.FilePath);
 
-            if (fileInforation.Count == 0)
+            if (fileInformation.Count == 0)
             {
                 AddError("A problem happen while generating the identifiers");
                 return await Task.FromResult(ValidationResult);
             }
             else
             {
-                string filesEmail = EmailTextWithIdentifiers(fileInforation);
+                string filesEmail = EmailTextWithIdentifiers(fileInformation);
                 _notificationService.SendEmail(request.StudentEmail, filesEmail);
                 _notificationService.SendEmail(request.UniversityEmail, filesEmail);
             }

@@ -15,14 +15,14 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
     {
 
         [Fact(DisplayName = "Verify file went ok")]
-        [Trait("VerifyFilesCommand", "Verify if files are corrupted")]
-        public void FilesAreNotCorrupted()
+        [Trait("VerifyFilesCommand", "Verify if files are corrupted or with other problems")]
+        public void FilesDontHaveProblems()
         {
             // Arrange
             VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(), It.IsAny<string>());
             var fileVerifier = new Mock<IFileVerifierService>();
             var meditrHandler = new Mock<IMediatorHandler>();
-            fileVerifier.Setup(x => x.VerifyIfFilesAreCorrupted(It.IsAny<string>())).Returns(false);
+            fileVerifier.Setup(x => x.VerifyFilesConditions(It.IsAny<string>())).Returns(false);
 
 
             VerifyFileCommandHandler verifyFileCommandHandler = new VerifyFileCommandHandler(fileVerifier.Object, meditrHandler.Object);
@@ -34,15 +34,15 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
             Assert.True(result.Result.IsValid);
         }
 
-        [Fact(DisplayName = "Files are corrupted")]
-        [Trait("VerifyFilesCommand", "Verify if files are corrupted")]
-        public void FilesAreCorrupted()
+        [Fact(DisplayName = "Files have problems")]
+        [Trait("VerifyFilesCommand", "Verify if files are corrupted or with other problems")]
+        public void AProblemHappendWithTheFiles()
         {
             // Arrange
             VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.NewGuid(), It.IsAny<string>());
             var fileVerifier = new Mock<IFileVerifierService>();
             var meditrHandler = new Mock<IMediatorHandler>();
-            fileVerifier.Setup(x => x.VerifyIfFilesAreCorrupted(It.IsAny<string>())).Returns(true); 
+            fileVerifier.Setup(x => x.VerifyFilesConditions(It.IsAny<string>())).Returns(true); 
 
             VerifyFileCommandHandler verifyFileCommandHandler = new VerifyFileCommandHandler(fileVerifier.Object, meditrHandler.Object);
 

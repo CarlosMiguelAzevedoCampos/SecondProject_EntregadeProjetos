@@ -145,6 +145,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                   string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
                    getStudentName.Value.ToString(), getCourseName.Value.ToString()), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString());
 
+                    if (!verifyFilesCommand.IsValid())
+                    {
+                        DeleteFiles(string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value));
+                        DeleteFiles(string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value));
+                    }
                 
 
                     var validation = await _mediator.Send(verifyFilesCommand);
@@ -336,6 +341,18 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
             });
             pollingTimer = new Timer(_ => StartPolling(), null, Convert.ToInt64(_config.GetSection("TimeToFetch:Time").Value), Timeout.Infinite);
 
+        }
+
+        private void DeleteFiles(string filePath)
+        {
+            try
+            {
+                File.Delete(filePath);
+            }
+            catch (Exception ex)
+            {
+                _log.Fatal(ex.ToString());
+            }
         }
 
         private Dictionary<string, object> returnDictionary(Dictionary<string, Variable> delivery)

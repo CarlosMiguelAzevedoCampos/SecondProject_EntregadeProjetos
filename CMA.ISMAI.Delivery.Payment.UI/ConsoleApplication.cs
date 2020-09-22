@@ -83,12 +83,20 @@ namespace CMA.ISMAI.Delivery.Payment.UI
             };
             var notification = JsonConvert.DeserializeObject
                     (Encoding.UTF8.GetString(e.Body.ToArray()), settings);
-            var parseObject = (Core.Model.DeliveryFileSystem)notification;
-            if (!_camundaService.StartWorkFlow(parseObject))
+            try
             {
-                _notificationService.SendEmail(_config.GetSection("Notification:ManualProcessing").Value, string.Format("Hey!, <br/> <br/> Delivery from {0} failed! <br/> <br/>  Is delivery items are: " +
-                     "<br/> <br/> Name: {1} <br/> <br/> Student Number {1} <br/> <br/> Course name: {3} <br/> <br/> Thanks.", parseObject.StudentName, parseObject.StudentNumber,
-                     parseObject.CourseName));
+                var parseObject = (Core.Model.Delivery)notification;
+                if (!_camundaService.StartWorkFlow(parseObject))
+                {
+                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hey!, <br/> <br/> An delivery failed to start on Payment workflow! <br/> <br/>  Is delivery items are: " +
+                        "<br/> <br/> Name: {0} <br/> <br/> Student Number {1} <br/> <br/> Course name: {2} <br/> <br/> Heres the JSON object {3} <br/><br/> Thanks.", parseObject.StudentName, parseObject.StudentNumber,
+                        parseObject.CourseName, JsonConvert.SerializeObject(notification)));
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Fatal(ex.ToString());
+                _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hey!, <br/> <br/> An delivery failed to start on Payment workflow! <br/> <br/> Heres the JSON object {1} <br/><br/> Thanks.", JsonConvert.SerializeObject(notification)));
             }
         }
     }

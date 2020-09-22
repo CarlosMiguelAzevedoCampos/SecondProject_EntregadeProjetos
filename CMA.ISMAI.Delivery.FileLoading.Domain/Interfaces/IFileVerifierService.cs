@@ -2,9 +2,9 @@
 {
     public interface IFileVerifierService
     {
-        bool VerifyIfFilesAreCorrupted(string filePath);
+        bool VerifyFilesConditions(string filePath);
 
         bool UnzipFiles(string filePath, string extractPath);
-        bool VerifyIfPublicAndPriateFilesExist(string filePathExtract, string privateFile, string publicFile);
+        bool VerifyIfPublicAndPrivateFilesExist(string filePathExtract, string privateFile, string publicFile);
     }
 }

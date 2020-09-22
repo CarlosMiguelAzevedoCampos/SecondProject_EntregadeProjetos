@@ -42,7 +42,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
             var loggingService = new Mock<ILoggingService>();
 
             fileVerifier.Setup(x => x.UnzipFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            fileVerifier.Setup(x => x.VerifyIfPublicAndPriateFilesExist(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+            fileVerifier.Setup(x => x.VerifyIfPublicAndPrivateFilesExist(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
 
             VerifyFileNameCommandHandler verifyFileCommandHandler = new VerifyFileNameCommandHandler(fileVerifier.Object, meditrHandler.Object, loggingService.Object);
 
@@ -64,7 +64,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Tests
             var loggingService = new Mock<ILoggingService>();
 
             fileVerifier.Setup(x => x.UnzipFiles(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            fileVerifier.Setup(x => x.VerifyIfPublicAndPriateFilesExist(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            fileVerifier.Setup(x => x.VerifyIfPublicAndPrivateFilesExist(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
 
             VerifyFileNameCommandHandler verifyFileCommandHandler = new VerifyFileNameCommandHandler(fileVerifier.Object, meditrHandler.Object, loggingService.Object);
 

@@ -63,6 +63,7 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                 return ValidationResult;
             }
 
+            request = VerifyFileNames(request);
 
             if (!_queueService.SendToQueue(new DeliveryWithLink(request.Id, request.StudentName, request.InstituteName, request.CourseName,
                request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.LinkFile, request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName), "FileLoading"))
@@ -75,6 +76,15 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Handlers
                     request.StudentEmail, request.StudentNumber, request.DeliveryTime, request.LinkFile, request.CordenatorName, request.DefenitionOfDelivery, request.Title, request.PublicPDFVersionName, request.PrivatePDFVersionName)));
 
             return ValidationResult;
+        }
+
+        private CreateDeliveryWithLinkCommand VerifyFileNames(CreateDeliveryWithLinkCommand request)
+        {
+            if (!request.PrivatePDFVersionName.Contains(".pdf"))
+                request.PrivatePDFVersionName = string.Format("{0}.pdf", request.PrivatePDFVersionName);
+            if (!request.PublicPDFVersionName.Contains(".pdf"))
+                request.PublicPDFVersionName = string.Format("{0}.pdf", request.PublicPDFVersionName);
+            return request;
         }
     }
 }

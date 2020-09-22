@@ -38,7 +38,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Unzip\A029216_ISMAI_Carlos Campos_Informática", "a029216@ismai.pt", "carlosmiguelcampos1996@gmail.com");
+            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Informática", "a029216@ismai.pt", "carlosmiguelcampos1996@gmail.com");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(createFileIdentifiersCommand);
@@ -53,7 +53,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Unzip\A029216_ISMAI_Carlos Campos_Informática","a029216@ismai.pt", "carlosmiguelcampos1996@gmail.com");
+            CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Informátic","a029216@ismai.pt", "carlosmiguelcampos1996@gmail.com");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(createFileIdentifiersCommand);

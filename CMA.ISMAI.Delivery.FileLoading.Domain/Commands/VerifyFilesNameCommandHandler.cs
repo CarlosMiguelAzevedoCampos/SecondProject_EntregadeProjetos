@@ -35,25 +35,12 @@ public class VerifyFileNameCommandHandler : CommandHandler,
             return await Task.FromResult(ValidationResult);
         }
 
-        if (!_fileVerifierService.VerifyIfPublicAndPriateFilesExist(request.FilePathExtract, request.PrivateFile, request.PublicFile))
+        if (!_fileVerifierService.VerifyIfPublicAndPrivateFilesExist(request.FilePathExtract, request.PrivateFile, request.PublicFile))
         {
             AddError("Public or Private file not found!");
-            DeleteFiles(request.FilePathExtract);
-            DeleteFiles(request.FilePath);
             return await Task.FromResult(ValidationResult);
         }
          await _mediator.PublishEvent(new FilesNameVerifiedEvent(request.Id, request.FilePath, request.FilePathExtract, request.PrivateFile, request.PublicFile));
         return await Task.FromResult(ValidationResult);
-    }
-
-    private void DeleteFiles(string filePath)
-    {
-        try
-        {
-            File.Delete(filePath);
-        }catch(Exception ex)
-        {
-            _loggingService.Fatal(ex.ToString());
-        }
     }
 }

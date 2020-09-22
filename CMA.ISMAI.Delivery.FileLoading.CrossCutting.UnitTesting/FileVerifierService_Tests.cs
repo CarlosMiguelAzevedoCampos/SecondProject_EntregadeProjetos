@@ -19,7 +19,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
             pdfService.Setup(x => x.ArePdfFilesOk(It.IsAny<string>())).Returns(false);
             FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object, logService.Object);
             // Act
-            bool result = fileVerifierService.VerifyIfFilesAreCorrupted(It.IsAny<string>());
+            bool result = fileVerifierService.VerifyFilesConditions(It.IsAny<string>());
 
             // Assert
             Assert.True(result);
@@ -33,10 +33,10 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
             var pdfService = new Mock<IPDFVerifierService>();
             var mediaService = new Mock<IVerifyFilesExtensions>();
             var logService = new Mock<ILoggingService>();
-            mediaService.Setup(x => x.AreMediaFilesOk(It.IsAny<string>())).Returns(false);
+            mediaService.Setup(x => x.AreFilesInTheCorrectFormat(It.IsAny<string>())).Returns(false);
             FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object, logService.Object);
             // Act
-            bool result = fileVerifierService.VerifyIfFilesAreCorrupted(It.IsAny<string>());
+            bool result = fileVerifierService.VerifyFilesConditions(It.IsAny<string>());
 
             // Assert
             Assert.True(result);
@@ -51,11 +51,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.UnitTesting
             var mediaService = new Mock<IVerifyFilesExtensions>();
             var logService = new Mock<ILoggingService>();
 
-            mediaService.Setup(x => x.AreMediaFilesOk(It.IsAny<string>())).Returns(true);
+            mediaService.Setup(x => x.AreFilesInTheCorrectFormat(It.IsAny<string>())).Returns(true);
             pdfService.Setup(x => x.ArePdfFilesOk(It.IsAny<string>())).Returns(true);
             FileVerifierService fileVerifierService = new FileVerifierService(pdfService.Object, mediaService.Object, logService.Object);
             // Act
-            bool result = fileVerifierService.VerifyIfFilesAreCorrupted(It.IsAny<string>());
+            bool result = fileVerifierService.VerifyFilesConditions(It.IsAny<string>());
 
             // Assert
             Assert.False(result);

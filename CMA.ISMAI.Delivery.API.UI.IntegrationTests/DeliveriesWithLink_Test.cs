@@ -72,6 +72,44 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
                 {"CordenatorName", "José" },
                 {"Title", "Entrega de Dissertação 210" },
                 {"DefenitionOfDelivery", "Mestrado" },
+                {"PublicPDFVersionName", "PrivateProjectDelivery.pdf" },
+                {"PrivatePDFVersionName", "public.pdf" },
+                {"DeliveryTime", DateTime.Now.ToString() }
+            };
+
+
+
+            // Act
+            var content = new FormUrlEncodedContent(formData);
+            var response = await client.PostAsync("/api/Deliveries/UploadWithLink", content);
+            var result = await response.Content.ReadAsStringAsync();
+            var resultObject = JsonConvert.DeserializeObject<OkObjectResult>(result);
+
+            // Assert
+            Assert.Equal(200, resultObject.StatusCode.Value);
+        }
+
+        [Fact(DisplayName = "Valid Request without file extension - Link Delivery")]
+        [Trait("DeliveryController", "Submit a delivery - Link Delivery")]
+        public async Task AGoodDeliveryDoneWithoutFileExtension()
+        {
+            // Arrange
+            var builder = new WebHostBuilder()
+                          .UseEnvironment("Development")
+                          .UseStartup<Startup>();
+            TestServer testServer = new TestServer(builder);
+            HttpClient client = testServer.CreateClient();
+
+            var formData = new Dictionary<string, string>() { //<---- NOTE HERE
+                { "StudentName", "Carlops" },
+                {"InstituteName", "ISMAI" },
+                {"CourseName", "Informática" },
+                {"StudentEmail", "carlosmiguelcampos1996@gmail.com" },
+                {"StudentNumber", "A029216" },
+                {"FileLink", "https://1drv.ms/u/s!Aos6ApXpMWOBajj-TKD5KkSWA4A?e=vjXWy1" },
+                {"CordenatorName", "José" },
+                {"Title", "Entrega de Dissertação 210" },
+                {"DefenitionOfDelivery", "Mestrado" },
                 {"PublicPDFVersionName", "PrivateProjectDelivery" },
                 {"PrivatePDFVersionName", "public" },
                 {"DeliveryTime", DateTime.Now.ToString() }

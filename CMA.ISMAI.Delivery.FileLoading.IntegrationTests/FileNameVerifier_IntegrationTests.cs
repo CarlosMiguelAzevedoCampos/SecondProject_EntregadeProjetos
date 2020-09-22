@@ -56,7 +56,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
             VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Zip\A029216_ISMAI_Carlos Campos_Informática.zip",
-                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática", "publicFile.pdf", "PrivateProjectDelivery.pdf");
+                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática", "publi", "PrivateProjectDelivery.pdf");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);
@@ -71,8 +71,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Zip\A029216_ISMAI_Carlos Campos_Informática.zip",
-                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática", "public.pdf", "private.pdf");
+            VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.NewGuid(), @"C:\Users\Carlos Campos\Desktop\Teste\Zip\A029216_ISMAI_Carlos Campos_Informática_PublicPrivateFile.zip",
+                @$"C:\Users\Carlos Campos\Desktop\Teste\Unzip\{Guid.NewGuid()}_ISMAI_Carlos Campos_Informática", "public.pdf", "priva");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(verifyFilesCommand);
