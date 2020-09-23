@@ -40,13 +40,27 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
             }
             else
             {
-                string filesEmail = EmailTextWithIdentifiers(fileInformation);
-                _notificationService.SendEmail(request.StudentEmail, filesEmail);
-                _notificationService.SendEmail(request.UniversityEmail, filesEmail);
+                _notificationService.SendEmail(request.StudentEmail, EmailTextWithIdentifiers(fileInformation));
+                _notificationService.SendEmail(request.UniversityEmail, EmailTextWithIdentifiersToUniversity(fileInformation, request.StudentEmail));
             }
                 await _mediator.PublishEvent(new FilesIdentifiedEvent(request.Id, request.FilePath, request.StudentEmail));
             return await Task.FromResult(ValidationResult);
 
+        }
+
+        private string EmailTextWithIdentifiersToUniversity(Dictionary<string, Guid> fileInformation, string studentEmail)
+        {
+            StringBuilder @string = new StringBuilder(@"
+                    Hello!,<br/>
+                    Delivery identifiers have been generated.
+                    Here they are: <br/>");
+            foreach (var item in fileInformation)
+            {
+                @string.Append(string.Format("<b>{0}</b> - {1} <br/> <br/>", item.Key, item.Value));
+            }
+
+            @string.Append(string.Format("<br/> The student email is {0} <br/> <br/> Thanks, <br/> Notification Service", studentEmail));
+            return @string.ToString();
         }
 
         private string EmailTextWithIdentifiers(Dictionary<string, Guid> fileInforation)

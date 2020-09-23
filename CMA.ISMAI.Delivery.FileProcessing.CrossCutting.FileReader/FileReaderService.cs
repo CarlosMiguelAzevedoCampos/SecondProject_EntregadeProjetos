@@ -46,8 +46,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader
                                 }
                                 catch (Exception ex)
                                 {
-                                    break;
                                     _log.Info(string.Format("{0}, This error's can happend when empty cells are in the excel..", ex.ToString()));
+                                    break;
                                 }
                             }
                         }
