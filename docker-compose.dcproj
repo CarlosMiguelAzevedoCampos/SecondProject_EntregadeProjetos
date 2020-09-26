@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>4af9559e-66a4-44cf-94c7-735a70fc2a82</ProjectGuid>
+    <ProjectGuid>9d85840c-8e64-4b88-8125-e6a65b6452e9</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/weatherforecast</DockerServiceUrl>
     <DockerServiceName>cma.ismai.delivery.api.ui</DockerServiceName>
