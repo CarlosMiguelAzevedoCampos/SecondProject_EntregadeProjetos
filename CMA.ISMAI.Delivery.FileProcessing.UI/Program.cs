@@ -40,7 +40,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.UI
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
             Console.WriteLine(string.Format("File Processing is starting..! - {0}", DateTime.Now));
-            serviceProvider.GetRequiredService<ConsoleApplication>().StartServiceAsync();
+            await serviceProvider.GetRequiredService<ConsoleApplication>().StartServiceAsync();
             var hostBuilder = new HostBuilder();
             await hostBuilder.RunConsoleAsync();
         }

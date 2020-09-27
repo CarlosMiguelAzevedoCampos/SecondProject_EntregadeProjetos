@@ -22,7 +22,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
         private readonly CamundaEngineClient camundaEngineClient;
         private readonly string filePath;
         private Timer pollingTimer;
-        private readonly IDictionary<string, Action<ExternalTask>> workers;
+        private IDictionary<string, Action<ExternalTask>> workers;
         private readonly IMediator _mediator;
         private readonly INotificationService _notificationService;
         private readonly ILoggingService _log;
@@ -45,6 +45,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
 
         public void RegistWorkers()
         {
+            workers = new Dictionary<string, Action<ExternalTask>>();
+
             registerWorker("generate_watermark", async externalTask =>
             {
                 try

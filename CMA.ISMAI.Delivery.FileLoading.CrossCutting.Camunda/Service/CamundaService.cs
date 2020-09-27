@@ -22,7 +22,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
         private readonly CamundaEngineClient camundaEngineClient;
         private readonly string filePath;
         private Timer pollingTimer;
-        private readonly IDictionary<string, Action<ExternalTask>> workers;
+        private IDictionary<string, Action<ExternalTask>> workers;
         private readonly IMediator _mediator;
         private readonly INotificationService _notificationService;
         private readonly IQueueService _queueService;
@@ -91,6 +91,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
 
         public void RegistWorkers()
         {
+            workers = new Dictionary<string, Action<ExternalTask>>();
 
             registerWorker("download_files", async externalTask =>
             {
