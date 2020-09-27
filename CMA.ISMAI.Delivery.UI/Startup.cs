@@ -1,9 +1,16 @@
 using CMA.ISMAI.Delivery.Logging.Interface;
 using CMA.ISMAI.Delivery.Logging.Service;
+using CMA.ISMAI.Delivery.UI.HealthCheck;
+using CMA.ISMAI.Delivery.UI.HealthCheck.Interface;
+using CMA.ISMAI.Delivery.UI.HealthCheck.Service;
+using HealthChecks.UI.Client;
+using HealthChecks.UI.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
@@ -14,8 +21,10 @@ namespace CMA.ISMAI.Delivery.UI
 {
     public class Startup
     {
-        public Startup()
+        private readonly IWebHostEnvironment _currentEnvironment;
+        public Startup(IWebHostEnvironment env)
         {
+            _currentEnvironment = env;
             Configuration = new ConfigurationBuilder()
                                                    .SetBasePath(Directory.GetCurrentDirectory()) // Directory where the json files are located
                                                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).AddEnvironmentVariables()
@@ -35,7 +44,13 @@ namespace CMA.ISMAI.Delivery.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ILoggingService, LoggingService>();
+            services.AddTransient<IHttpRequest, HttpRequest>();
+            services.AddSingleton<IHealthCheck, CamundaHealthCheck>();
+
             services.AddControllersWithViews();
+            services.AddHealthChecks().AddRabbitMQ(Configuration.GetSection("RabbitMq:Uri").Value, null, "RabbitMQ")
+            .AddCheck<CamundaHealthCheck>("Camunda BPM");
+            services.AddHealthChecksUI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +78,17 @@ namespace CMA.ISMAI.Delivery.UI
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecksUI(delegate (Options options)
+            {
+                options.UIPath = "/hc-ui";
             });
         }
     }
