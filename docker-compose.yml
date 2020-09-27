@@ -5,7 +5,7 @@ services:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryapiui
     networks:
       - deliveryproject_network
-    container_name: cmaismaideliveryapiuis
+    container_name: cmaismaideliveryapiui
     ports:
     - 5668:80
     - 5669:443
@@ -50,7 +50,11 @@ services:
       - OneDrive__Path=C:/Users/Carlos Campos/OneDrive/Document
       - TimeToFetch__Time=43200 
       - TaskPerFetch__Time=30 
-      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com
+      - Notification__Email=carlosmiguelcampos1996@gmail.com
+      - NotificationEmail__Email=trelloismai@gmail.com
+      - NotificationEmail__Password=trelloteste123
+      - NotificationEmail__Host=smtp.gmail.com
+      - NotificationEmail__Port=587
   cma.ismai.delivery.payment.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliverypaymentui
     networks:
@@ -76,6 +80,10 @@ services:
       - TaskPerFetch__Time=30
       - Notification__ManualProcessing=carlosmiguelcampos1996@gmail.com 
       - Notification__University=carlosmiguelcampos1996@gmail.com 
+      - NotificationEmail__Email=trelloismai@gmail.com
+      - NotificationEmail__Password=trelloteste123
+      - NotificationEmail__Host=smtp.gmail.com
+      - NotificationEmail__Port=587
   cma.ismai.delivery.fileloading.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileloadingui
     networks:
@@ -98,7 +106,11 @@ services:
       - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/
       - FilePathZip__Path=C:/Users/Carlos Campos/Desktop/Production/Zip
       - FilePathUnzip__Path=C:/Users/Carlos Campos/Desktop/Production/Unzip
-      - Notificaiton__Email=carlosmiguelcampos1996@gmail.com
+      - Notification__Email=carlosmiguelcampos1996@gmail.com
+      - NotificationEmail__Email=trelloismai@gmail.com
+      - NotificationEmail__Password=trelloteste123
+      - NotificationEmail__Host=smtp.gmail.com
+      - NotificationEmail__Port=587
   cma.ismai.delivery.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryui
     networks:

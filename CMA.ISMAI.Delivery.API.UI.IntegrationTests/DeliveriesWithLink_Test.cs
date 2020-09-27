@@ -47,7 +47,7 @@ namespace CMA.ISMAI.Delivery.API.UI.IntegrationTests
 
             // Assert
             Assert.Equal(400, resultObject.Status.Value);
-            Assert.Equal(8, resultObject.Errors["Messages"].Length);
+            Assert.Equal(9, resultObject.Errors["Messages"].Length);
 
         }
 

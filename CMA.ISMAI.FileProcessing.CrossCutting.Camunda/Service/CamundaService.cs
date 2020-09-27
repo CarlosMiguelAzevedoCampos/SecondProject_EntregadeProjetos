@@ -141,12 +141,24 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                     var delivery = externalTask.Variables;
                     var getPath = returnVariableValue(delivery, "deliveryPath");
                     var getStudentEmail = returnVariableValue(delivery, "studentEmail");
+                    var getStudentName = returnVariableValue(delivery, "studentName");
+                    var getInstituteName = returnVariableValue(delivery, "instituteName");
+                    var getCourseName = returnVariableValue(delivery, "courseName");
+                    var getStudentNumber = returnVariableValue(delivery, "studentNumber");
 
                     var generateJuryPageCommand = new FileTransferCommand(getPath.Value.ToString(), _config.GetSection("OneDrive:Path").Value, getStudentEmail.Value.ToString());
 
 
                     var result = await _mediator.Send(generateJuryPageCommand);
 
+                    if (result.IsValid)
+                    {
+                        _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Olá, <br/> Uma entrega irá para o OneDrive da Instituição. A informação do Aluno é <br/> <br/> Nome:{0}, Instituição: {1}, Número de estudante:{2}, Curso:{3}. <br/> <br/> Obrigado",
+                        getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString()));
+
+                        _notificationService.SendEmail(getStudentEmail.Value.ToString(), string.Format("Olá, <br/> A tua entrega irá para o OneDrive da Instituição. Para mais informação, contacta a tua Instituição. Obrigado",
+                        getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString()));
+                    }
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     dictionaryToPassVariable["ok"] = result.IsValid;
                     dictionaryToPassVariable["Worker"] = "send_to_cloud";

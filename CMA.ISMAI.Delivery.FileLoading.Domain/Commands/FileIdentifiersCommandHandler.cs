@@ -53,7 +53,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
             StringBuilder @string = new StringBuilder(@"
                     Olá!,<br/>
                     Identificadores únicos foram gerados
-                    Aqui estão eles: <br/>");
+                    <br/> <br/> Aqui estão eles: <br/>");
             foreach (var item in fileInformation)
             {
                 @string.Append(string.Format("<b>{0}</b> - {1} <br/> <br/>", item.Key, item.Value));
@@ -68,7 +68,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
             StringBuilder @string = new StringBuilder(@"
                     Olá!,<br/>
                     Os teus identificadores únicos foram gerados
-                    Aqui estão eles: <br/>");
+                    <br/> <br/> Aqui estão eles: <br/>");
             foreach (var item in fileInforation)
             {
                 @string.Append(string.Format("<b>{0}</b> - {1} <br/> <br/>", item.Key, item.Value));

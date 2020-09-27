@@ -43,7 +43,6 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Events
         public Task Handle(FileTransferCompletedEvent notification, CancellationToken cancellationToken)
         {
             _eventStore.SaveToEventStore(notification);
-            _notificationService.SendEmail(notification.StudentEmail, "Hey!, <br/> <br/> You're delivery is already on the institution OneDrive! <br/><br/> Thanks,<br/> <br/> Delivery System");
             return Task.CompletedTask;
         }
     }

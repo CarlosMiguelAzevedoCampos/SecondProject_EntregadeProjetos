@@ -26,7 +26,7 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Models.Validations
         }
         protected void ValidateStudentNumber()
         {
-            RuleFor(c => c.CourseName)
+            RuleFor(c => c.StudentNumber)
                 .NotEmpty().WithMessage("Porfavor, insira o seu número de aluno")
                 .Length(2, 10).WithMessage("O Número de aluno deve ter entre 2 a 10 caracteres");
         }
