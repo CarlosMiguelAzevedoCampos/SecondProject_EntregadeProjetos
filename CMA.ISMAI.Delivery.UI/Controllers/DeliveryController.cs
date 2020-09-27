@@ -95,7 +95,7 @@ namespace CMA.ISMAI.Delivery.UI.Controllers
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var resultObject = JsonConvert.DeserializeObject<OkObjectResult>(result);
-                        TempData["result"] = "Delivery Deployed!";
+                        TempData["result"] = "Projeto entregue!";
                     }
                     else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
@@ -104,7 +104,7 @@ namespace CMA.ISMAI.Delivery.UI.Controllers
                     }
                     else
                     {
-                        TempData["unkn_result"] = "Something wrong happend!, please, contact local IT";
+                        TempData["unkn_result"] = "Algo falhou, porfavor, contacta a universidade";
                     }
                     return View();
                 }
@@ -112,7 +112,7 @@ namespace CMA.ISMAI.Delivery.UI.Controllers
             catch(Exception ex)
             {
                 this._log.Fatal(ex.ToString());
-                TempData["unkn_result"] = "Something wrong happend!, please, contact local IT";
+                TempData["unkn_result"] = "Algo falhou, porfavor, contacta a universidade";
                 return View();
             }
 

@@ -4,10 +4,11 @@
     {
         public CreateDeliveryWithFileCommandValidation()
         {
-            ValidateStudentCourseName();
-            ValidateStudentInstitution();
             ValidateStudentName();
+            ValidateStudentInstitution();
+            ValidateStudentCourseName();
             ValidateStudentNumber();
+            ValidateStudentEmail();
             ValidateCordenator();
             ValidateTitle();
             ValidateDefenition();

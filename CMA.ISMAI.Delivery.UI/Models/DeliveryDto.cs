@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 using System.ComponentModel;
 
 namespace CMA.ISMAI.Delivery.UI.Models
@@ -7,31 +6,31 @@ namespace CMA.ISMAI.Delivery.UI.Models
     public class DeliveryDto
     {
 
-        [DisplayName("Student Name:")]
+        [DisplayName("Nome do Estudante:")]
         public string StudentName { get; set; }
-        [DisplayName("Institute Name:")]
+        [DisplayName("Nome da Instituição:")]
         public string InstituteName { get; set; }
-        [DisplayName("Course Name:")]
+        [DisplayName("Nome do Curso:")]
         public string CourseName { get; set; }
-        [DisplayName("Student Email:")]
+        [DisplayName("Email do Estudante:")]
         public string StudentEmail { get; set; }
-        [DisplayName("Student Number:")]
+        [DisplayName("Número de Aluno:")]
         public string StudentNumber { get; set; }
-        [DisplayName("Coordenator Name:")]
+        [DisplayName("Nome do Coordenador:")]
         public string CordenatorName { get; set; }
-        [DisplayName("Project Title:")]
+        [DisplayName("Título do Projeto:")]
         public string Title { get; set; }
-        [DisplayName("Project Defenition: (Master Degree)")]
+        [DisplayName("Definição da entrega: (Mestrado)")]
         public string DefenitionOfDelivery { get; set; } // Relatorio.., tese..
-        [DisplayName("File for public delivery (publicDelivery.pdf)")]
+        [DisplayName("Ficheiro público de entrega (publicDelivery.pdf)")]
         public string PublicPDFVersionName { get; set; }
-        [DisplayName("File for private delivery (privateDelivery.pdf)")]
+        [DisplayName("Ficheiro privado de entrega (privateDelivery.pdf)")]
         public string PrivatePDFVersionName { get; set; }
-        [DisplayName("Delivery by Link")]
+        [DisplayName("Entrega por Link")]
         public string FileUrl { get; set; }
-        [DisplayName("Delivery by File")]
+        [DisplayName("Entrega por Ficheiro")]
         public IFormFile FormFile { get; set; }
-        [DisplayName("Delivery Type - File or Link?")]
+        [DisplayName("Forma de entrega - Ficheiro ou Link?")]
         public bool DeliveryType { get; set; }
     }
 }

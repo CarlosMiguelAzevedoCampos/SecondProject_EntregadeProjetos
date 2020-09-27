@@ -54,7 +54,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                 {
                     var delivery = externalTask.Variables;
                     var getStudentEmail = returnVariableValue(delivery, "studentEmail");
-                    bool result = _notificationService.SendEmail(getStudentEmail.Value.ToString(), "Hey! <br/> <br/> You're files are approved. <br/> <br/> Now, you can pay your delivery! <br/> <br/> Thanks, <br/> <br/> Delivery System.");
+                    bool result = _notificationService.SendEmail(getStudentEmail.Value.ToString(), "Olá! <br/> <br/> Os teus ficheiros foram aprovados. <br/> <br/>Agora, podes pagar a tua entrega! <br/> <br/> Obrigado, <br/> <br/> Delivery System.");
 
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     dictionaryToPassVariable.Add("ok", result);
@@ -112,8 +112,8 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getCordenatorName = returnVariableValue(delivery, "cordenatorName");
 
-                    bool result = _notificationService.SendEmail(_config.GetSection("Notification:University").Value, string.Format(@"Hello, <br/> The delivery of {0}, has been paid! <br/> <br/> 
-                            Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/><br/> Thanks, <br/> <br/> Delivery System", getStudentName.Value.ToString(),
+                    bool result = _notificationService.SendEmail(_config.GetSection("Notification:University").Value, string.Format(@"Olá, <br/> A entrega de {0}, foi paga! <br/> <br/> 
+                            Nome da Instituição: {1}, Número do Aluno:{2}, Curso: {3}. <br/><br/> Obrigado, <br/> <br/> Delivery System", getStudentName.Value.ToString(),
                         getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString()));
 
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
@@ -185,7 +185,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "Worker");
 
-                    bool result = _notificationService.SendEmail(getStudentEmail.Value.ToString(), "Hey! <br/> <br/> You're files are approved. <br/> <br/> Now, you can pay your delivery! <br/> <br/> Thanks, <br/> <br/> Delivery System.");
+                    bool result = _notificationService.SendEmail(getStudentEmail.Value.ToString(), "Olá! <br/> <br/> Os teus ficheiros foram aprovados. <br/> <br/>Agora, podes pagar a tua entrega! <br/> <br/> Obrigado, <br/> <br/> Delivery System.");
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     dictionaryToPassVariable["Worker"] = "notify_student";
                     camundaEngineClient.ExternalTaskService.Complete("StudentPaymentISMAI", externalTask.Id, dictionaryToPassVariable);
@@ -209,7 +209,7 @@ namespace CMA.ISMAI.Delivery.Payment.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "worker");
 
-                    _notificationService.SendEmail(_config.GetSection("Notification:ManualProcessing").Value, string.Format("Hello, <br/> Something went wrong on the delivery. <br/> <br/> The delivery failed on the Payment diagram. <br/> <br/> Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/> <br/> It failed on the {4} phase. <br/> <br/> Thanks",
+                    _notificationService.SendEmail(_config.GetSection("Notification:ManualProcessing").Value, string.Format("Olá, <br/> Algo correu mal na entrega. <br/> <br/> A entrega falhou no diagrama Payment. <br/> <br/> Nome do Estudante:{0}, Nome da Instituição: {1}, Número de Aluno:{2}, Curso:{3}. <br/> <br/> Ele falhou na fase {4} . <br/> <br/> Obrigado",
                         getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getWorker.Value.ToString()));
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("StudentPaymentISMAI", externalTask.Id, dictionaryToPassVariable);

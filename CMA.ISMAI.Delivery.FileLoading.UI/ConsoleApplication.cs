@@ -87,15 +87,15 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
                 var parseObject = (Core.Model.Delivery)notification;
                 if (!_camundaService.StartWorkFlow(parseObject))
                 {
-                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hey!, <br/> <br/> An delivery failed to start on FileLoading workflow! <br/> <br/>  Is delivery items are: " +
-                        "<br/> <br/> Name: {0} <br/> <br/> Student Number {1} <br/> <br/> Course name: {2} <br/> <br/> Heres the JSON object {3} <br/><br/> Thanks.", parseObject.StudentName, parseObject.StudentNumber,
+                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Olá!, <br/> <br/> Uma entrega falhou a inicar no Diagrama FileLoading! <br/> <br/>  Os items são: " +
+                        "<br/> <br/> Nome: {0} <br/> <br/> Número de Aluno {1} <br/> <br/> Curso: {2} <br/> <br/> Aqui tem o JSON com a informação {3} <br/><br/> Obrigado.", parseObject.StudentName, parseObject.StudentNumber,
                         parseObject.CourseName, JsonConvert.SerializeObject(notification)));
                 }
             }
             catch (Exception ex)
             {
                 _log.Fatal(ex.ToString());
-                _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hey!, <br/> <br/> An delivery failed to start on FileLoading workflow! <br/> <br/> Heres the JSON object {1} <br/><br/> Thanks.",  JsonConvert.SerializeObject(notification)));
+                _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Olá!, <br/> <br/> Uma entrega falhou a inicar no Diagrama FileLoading! <br/> <br/> Aqui tem o JSON com a informação {0} <br/><br/> Thanks.", JsonConvert.SerializeObject(notification)));
             }
         }
     }

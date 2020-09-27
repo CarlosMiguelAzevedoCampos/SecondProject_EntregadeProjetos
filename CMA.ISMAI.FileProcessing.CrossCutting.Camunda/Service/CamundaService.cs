@@ -173,7 +173,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "worker");
 
-                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hello, <br/> Something went wrong on the delivery. <br/> <br/> The delivery failed on the Payment diagram.<br/> <br/> Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/> <br/> It failed on the {4} phase. <br/> <br/> Thanks",
+                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Olá, <br/> Algo correu mal na entrega. <br/> <br/> A entrega falhou no diagrama FileProcessing.<br/> <br/> Nome:{0}, Instituição: {1}, Número de estudante:{2}, Curso:{3}. <br/> <br/> Falhou na fase {4} . <br/> <br/> Obrigado",
                         getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getWorker.Value.ToString()));
                                        
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);

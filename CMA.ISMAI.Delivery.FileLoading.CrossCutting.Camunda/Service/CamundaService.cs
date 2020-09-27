@@ -280,7 +280,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "Worker");
 
-                    _notificationService.SendEmail(getStudentEmail.Value.ToString(), string.Format("Hello, <br/> No public or private file was found on your Delivery. Please, contact the university for more information. <br/> Thanks, <br/> Delivery System."));
+                    _notificationService.SendEmail(getStudentEmail.Value.ToString(), string.Format("Olá, <br/> Não foram encontrado ficheiros públicos ou privados na tua entrega. Porfavor, contacta a tua Universidade! <br/> Obrigado, <br/> Delivery System."));
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
                 }
@@ -306,7 +306,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "Worker");
 
-                    _notificationService.SendEmail(getStudentEmail.Value.ToString(), string.Format("Hello, <br/> Corrupted files were found in your Delivery. Please, contact the university for more information. <br/> Thanks, <br/> Delivery System."));
+                    _notificationService.SendEmail(getStudentEmail.Value.ToString(), string.Format("Olá, <br/> Ficheiros corrompidos foram encontrados. Porfavor, contacta a tua Universidade! <br/> Obrigado, <br/> Delivery System."));
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);
                 }
@@ -329,7 +329,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getWorker = returnVariableValue(delivery, "worker");
 
-                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Hello, <br/> Something went wrong on the delivery. <br/> <br/> The delivery failed on the File Loading diagram. <br/> <br/> Student Name:{0}, Institution Name: {1}, Student Number:{2}, Course Name:{3}. <br/> <br/> It failed on the {4} phase. <br/> <br/> Thanks",
+                    _notificationService.SendEmail(_config.GetSection("Notification:Email").Value, string.Format("Ol]a, <br/> Algo correu mal na entrega. <br/> <br/> A entrega falhou no diagrama FileLoading. <br/> <br/> Nome do estudante:{0}, Nome da Universidade: {1}, Número do estudante: {2}, Nome do Curso:{3}. <br/> <br/> Ele falhou na fase {4} . <br/> <br/> Obrigado",
                         getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getStudentNumber.Value.ToString(), getCourseName.Value.ToString(), getWorker.Value.ToString()));
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     camundaEngineClient.ExternalTaskService.Complete("FileLoading", externalTask.Id, dictionaryToPassVariable);

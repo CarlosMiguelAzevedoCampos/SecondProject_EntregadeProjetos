@@ -51,30 +51,30 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
         private string EmailTextWithIdentifiersToUniversity(Dictionary<string, Guid> fileInformation, string studentEmail)
         {
             StringBuilder @string = new StringBuilder(@"
-                    Hello!,<br/>
-                    Delivery identifiers have been generated.
-                    Here they are: <br/>");
+                    Olá!,<br/>
+                    Identificadores únicos foram gerados
+                    Aqui estão eles: <br/>");
             foreach (var item in fileInformation)
             {
                 @string.Append(string.Format("<b>{0}</b> - {1} <br/> <br/>", item.Key, item.Value));
             }
 
-            @string.Append(string.Format("<br/> The student email is {0} <br/> <br/> Thanks, <br/> Notification Service", studentEmail));
+            @string.Append(string.Format("<br/> O e-mail do estudante é {0} <br/> <br/> Obrigado, <br/> Notification Service", studentEmail));
             return @string.ToString();
         }
 
         private string EmailTextWithIdentifiers(Dictionary<string, Guid> fileInforation)
         {
             StringBuilder @string = new StringBuilder(@"
-                    Hello!,<br/>
-                    Your delivery identifiers have been generated.
-                    Here they are: <br/>");
+                    Olá!,<br/>
+                    Os teus identificadores únicos foram gerados
+                    Aqui estão eles: <br/>");
             foreach (var item in fileInforation)
             {
                 @string.Append(string.Format("<b>{0}</b> - {1} <br/> <br/>", item.Key, item.Value));
             }
 
-            @string.Append("<br/> Thanks, <br/> Notification Service");
+            @string.Append("<br/> Obrigado, <br/> Notification Service");
             return @string.ToString();
         }
     }

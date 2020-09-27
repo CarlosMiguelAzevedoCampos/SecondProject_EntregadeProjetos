@@ -6,20 +6,21 @@ namespace CMA.ISMAI.Delivery.API.Domain.Commands.Models.Validations
     {
         public CreateDeliveryWithLinkCommandValidation()
         {
-            ValidateStudentCourseName();
-            ValidateStudentInstitution();
             ValidateStudentName();
+            ValidateStudentInstitution();
+            ValidateStudentCourseName();
             ValidateStudentNumber();
-            ValidateUrl();
+            ValidateStudentEmail();
             ValidateCordenator();
             ValidateTitle();
             ValidateDefenition();
+            ValidateUrl();
         }
 
         protected void ValidateUrl()
         {
             RuleFor(c => c.LinkFile)
-                .NotEmpty().WithMessage("Please ensure you have entered the File Url");
+                .NotEmpty().WithMessage("Porfavor, entregue preencha o campo Link com o Link da entrega.");
         }
     }
 }
