@@ -17,13 +17,11 @@ public class VerifyFileNameCommandHandler : CommandHandler,
 {
     private readonly IFileVerifierService _fileVerifierService;
     private readonly IMediatorHandler _mediator;
-    private readonly ILoggingService _loggingService;
 
-    public VerifyFileNameCommandHandler(IFileVerifierService fileVerifierService, IMediatorHandler mediator, ILoggingService loggingService)
+    public VerifyFileNameCommandHandler(IFileVerifierService fileVerifierService, IMediatorHandler mediator)
     {
         _fileVerifierService = fileVerifierService;
         _mediator = mediator;
-        _loggingService = loggingService;
     }
 
     public async Task<ValidationResult> Handle(VerifyFilesNameCommand request, CancellationToken cancellationToken)

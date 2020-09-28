@@ -106,12 +106,14 @@ namespace CMA.ISMAI.Delivery.UI.Controllers
                     {
                         TempData["unkn_result"] = "Algo falhou, porfavor, contacta a universidade";
                     }
+                    ModelState.Clear();
                     return View();
                 }
             }
             catch(Exception ex)
             {
                 this._log.Fatal(ex.ToString());
+                ModelState.Clear();
                 TempData["unkn_result"] = "Algo falhou, porfavor, contacta a universidade";
                 return View();
             }

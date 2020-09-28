@@ -111,6 +111,7 @@ services:
       - NotificationEmail__Password=trelloteste123
       - NotificationEmail__Host=smtp.gmail.com
       - NotificationEmail__Port=587
+
   cma.ismai.delivery.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryui
     networks:
@@ -128,7 +129,71 @@ services:
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113
       - API_File_ZIP__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithFile
       - API_File_URL__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithLink
-   
+  elasticsearch:
+   image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+   container_name: elasticsearch
+   ports:
+    - "9200:9200"
+   volumes:
+    - elasticsearch-data:/usr/share/elasticsearch/data
+   networks:
+    - network_cmaismai
+   restart: always
+
+  kibana:
+   image: docker.elastic.co/kibana/kibana:6.2.4
+   container_name: kibana
+   ports:
+    - "5601:5601"
+   depends_on:
+    - elasticsearch
+   networks:
+    - network_cmaismai
+   restart: always
+
+  rabbitmq:
+   image: rabbitmq:management
+   container_name: rabbitmq
+   hostname: rabbitmq
+   environment:
+    RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+    RABBITMQ_DEFAULT_USER: "admin"
+    RABBITMQ_DEFAULT_PASS: "admin"
+    RABBITMQ_DEFAULT_VHOST: "/"
+   ports:
+    - "5672:5672"
+    - "15672:15672"
+   networks:
+   - network_cmaismai
+   restart: always
+
+  camunda:
+   container_name: camunda
+   image: camunda/camunda-bpm-platform:latest
+   ports:
+    - "8080:8080"
+   networks:
+    - network_cmaismai
+   restart: always
+
+  eventstore.db:
+    container_name: eventstore
+    image: eventstore/eventstore:release-5.0.8
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_INT_TCP_PORT=1112
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_INT_HTTP_PORT=2112
+      - EVENTSTORE_EXT_HTTP_PORT=2113
+    ports:
+      - "1112:1112"
+      - "1113:1113"
+      - "2112:2112"
+      - "2113:2113"
+    networks:
+    - network_cmaismai
+    restart: always
+
 volumes:
   elasticsearch-data:
 networks:
