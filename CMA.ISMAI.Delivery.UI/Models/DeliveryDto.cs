@@ -30,7 +30,7 @@ namespace CMA.ISMAI.Delivery.UI.Models
         public string FileUrl { get; set; }
         [DisplayName("Entrega por Ficheiro")]
         public IFormFile FormFile { get; set; }
-        [DisplayName("Forma de entrega - Ficheiro ou Link?")]
+        [DisplayName("Forma de entrega - Link?")]
         public bool DeliveryType { get; set; }
     }
 }
