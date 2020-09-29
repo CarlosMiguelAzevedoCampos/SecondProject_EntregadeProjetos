@@ -15,7 +15,7 @@ services:
       dockerfile: CMA.ISMAI.Delivery.API.UI/Dockerfile
     volumes:
       - C:/Users/Carlos Campos/Desktop/Production/Unzip:/Production/Unzip 
-      - C:/Users/Carlos Campos/Desktop/Production/Zip:/Production/Zip 
+      - C:/Users/Carlos Campos/Desktop/Production/Zip:/Production/Zip  
     environment:
       - RabbitMqCore__Uri=rabbitmq 
       - RabbitMqCore__Username=admin
@@ -23,8 +23,8 @@ services:
       - RabbitMqCore__Port=5672 
       - ElasticConfiguration__Uri=http://elasticsearch:9200/
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 
-      - FilePathZip__Path=C:/Users/Carlos Campos/Desktop/Production/Zip
-      - FilePathUnzip__Path=C:/Users/Carlos Campos/Desktop/Production/Unzip
+      - FilePathZip__Path=C:/Users/Carlos Campos/Desktop/Production/Zip # Onde estarão os ficheiros descarregados zip
+      - FilePathUnzip__Path=C:/Users/Carlos Campos/Desktop/Production/Unzip # One estarao os ficheiros descarregados unzip
 
   cma.ismai.delivery.fileprocessing.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileprocessingui
@@ -38,6 +38,8 @@ services:
     volumes:
       - C:/Users/Carlos Campos/OneDrive/Document:/Document/OneDrive
       - C:/Users/Carlos Campos/Desktop/ismai.xlsx:/Jury/ismai.xlsx
+      - C:/Users/Carlos Campos/Desktop/Production/Unzip:/Production/Unzip 
+      - C:/Users/Carlos Campos/Desktop/Production/Zip:/Production/Zip  
     environment:
       - RabbitMqCore__Uri=rabbitmq 
       - RabbitMqCore__Username=admin 
@@ -46,15 +48,18 @@ services:
       - ElasticConfiguration__Uri=http://elasticsearch:9200/ 
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 
       - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/
-      - FilePathJury__Path=//Jury//ismai.xlsx
-      - OneDrive__Path=C:/Users/Carlos Campos/OneDrive/Document
-      - TimeToFetch__Time=43200 
-      - TaskPerFetch__Time=30 
-      - Notification__Email=carlosmiguelcampos1996@gmail.com
-      - NotificationEmail__Email=trelloismai@gmail.com
+      - FilePathJury__Path=//Jury//ismai.xlsx # Onde estará o ficheiro com o Juri
+      - OneDrive__Path=C:/Users/Carlos Campos/OneDrive/Document #Onde se encontra o OneDrive
+      - TimeToFetch__Time=43200 # tempo para o timer ir ao camunda colecionar tasks
+      - TaskPerFetch__Time=30 # tasks que o camunda retorna
+      - Notification__Email=carlosmiguelcampos1996@gmail.com #Email de envio de notificação da solução para processamento manual
+      - NotificationEmail__Email=trelloismai@gmail.com #Email de envio de notificação da solução
       - NotificationEmail__Password=trelloteste123
       - NotificationEmail__Host=smtp.gmail.com
       - NotificationEmail__Port=587
+      - FilePathZip__Path=C:/Users/Carlos Campos/Desktop/Production/Zip # Onde estarão os ficheiros descarregados zip
+      - FilePathUnzip__Path=C:/Users/Carlos Campos/Desktop/Production/Unzip # One estarao os ficheiros descarregados unzip
+
   cma.ismai.delivery.payment.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliverypaymentui
     networks:
@@ -66,6 +71,8 @@ services:
       dockerfile: CMA.ISMAI.Delivery.Payment.UI/Dockerfile
     volumes:
       - C:/Users/Carlos Campos/Desktop/excel.xlsx:/Payment/excel.xlsx 
+      - C:/Users/Carlos Campos/Desktop/Production/Unzip:/Production/Unzip 
+      - C:/Users/Carlos Campos/Desktop/Production/Zip:/Production/Zip  
     environment:
       - COMPOSE_CONVERT_WINDOWS_PATHS=1 
       - RabbitMqCore__Uri=rabbitmq 
@@ -75,15 +82,18 @@ services:
       - ElasticConfiguration__Uri=http://elasticsearch:9200/
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 
       - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/ 
-      - FilePathPayment__Path=//Payment//excel.xlsx 
-      - TimeToFetch__Time=86400
-      - TaskPerFetch__Time=30
-      - Notification__ManualProcessing=carlosmiguelcampos1996@gmail.com 
-      - Notification__University=carlosmiguelcampos1996@gmail.com 
-      - NotificationEmail__Email=trelloismai@gmail.com
+      - FilePathPayment__Path=//Payment//excel.xlsx #Ficheiro excel com os alunos que fizeram o pagamento
+      - TimeToFetch__Time=86400 # tempo para o timer ir ao camunda colecionar tasks
+      - TaskPerFetch__Time=30 # tasks que o camunda retorna
+      - Notification__ManualProcessing=carlosmiguelcampos1996@gmail.com  # Email de notificação para processamento manual
+      - Notification__University=carlosmiguelcampos1996@gmail.com  # Email de notificação da universidade do pagamento
+      - NotificationEmail__Email=trelloismai@gmail.com #Email de envio de notificação da solução
       - NotificationEmail__Password=trelloteste123
       - NotificationEmail__Host=smtp.gmail.com
       - NotificationEmail__Port=587
+      - FilePathZip__Path=C:/Users/Carlos Campos/Desktop/Production/Zip # Onde estarão os ficheiros descarregados zip
+      - FilePathUnzip__Path=C:/Users/Carlos Campos/Desktop/Production/Unzip # One estarao os ficheiros descarregados unzip
+
   cma.ismai.delivery.fileloading.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileloadingui
     networks:
@@ -104,10 +114,10 @@ services:
       - ElasticConfiguration__Uri=http://elasticsearch:9200/
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113
       - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/
-      - FilePathZip__Path=C:/Users/Carlos Campos/Desktop/Production/Zip
-      - FilePathUnzip__Path=C:/Users/Carlos Campos/Desktop/Production/Unzip
-      - Notification__Email=carlosmiguelcampos1996@gmail.com
-      - NotificationEmail__Email=trelloismai@gmail.com
+      - FilePathZip__Path=C:/Users/Carlos Campos/Desktop/Production/Zip # Onde estarão os ficheiros descarregados zip
+      - FilePathUnzip__Path=C:/Users/Carlos Campos/Desktop/Production/Unzip # One estarao os ficheiros descarregados unzip
+      - Notification__Email=carlosmiguelcampos1996@gmail.com # Email de notificação de processamento manual
+      - NotificationEmail__Email=trelloismai@gmail.com #Email de envio de notificação da solução
       - NotificationEmail__Password=trelloteste123
       - NotificationEmail__Host=smtp.gmail.com
       - NotificationEmail__Port=587
@@ -129,6 +139,8 @@ services:
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113
       - API_File_ZIP__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithFile
       - API_File_URL__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithLink
+
+#Auxiliares
   elasticsearch:
    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
    container_name: elasticsearch

@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>b7fa20d8-faf1-48c7-9c92-38cafb457c62</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\CMA.ISMAI.Delivery</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
