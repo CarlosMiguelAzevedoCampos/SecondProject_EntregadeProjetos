@@ -43,7 +43,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A029216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_JuryPageTest", "C:\\Users\\Carlos Campos\\Desktop\\ismai.xlsx");
+            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A029216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_JuryPageTest\", "C:\\Users\\Carlos Campos\\Desktop\\ismai.xlsx");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateJuryPageCommand);
@@ -58,7 +58,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
            // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A029216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A039216_ISMAI_Carlos Campos_Informática_JuryPageTest", "C:\\Users\\Carlos Campos\\Desktop\\ismai.xlsx");
+            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A029216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A039216_ISMAI_Carlos Campos_Informática_JuryPageTest\", "C:\\Users\\Carlos Campos\\Desktop\\ismai.xlsx");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateJuryPageCommand);
@@ -73,7 +73,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A039216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_JuryPageTest", "C:\\Users\\Carlos Campos\\Desktop\\ismai.xlsx");
+            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A039216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_JuryPageTest\", "C:\\Users\\Carlos Campos\\Desktop\\ismai.xlsx");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateJuryPageCommand);
@@ -88,7 +88,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A029216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_JuryPageTest", "C:\\Users\\Carlos Campos\\Desktop\\ismaiJury.xlsx");
+            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A029216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_JuryPageTest\", "C:\\Users\\Carlos Campos\\Desktop\\ismaiJury.xlsx");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateJuryPageCommand);

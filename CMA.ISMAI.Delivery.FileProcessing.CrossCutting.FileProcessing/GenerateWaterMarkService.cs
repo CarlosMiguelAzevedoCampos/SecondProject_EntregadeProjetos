@@ -27,9 +27,9 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
         {
             try
             {
-                GenerateWaterMark(string.Format(@"{0}\{1}", path, privateFile), string.Format(@"{0}\{1}", path, "PrivateWaterMark.pdf"), "Private evaluation File");
+                GenerateWaterMark(string.Format(@"{0}{1}", path, privateFile), string.Format(@"{0}{1}", path, "PrivateWaterMark.pdf"), "Private evaluation File");
 
-                GenerateWaterMark(string.Format(@"{0}\{1}", path, publicFile), string.Format(@"{0}\{1}", path, "PublicWaterMark.pdf"), "Public evaluation File");
+                GenerateWaterMark(string.Format(@"{0}{1}", path, publicFile), string.Format(@"{0}{1}", path, "PublicWaterMark.pdf"), "Public evaluation File");
 
                 return true;
             }

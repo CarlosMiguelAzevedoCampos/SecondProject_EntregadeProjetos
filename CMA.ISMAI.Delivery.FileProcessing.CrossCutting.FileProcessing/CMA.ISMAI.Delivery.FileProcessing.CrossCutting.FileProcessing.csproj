@@ -13,10 +13,4 @@
     <ProjectReference Include="..\CMA.ISMAI.Delivery.Logging.Log\CMA.ISMAI.Delivery.Logging.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Image\ismai.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

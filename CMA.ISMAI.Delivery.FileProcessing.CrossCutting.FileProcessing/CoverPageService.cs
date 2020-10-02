@@ -11,6 +11,7 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using System;
+using System.IO;
 
 namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
 {
@@ -23,20 +24,20 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
             _log = log;
         }
 
-        public bool AddCoverPage(string basepath, string title, string studentName, string cordenatorName, string contextOfDelivery)
+        public bool AddCoverPage(string basepath, string title, string studentName, string cordenatorName, string contextOfDelivery, string imagePath)
         {
             try
             {
-                PdfDocument pdfDocPrivate = new PdfDocument(new PdfReader(string.Format(@"{0}\PrivateWaterMark.pdf", basepath)),
-                    new PdfWriter(string.Format(@"{0}\{1}", basepath, "PrivateCover.pdf")));
+                PdfDocument pdfDocPrivate = new PdfDocument(new PdfReader(string.Format(@"{0}PrivateWaterMark.pdf", basepath)),
+                    new PdfWriter(string.Format(@"{0}{1}", basepath, "PrivateCover.pdf")));
 
-                PrepareToAddCover(title, studentName, cordenatorName, contextOfDelivery, pdfDocPrivate);
+                PrepareToAddCover(title, studentName, cordenatorName, contextOfDelivery, pdfDocPrivate, imagePath);
 
-                PdfDocument pdfDocPublic = new PdfDocument(new PdfReader(string.Format(@"{0}\PublicWaterMark.pdf", basepath)),
-                   new PdfWriter(string.Format(@"{0}\{1}", basepath, "PublicCover.pdf")));
-                PrepareToAddCover(title, studentName, cordenatorName, contextOfDelivery, pdfDocPublic);
+                PdfDocument pdfDocPublic = new PdfDocument(new PdfReader(string.Format(@"{0}PublicWaterMark.pdf", basepath)),
+                   new PdfWriter(string.Format(@"{0}{1}", basepath, "PublicCover.pdf")));
+                PrepareToAddCover(title, studentName, cordenatorName, contextOfDelivery, pdfDocPublic, imagePath);
 
-                
+
                 return true;
             }
             catch (Exception ex)
@@ -46,25 +47,25 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
             return false;
         }
 
-        private void PrepareToAddCover(string title, string studentName, string cordenatorName, string contextOfDelivery, PdfDocument pdfDoc)
+        private void PrepareToAddCover(string title, string studentName, string cordenatorName, string contextOfDelivery, PdfDocument pdfDoc, string imagePath)
         {
             Document doc = new Document(pdfDoc);
             var pdfPage = pdfDoc.AddNewPage(2);
-           Rectangle pageSize = pdfPage.GetPageSize();
+            Rectangle pageSize = pdfPage.GetPageSize();
 
 
             AddParagraph(title, pdfDoc, doc, (pageSize.GetLeft() + pageSize.GetRight()) / 2, (pageSize.GetLeft() + pageSize.GetRight()) / 2);
             AddParagraph(contextOfDelivery, pdfDoc, doc, (pageSize.GetLeft() + pageSize.GetRight()) / 2, (pageSize.GetLeft() + pageSize.GetRight()) / 3);
             AddParagraph(studentName, pdfDoc, doc, (pageSize.GetLeft() + pageSize.GetRight()) / 3, (pageSize.GetLeft() + pageSize.GetRight()) / 5);
             AddParagraph(cordenatorName, pdfDoc, doc, (pageSize.GetLeft() + pageSize.GetRight()) / 3, (pageSize.GetLeft() + pageSize.GetRight()) / 6);
-            AddLogoImage(pdfDoc, pageSize);
+            AddLogoImage(pdfDoc, pageSize, imagePath);
 
             doc.Close();
         }
 
-        private void AddLogoImage(PdfDocument pdfDoc, Rectangle pageSize)
+        private void AddLogoImage(PdfDocument pdfDoc, Rectangle pageSize, string imagePath)
         {
-            ImageData img = ImageDataFactory.Create(string.Format(@"{0}\\Image\ismai.png", Environment.CurrentDirectory));
+            ImageData img = ImageDataFactory.Create(imagePath);
             float w = img.GetWidth() / 2;
             float h = img.GetHeight() / 2;
             var pdfPage = pdfDoc.GetPage(2);

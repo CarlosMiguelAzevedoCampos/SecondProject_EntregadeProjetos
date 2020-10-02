@@ -88,7 +88,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.Camunda.Service
                     var getDefenition = returnVariableValue(delivery, "defenitionOfDelivery");
                     var getPath = returnVariableValue(delivery, "deliveryPath");
 
-                    var generateCoverPageCommand = new GenerateCoverPageCommand(getStudentName.Value.ToString(), getCordenatorName.Value.ToString(),getDefenition.Value.ToString(),getTitle.Value.ToString(), getPath.Value.ToString());
+                    var generateCoverPageCommand = new GenerateCoverPageCommand(getStudentName.Value.ToString(), getCordenatorName.Value.ToString(),getDefenition.Value.ToString(),getTitle.Value.ToString(), getPath.Value.ToString(), _config.GetSection("Logo:Path").Value);
 
 
                     var result = await _mediator.Send(generateCoverPageCommand);

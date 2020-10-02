@@ -43,7 +43,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateCoverPageCommand = new GenerateCoverPageCommand("Carlos Campos", "José Manuel", "Mestrado", "BPMN e os seus processos", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_CoverTest");
+            var generateCoverPageCommand = new GenerateCoverPageCommand("Carlos Campos", "José Manuel", "Mestrado", "BPMN e os seus processos", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_CoverTest\", @"C:\Users\Carlos Campos\Desktop\Image\ismai.png");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateCoverPageCommand);
@@ -58,7 +58,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateCoverPageCommand = new GenerateCoverPageCommand("Carlos Campos", "José Manuel", "Mestrado", "BPMN e os seus processos", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029236_ISMAI_Carlos Campos_Informática_CoverTest");
+            var generateCoverPageCommand = new GenerateCoverPageCommand("Carlos Campos", "José Manuel", "Mestrado", "BPMN e os seus processos", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_CoverTest\", @"C:\Users\Carlos Campos\Desktop\Image\ismai.png");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateCoverPageCommand);

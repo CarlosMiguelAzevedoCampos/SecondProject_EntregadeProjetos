@@ -54,7 +54,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
         {
             ValidationResult.Errors.Clear();
 
-            if (!_coverPageService.AddCoverPage(request.FilePath, request.Title, request.StudentName, request.Cordenator, request.DeliveryContext))
+            if (!_coverPageService.AddCoverPage(request.FilePath, request.Title, request.StudentName, request.Cordenator, request.DeliveryContext, request.CoverImagePath))
             {
                 AddError("A problem happen while adding a cover");
                 return await Task.FromResult(ValidationResult);

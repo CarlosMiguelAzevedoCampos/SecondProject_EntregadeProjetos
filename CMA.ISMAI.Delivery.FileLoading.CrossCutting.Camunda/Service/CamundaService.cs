@@ -141,19 +141,22 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getprivatedefenition = returnVariableValue(delivery, "privatePDFVersionName");
 
 
-                    VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.Parse(getId.Value.ToString()), string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                    VerifyFilesNameCommand verifyFilesCommand = new VerifyFilesNameCommand(Guid.Parse(getId.Value.ToString()), string.Format(@"{0}{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
                    getStudentName.Value.ToString(), getCourseName.Value.ToString()),
-                  string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
-                   getStudentName.Value.ToString(), getCourseName.Value.ToString()), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString());
+                  string.Format(@"{0}{1}_{2}_{3}_{4}{5}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                   getStudentName.Value.ToString(), getCourseName.Value.ToString(), IsRunningLinux() ? "/" : "\\"), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString());
 
-                    if (!verifyFilesCommand.IsValid())
-                    {
-                        DeleteFiles(string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value));
-                        DeleteFiles(string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value));
-                    }
-                
 
                     var validation = await _mediator.Send(verifyFilesCommand);
+                    if (!validation.IsValid)
+                    {
+                        DeleteFiles(string.Format(@"{0}{1}{2}_{3}_{4}_{5}.zip", _config.GetSection("FilePathUnzip:Path").Value, IsRunningLinux() ? "/" : "\\", getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                            getStudentName.Value.ToString(), getCourseName.Value.ToString()));
+
+                        DeleteFiles(string.Format(@"{0}{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                            getStudentName.Value.ToString(), getCourseName.Value.ToString()));
+                    }
+                
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
                     dictionaryToPassVariable.Add("filesnames", validation.IsValid);
                     dictionaryToPassVariable["Worker"] = "verify_files_names";
@@ -166,8 +169,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                 }
             });
 
-
-
+           
             registerWorker("verify_files", async externalTask =>
             {
                 try
@@ -180,8 +182,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getCourseName = returnVariableValue(delivery, "courseName");
 
                     VerifyFilesCommand verifyFilesCommand = new VerifyFilesCommand(Guid.Parse(getId.Value.ToString()),
-                           string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
-                 getStudentName.Value.ToString(), getCourseName.Value.ToString()));
+                            string.Format(@"{0}{1}_{2}_{3}_{4}{5}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                   getStudentName.Value.ToString(), getCourseName.Value.ToString(), IsRunningLinux() ? "/" : "\\"));
 
                     var validation = await _mediator.Send(verifyFilesCommand);
                     Dictionary<string, object> dictionaryToPassVariable = returnDictionary(delivery);
@@ -208,8 +210,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
                     var getStudentNumber = returnVariableValue(delivery, "studentNumber");
                     var getCourseName = returnVariableValue(delivery, "courseName");
 
-                    CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
-                    getStudentName.Value.ToString(), getCourseName.Value.ToString()), getStudentEmail.Value.ToString(), _config.GetSection("Notification:Email").Value);
+                    CreateFileIdentifiersCommand createFileIdentifiersCommand = new CreateFileIdentifiersCommand(Guid.NewGuid(), string.Format(@"{0}{1}_{2}_{3}_{4}{5}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                   getStudentName.Value.ToString(), getCourseName.Value.ToString(), IsRunningLinux() ? "/" : "\\"), getStudentEmail.Value.ToString(), _config.GetSection("Notification:Email").Value);
 
 
                     var validation = await _mediator.Send(createFileIdentifiersCommand);
@@ -248,8 +250,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
 
                     Core.Model.DeliveryFileSystem deliveryFileSystem = new Core.Model.DeliveryFileSystem(Guid.Parse(getId.Value.ToString())
                         , getStudentName.Value.ToString(), getInstituteName.Value.ToString(), getCourseName.Value.ToString(), getStudentEmail.Value.ToString(), getStudentNumber.Value.ToString(), DateTime.Parse(getDeliveryTime.Value.ToString()),
-                        getCordenatorName.Value.ToString(), getTitle.Value.ToString(), getDefenition.Value.ToString(), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString(), string.Format(@"{0}\{1}_{2}_{3}_{4}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
-                    getStudentName.Value.ToString(), getCourseName.Value.ToString()));
+                        getCordenatorName.Value.ToString(), getTitle.Value.ToString(), getDefenition.Value.ToString(), getpublicdefenition.Value.ToString(), getprivatedefenition.Value.ToString(), string.Format(@"{0}{1}_{2}_{3}_{4}{5}", _config.GetSection("FilePathUnzip:Path").Value, getStudentNumber.Value.ToString(), getInstituteName.Value.ToString(),
+                   getStudentName.Value.ToString(), getCourseName.Value.ToString(), IsRunningLinux() ? "/" : "\\"));
 
 
                     bool validation = _queueService.SendToQueue(deliveryFileSystem, "PaymentProcessing");
@@ -342,6 +344,11 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.Camunda.Service
             });
             pollingTimer = new Timer(_ => StartPolling(), null, Convert.ToInt64(_config.GetSection("TimeToFetch:Time").Value), Timeout.Infinite);
 
+        }
+
+        private bool IsRunningLinux()
+        {
+            return _config.GetSection("FilePathUnzip:Path").Value.Contains("/");
         }
 
         private void DeleteFiles(string filePath)

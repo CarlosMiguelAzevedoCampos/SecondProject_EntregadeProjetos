@@ -35,7 +35,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.Domain.Commands
         public async Task<ValidationResult> Handle(DownloadFileFromUrlCommand request, CancellationToken cancellationToken)
         {
             ValidationResult.Errors.Clear();
-            if (!_httpRequestService.DownloadFileToHost(string.Format(@"{0}\{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.DeliveryWithLink.StudentNumber, request.DeliveryWithLink.InstituteName,
+            if (!_httpRequestService.DownloadFileToHost(string.Format(@"{0}{1}_{2}_{3}_{4}.zip", _config.GetSection("FilePathZip:Path").Value, request.DeliveryWithLink.StudentNumber, request.DeliveryWithLink.InstituteName,
                 request.DeliveryWithLink.StudentName, request.DeliveryWithLink.CourseName), request.DeliveryWithLink.Title))
             {
                 AddError("An error happend while downloading!");

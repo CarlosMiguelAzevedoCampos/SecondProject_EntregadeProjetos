@@ -28,9 +28,9 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileProcessing
             try
             {
 
-                GenerateJuryPage(string.Format(@"{0}\PrivateCover.pdf", filePath), string.Format(@"{0}\{1}", filePath, "FinalPrivate_Delivery.pdf"), jury);
+                GenerateJuryPage(string.Format(@"{0}PrivateCover.pdf", filePath), string.Format(@"{0}{1}", filePath, "FinalPrivate_Delivery.pdf"), jury);
 
-                GenerateJuryPage(string.Format(@"{0}\PublicCover.pdf", filePath), string.Format(@"{0}\{1}", filePath, "FinalPublic_Delivery.pdf"), jury);
+                GenerateJuryPage(string.Format(@"{0}PublicCover.pdf", filePath), string.Format(@"{0}{1}", filePath, "FinalPublic_Delivery.pdf"), jury);
 
                 return true;
             }

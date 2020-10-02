@@ -28,7 +28,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
                     zout.ExtractToDirectory(extractPath);
                 }
                 return true;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _log.Fatal(ex.ToString());
             }
@@ -46,8 +47,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.CrossCutting.FileVerifier
 
         public bool VerifyIfPublicAndPrivateFilesExist(string filePathExtract, string privateFile, string publicFile)
         {
-            return (File.Exists(string.Format("{0}/{1}", filePathExtract, publicFile)) && (Path.GetExtension(string.Format("{0}/{1}", filePathExtract, publicFile)).ToLower() == ".pdf"))
-                && (File.Exists(string.Format("{0}/{1}", filePathExtract, privateFile)) && (Path.GetExtension(string.Format("{0}/{1}", filePathExtract, privateFile)).ToLower() == ".pdf"));
+            return (File.Exists(string.Format("{0}{1}", filePathExtract, publicFile)) && (Path.GetExtension(string.Format("{0}{1}", filePathExtract, publicFile)).ToLower() == ".pdf"))
+              && (File.Exists(string.Format("{0}{1}", filePathExtract, privateFile)) && (Path.GetExtension(string.Format("{0}{1}", filePathExtract, privateFile)).ToLower() == ".pdf"));
         }
     }
 }

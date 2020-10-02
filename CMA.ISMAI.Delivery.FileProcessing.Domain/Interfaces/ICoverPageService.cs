@@ -2,6 +2,6 @@
 {
     public interface ICoverPageService
     {
-        bool AddCoverPage(string basepath, string title, string studentName, string cordenatorName, string contextOfDelivery);
+        bool AddCoverPage(string basepath, string title, string studentName, string cordenatorName, string contextOfDelivery, string imagePath);
     }
 }

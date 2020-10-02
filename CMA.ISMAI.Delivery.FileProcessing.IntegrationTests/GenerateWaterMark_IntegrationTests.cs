@@ -42,7 +42,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             File.Delete(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_WaterMarkTest\PublicWaterMark.pdf");
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_WaterMarkTest", "Informmática", "ISMAI", DateTime.Now,
+            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_WaterMarkTest\", "Informmática", "ISMAI", DateTime.Now,
                 "public.pdf", "PrivateProjectDelivery.pdf");
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateWaterMark);
@@ -57,7 +57,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_WaterMarkTest", "Informmática", "ISMAI", DateTime.Now,
+            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_WaterMarkTest\", "Informmática", "ISMAI", DateTime.Now,
                 "public.pdf", "private.pdf");
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateWaterMark);
@@ -73,7 +73,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_WaterMarkTest", "Informmática", "ISMAI", DateTime.Now,
+            var generateWaterMark = new GenerateWaterMarkCommand("A029216", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_WaterMarkTest\", "Informmática", "ISMAI", DateTime.Now,
                 "PublicDelivery.pdf", "PrivateProjectDelivery.pdf");
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateWaterMark);
