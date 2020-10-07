@@ -22,6 +22,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NetDevPack.Mediator;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
@@ -39,6 +40,8 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
         {
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            loggerFactory.AddSerilog();
             Console.WriteLine(string.Format("File Loading is starting..! - {0}", DateTime.Now));
             await serviceProvider.GetRequiredService<ConsoleApplication>().StartServiceAsync();
             var hostBuilder = new HostBuilder();
@@ -58,6 +61,7 @@ namespace CMA.ISMAI.Delivery.FileLoading.UI
             .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(_config.GetSection("ElasticConfiguration:Uri").Value))
             {
                 AutoRegisterTemplate = true,
+                IndexFormat = "DeliveryISMAIFileLoading"
             })
         .CreateLogger();
 

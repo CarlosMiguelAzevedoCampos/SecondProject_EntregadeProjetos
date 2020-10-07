@@ -125,7 +125,23 @@ services:
       - NotificationEmail__Port=587
       - FilePathZip__Path=/Production/Zip  
       - FilePathUnzip__Path=/Production/Unzip 
-
+  cma.ismai.delivery.ui:
+    image: ${DOCKER_REGISTRY-}cmaismaideliveryui
+    networks:
+      - deliveryproject_network
+    container_name: cmaismaideliveryui
+    restart: always
+    ports:
+    - 5778:80
+    - 5779:443
+    build:
+      context: .
+      dockerfile: CMA.ISMAI.Delivery.UI/Dockerfile
+    environment:
+      - ElasticConfiguration__Uri=http://elasticsearch:9200/ 
+      - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113
+      - API_File_ZIP__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithFile
+      - API_File_URL__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithLink
 
  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
