@@ -15,12 +15,11 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileMover
             _log = log;
         }
 
-        public bool TransferFile(string filePath, string drivePath)
+        public bool TransferFile(string filePath, string drivePath, string fileName)
         {
             try
             {
-                string fileName = Path.GetFileName(filePath);
-                ZipFile.CreateFromDirectory(filePath, string.Format("{0}\\{1}.zip", drivePath, fileName));   
+                ZipFile.CreateFromDirectory(filePath, string.Format("{0}{1}{2}.zip", drivePath, filePath.Contains("/") ? "//" : "\\", fileName));   
                 return true;
             }
             catch (Exception ex)

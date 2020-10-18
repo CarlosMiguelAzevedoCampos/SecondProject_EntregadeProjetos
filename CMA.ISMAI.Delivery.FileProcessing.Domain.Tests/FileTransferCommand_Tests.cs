@@ -22,8 +22,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Tests
             var meditrHandler = new Mock<IMediatorHandler>();
             var fileTransfer = new Mock<IFileTransferService>();
 
-            var fileTransferCommand = new FileTransferCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
-            fileTransfer.Setup(x => x.TransferFile(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            var fileTransferCommand = new FileTransferCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+            fileTransfer.Setup(x => x.TransferFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             // Act
             var fileHandler = new FileProcessingHandler(pdfProcessor.Object, coverProcessor.Object, generateJuryPage.Object, fileReader.Object, meditrHandler.Object,fileTransfer.Object);
             var result = fileHandler.Handle(fileTransferCommand, new CancellationToken());
@@ -45,8 +45,8 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Tests
             var meditrHandler = new Mock<IMediatorHandler>();
             var fileTransfer = new Mock<IFileTransferService>();
 
-            var fileTransferCommand = new FileTransferCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
-            fileTransfer.Setup(x => x.TransferFile(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+            var fileTransferCommand = new FileTransferCommand(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+            fileTransfer.Setup(x => x.TransferFile(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
             // Act
             var fileHandler = new FileProcessingHandler(pdfProcessor.Object, coverProcessor.Object, generateJuryPage.Object, fileReader.Object, meditrHandler.Object, fileTransfer.Object);
             var result = fileHandler.Handle(fileTransferCommand, new CancellationToken());

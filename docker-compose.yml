@@ -23,8 +23,8 @@ services:
       - RabbitMqCore__Port=5672 
       - ElasticConfiguration__Uri=http://elasticsearch:9200/
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 
-      - FilePathZip__Path=/Production/Zip/
-      - FilePathUnzip__Path=/Production/Unzip/
+      - FilePathZip__Path=//Production//Zip//
+      - FilePathUnzip__Path=//Production/Unzip//
 
   cma.ismai.delivery.fileloading.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryfileloadingui
@@ -46,8 +46,8 @@ services:
       - ElasticConfiguration__Uri=http://elasticsearch:9200/
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113
       - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/
-      - FilePathZip__Path=/Production/Zip/
-      - FilePathUnzip__Path=/Production/Unzip/  
+      - FilePathZip__Path=//Production//Zip//
+      - FilePathUnzip__Path=//Production/Unzip// 
       - Notification__Email=carlosmiguelcampos1996@gmail.com 
       - NotificationEmail__Email=trelloismai@gmail.com 
       - NotificationEmail__Password=trelloteste123
@@ -80,7 +80,7 @@ services:
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113 
       - Camunda__Uri=http://camunda:8080/engine-rest/engine/default/
       - FilePathJury__Path=//Jury//ismai.xlsx 
-      - OneDrive__Path=/Document/OneDrive 
+      - OneDrive__Path=//Document//OneDrive 
       - TimeToFetch__Time=60000
       - TaskPerFetch__Time=30 
       - Notification__Email=carlosmiguelcampos1996@gmail.com
@@ -88,9 +88,9 @@ services:
       - NotificationEmail__Password=trelloteste123
       - NotificationEmail__Host=smtp.gmail.com
       - NotificationEmail__Port=587
-      - FilePathZip__Path=/Production/Zip  
-      - FilePathUnzip__Path=/Production/Unzip 
-      - Logo__Path=/Image/ISMAI/ismai.png
+      - FilePathZip__Path=//Production//Zip//
+      - FilePathUnzip__Path=//Production/Unzip//
+      - Logo__Path=//Image//ISMAI//ismai.png
 
   cma.ismai.delivery.payment.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliverypaymentui
@@ -123,8 +123,8 @@ services:
       - NotificationEmail__Password=trelloteste123
       - NotificationEmail__Host=smtp.gmail.com
       - NotificationEmail__Port=587
-      - FilePathZip__Path=/Production/Zip  
-      - FilePathUnzip__Path=/Production/Unzip 
+      - FilePathZip__Path=//Production//Zip  
+      - FilePathUnzip__Path=//Production//Unzip 
   cma.ismai.delivery.ui:
     image: ${DOCKER_REGISTRY-}cmaismaideliveryui
     networks:
@@ -140,34 +140,30 @@ services:
     environment:
       - ElasticConfiguration__Uri=http://elasticsearch:9200/ 
       - EventStore__IPAddress=tcp://admin:changeit@eventstore:1113
-      - API_File_ZIP__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithFile
+      - API_File_ZIP__Uri=http://localhost:5668/api/Deliveries/UploadWithFile
       - API_File_URL__Uri=http://cmaismaideliveryapiui/api/Deliveries/UploadWithLink
 
- elasticsearch:
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
     container_name: elasticsearch
     ports:
      - "9200:9200"
-    volumes:
-     - ./elasticsearch-data:/usr/share/elasticsearch/data
     networks:
      - deliveryproject_network
     restart: always
  
-   kibana:
+  kibana:
     image: docker.elastic.co/kibana/kibana:6.2.4
     container_name: kibana
     ports:
      - "5601:5601"
     depends_on:
      - elasticsearch
-    volumes:
-      - ./kibana-data:/usr/share/kibana/kibana.yml
     networks:
      - deliveryproject_network
     restart: always
  
-   rabbitmq:
+  rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
     hostname: rabbitmq
@@ -182,22 +178,18 @@ services:
     networks:
     - deliveryproject_network
     privileged: true
-    volumes:
-    - ./rabbitmq-data/:/var/lib/rabbitmq/mnesia
     restart: always
  
-   camunda:
+  camunda:
     container_name: camunda
     image: camunda/camunda-bpm-platform:latest
     ports:
      - "8080:8080"
     networks:
      - deliveryproject_network
-    volumes:
-    - ./camunda-data/:/camunda/camunda-h2-dbs
     restart: always
  
-   eventstore.db:
+  eventstore.db:
      container_name: eventstore
      image: eventstore/eventstore:release-5.0.8
      environment:
@@ -211,18 +203,14 @@ services:
        - "1113:1113"
        - "2112:2112"
        - "2113:2113"
-     volumes:
-       - ./eventstore-data:/var/lib/eventstore
-       - ./eventstore-log:/var/log/eventstore
      networks:
        - deliveryproject_network
      restart: always
-   portainer:
+  portainer:
       image: portainer/portainer
       ports:
         - "9000:9000"
       volumes:
-        - ./portainer_data:/data
         - /var/run/docker.sock:/var/run/docker.sock
       networks:
         - deliveryproject_network

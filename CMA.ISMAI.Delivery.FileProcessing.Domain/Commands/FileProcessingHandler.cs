@@ -6,6 +6,7 @@ using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Mediator;
 using NetDevPack.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -89,7 +90,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.Domain.Commands
         {
             ValidationResult.Errors.Clear();
 
-            bool result = _fileTransferService.TransferFile(request.FilePath, request.OneDrivePath);
+            bool result = _fileTransferService.TransferFile(request.FilePath, request.OneDrivePath, string.Format("{0}_{1}", request.StudentEmail, request.StudentNumber));
 
             if(!result)
             {

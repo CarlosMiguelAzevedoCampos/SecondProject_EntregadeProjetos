@@ -2,6 +2,6 @@
 {
     public interface IFileTransferService
     {
-        bool TransferFile(string filePath, string drivePath);
+        bool TransferFile(string filePath, string drivePath, string fileName);
     }
 }
