@@ -38,9 +38,14 @@ namespace CMA.ISMAI.Delivery.FileProcessing.CrossCutting.FileReader
                                          package.Workbook.Worksheets[i].Cells[j, 2].Value.ToString().ToLower() == studentInstitute.ToLower() &&
                                          package.Workbook.Worksheets[i].Cells[j, 3].Value.ToString().ToLower() == studentCourseName.ToLower())
                                     {
-                                        for (int p = 4; p <9; p++)
+                                        for (int p = 4; p <1000; p++)
                                         {
-                                            jury.Add(package.Workbook.Worksheets[i].Cells[j, p].Value.ToString());
+                                            if (!string.IsNullOrEmpty(package.Workbook.Worksheets[i].Cells[j, p].Value.ToString()))
+                                            {
+                                                jury.Add(package.Workbook.Worksheets[i].Cells[j, p].Value.ToString());
+                                            }
+                                            else
+                                                break;
                                         }
                                     }
                                 }

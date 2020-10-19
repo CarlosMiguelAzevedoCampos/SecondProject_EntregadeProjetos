@@ -43,7 +43,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
             var fileTransferCommand = new FileTransferCommand(@"C:\Users\Carlos Campos\Desktop\Teste\Unzip\A029216_ISMAI_Carlos Campos_Informática",
-                "C:\\Users\\Carlos Campos\\OneDrive\\Documentos", "carlosmiguelcampos1996@gmail.com", "a029216");
+                "C:\\Users\\Carlos Campos\\OneDrive\\Documentos", "carlosmiguelcampos1996@gmail.com", Guid.NewGuid().ToString());
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(fileTransferCommand);

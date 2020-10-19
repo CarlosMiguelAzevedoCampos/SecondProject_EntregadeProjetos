@@ -43,7 +43,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
             // Arrange
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A029216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_JuryPageTest\", "C:\\Users\\Carlos Campos\\Desktop\\ismai.xlsx");
+            var generateJuryPageCommand = new GenerateJuryPageCommand("Carlos Campos", "A029216", "Informática", "ISMAI", @"C:\Users\Carlos Campos\Desktop\Teste\Unzip\FileProcessing\A029216_ISMAI_Carlos Campos_Informática_JuryPageTest\", "C:\\Users\\Carlos Campos\\Desktop\\jury.xlsx");
 
             // Act
             var result = await serviceProvider.GetRequiredService<IMediator>().Send(generateJuryPageCommand);
@@ -67,7 +67,7 @@ namespace CMA.ISMAI.Delivery.FileProcessing.IntegrationTests
         }
 
         [Fact(DisplayName = "Jury not found")]
-        [Trait("GenerateJuryPageCommand", "Generate Jury page")]
+        [Trait("GenerateJuryPageCommand", "Generate Jury page - Integration Tests")]
         public async Task JuryNotFound()
         {
             // Arrange
