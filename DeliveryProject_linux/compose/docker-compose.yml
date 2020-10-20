@@ -3,7 +3,9 @@
 # Nas imagens, elasticsearch até portainer, não necessitamos de fazer modificações.
 # !! Variaveis importantes
 #  TimeToFetch__Time=30000 e TaskPerFetch__Time=30 são varáveis importantes, pois representam o tempo de obtenção de dados do camunda e o número de tasks que iremos requistiar ao Camunda BPM
-
+# Nos volumes, apenas necessitamos de editar a parte esquerda ao ":", pois é onde devemos indicar onde, no nosso computar, a pasta do container se vai localizar.
+# Uma variavel de volume que tenha este aspeto: /Users/carloscampos/Desktop/DeliveryProject_linux/Unzip - Representa uma pasta no nosso computar.
+# Uma variavel de volume que tenha este aspeto : /Users/carloscampos/Desktop/DeliveryProject_linux/excel/jury.xlsx - Representa um ficheiro que se encontra no nosso computador
 version: '3.4'
 
 services:
