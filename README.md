@@ -17,3 +17,12 @@ Com este projeto, o pretendido passa por inovar e simplificar o processamento ma
 
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/pDoP1SKzdwA/0.jpg)](https://youtu.be/pDoP1SKzdwA "Segundo Projeto")
+
+
+## Arquitetura da solução
+
+Nesta arquitetura podemos verificar que o RabbitMQ assume uma grande importância, juntamente com o Camunda BPM.
+
+Caso não consigamos enviar mensagens com o RabbitMQ, vai ser gerado um erro com a informação e o sistema vai enviar o processo para validação manual. No caso de erro, o aluno vai ser alertado e aconselhado a repetir a submissão.
+
+Caso o Camunda BPM falhe, vai ser gerado um erro e a informação não vai ser obtida, contudo o sistema irá continuar a tentar processar entregas.
