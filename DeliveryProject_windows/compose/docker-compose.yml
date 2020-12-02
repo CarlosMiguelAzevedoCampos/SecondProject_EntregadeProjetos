@@ -6,6 +6,8 @@
 # Nos volumes, apenas necessitamos de editar a parte esquerda ao ":", pois é onde devemos indicar onde, no nosso computar, a pasta do container se vai localizar.
 # Uma variavel de volume que tenha este aspeto: C:\Users\Carlos Campos\Desktop\Projeto\DeliveryProject_windows\Unzip - Representa uma pasta no nosso computar.
 # Uma variavel de volume que tenha este aspeto : C:\Users\Carlos Campos\Desktop\Projeto\DeliveryProject_windows\excel\jury.xlsx - Representa um ficheiro que se encontra no nosso computador
+# As variaveis Notification__Email | Notification__ManualProcessing representam o email que irá receber a notificação de entregas que falharam e que seguiram para processamento manual.
+
 version: '3.4'
 
 services:
