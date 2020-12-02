@@ -1,4 +1,4 @@
-# Neste ficheiro, devemos modificar o caminho dos volumes para o caminho onde se encontra a informação pretendida.
+# Neste ficheiro, devemos modificar o caminho dos volumes para o caminho onde se encontra a informação pretendida. Para um bom uso, recomendo que a informação esteja na mesma pasta que o docker-compose.
 # Nas variaveis de ambiente, estas são simples de ser compreendidas, logo, devemos preenche-lás com a informação pedida.
 # Nas imagens, elasticsearch até portainer, não necessitamos de fazer modificações.
 # !! Variaveis importantes
