@@ -26,3 +26,6 @@ Caso o Camunda BPM falhe, vai ser gerado um erro e a informação não vai ser o
 
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/pDoP1SKzdwA/0.jpg)](https://youtu.be/pDoP1SKzdwA "Segundo Projeto")
+
+
+Autor: Carlos Campos
